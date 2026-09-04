@@ -1,0 +1,1909 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Digital Logic Laboratory Course Materials">
+      
+      
+      
+        <link rel="canonical" href="https://cs207digitallogic.github.io/site/en/DigitalLogic_EnvironmentSetup/">
+      
+      
+        <link rel="prev" href="../">
+      
+      
+        <link rel="next" href="../DigitalLogic_VerilogBasics/">
+      
+      
+        
+          <link rel="alternate" href="../../DigitalLogic_EnvironmentSetup/" hreflang="zh">
+        
+          <link rel="alternate" href="./" hreflang="en">
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>Lab 1: Environment Setup - Digital Logic Course</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#digital-logic-environment-setup-and-engineering-practice" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../" title="Digital Logic Course" class="md-header__button md-logo" aria-label="Digital Logic Course" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Digital Logic Course
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Lab 1: Environment Setup
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-hidden="true"  type="radio" name="__palette" id="__palette_0">
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+      <div class="md-header__option">
+  <div class="md-select">
+    
+    <button class="md-header__button md-icon" aria-label="Select language">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m12.87 15.07-2.54-2.51.03-.03A17.5 17.5 0 0 0 14.07 6H17V4h-7V2H8v2H1v2h11.17C11.5 7.92 10.44 9.75 9 11.35 8.07 10.32 7.3 9.19 6.69 8h-2c.73 1.63 1.73 3.17 2.98 4.56l-5.09 5.02L4 19l5-5 3.11 3.11zM18.5 10h-2L12 22h2l1.12-3h4.75L21 22h2zm-2.62 7 1.62-4.33L19.12 17z"/></svg>
+    </button>
+    <div class="md-select__inner">
+      <ul class="md-select__list">
+        
+          <li class="md-select__item">
+            <a href="../../DigitalLogic_EnvironmentSetup/" hreflang="zh" class="md-select__link">
+              中文
+            </a>
+          </li>
+        
+          <li class="md-select__item">
+            <a href="./" hreflang="en" class="md-select__link">
+              English
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</div>
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://cs207digitallogic.github.io" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub Repository
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="./" class="md-tabs__link">
+          
+  
+  
+  Labs
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../projects/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Projects
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../links/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  OJ Platforms
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../resources/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Course Resources
+
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../" title="Digital Logic Course" class="md-nav__button md-logo" aria-label="Digital Logic Course" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Digital Logic Course
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://cs207digitallogic.github.io" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub Repository
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Labs
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Labs
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 1: Environment Setup
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 1: Environment Setup
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#objectives" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Objectives
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1-experimental-platform" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Experimental Platform
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. Experimental Platform">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#11-eda-tool-vivado-20183" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.1 EDA Tool: Vivado 2018.3
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#12-fpga-development-board-ego1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.2 FPGA Development Board: EGO1
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-installing-vivado" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Installing Vivado
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. Installing Vivado">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#21-important-notes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.1 Important Notes
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#22-installation-procedure" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.2 Installation Procedure
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-standard-vivado-project-development-flow" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Standard Vivado Project Development Flow
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Standard Vivado Project Development Flow">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#step-1-create-or-open-a-vivado-project" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 1: Create or Open a Vivado Project
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-2-add-or-create-source-files" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 2: Add or Create Source Files
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-3-run-functional-simulation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 3: Run Functional Simulation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-4-synthesize-implement-and-generate-the-bitstream" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 4: Synthesize, Implement, and Generate the Bitstream
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-5-connect-the-development-board" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 5: Connect the Development Board
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-6-program-the-device-and-verify-it-on-the-board" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 6: Program the Device and Verify It on the Board
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-disconnecting-the-hardware-and-reconfiguring-the-device" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Disconnecting the Hardware and Reconfiguring the Device
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. Disconnecting the Hardware and Reconfiguring the Device">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#41-safe-disconnection" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.1 Safe Disconnection
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#42-changing-the-fpga-device-in-a-project" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.2 Changing the FPGA Device in a Project
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-laboratory-exercise" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Laboratory Exercise
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../DigitalLogic_VerilogBasics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 2: Verilog Basics and Structural Modeling
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../DigitalLogic_Dataflow/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 3: Dataflow Modeling and FPGA Verification
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../DigitalLogic_BehaviorModeling/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 4: Behavioral Modeling and Seven-Segment Display
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../DigitalLogic_SequentialLogic/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 5: Sequential Logic—Counters and Clock Dividers
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../DigitalLogic_DynamicDisplay/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 6: Multiplexed Display—Chasing LEDs and Seven-Segment Displays
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../DigitalLogic_ButtonDebounce/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 7: Button Debouncing and Edge Detection
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../DigitalLogic_StateMachine/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 8: State Machines
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../DigitalLogic_ModuleIntegration/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 9: Module Integration
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../DigitalLogic_UART/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 10: UART
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../DigitalLogic_StopwatchCore/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 11 Demo: Stopwatch Core
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../DigitalLogic_StopwatchControl/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 12 Demo: Stopwatch Control
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../DigitalLogic_StopwatchIntegration/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 13 Demo: System Integration
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../DigitalLogic_Memory/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 14: Memory Design and IP Cores
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../projects/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Projects
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../links/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    OJ Platforms
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../resources/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Course Resources
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#objectives" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Objectives
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1-experimental-platform" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Experimental Platform
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. Experimental Platform">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#11-eda-tool-vivado-20183" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.1 EDA Tool: Vivado 2018.3
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#12-fpga-development-board-ego1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.2 FPGA Development Board: EGO1
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-installing-vivado" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Installing Vivado
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. Installing Vivado">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#21-important-notes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.1 Important Notes
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#22-installation-procedure" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.2 Installation Procedure
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-standard-vivado-project-development-flow" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Standard Vivado Project Development Flow
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Standard Vivado Project Development Flow">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#step-1-create-or-open-a-vivado-project" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 1: Create or Open a Vivado Project
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-2-add-or-create-source-files" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 2: Add or Create Source Files
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-3-run-functional-simulation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 3: Run Functional Simulation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-4-synthesize-implement-and-generate-the-bitstream" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 4: Synthesize, Implement, and Generate the Bitstream
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-5-connect-the-development-board" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 5: Connect the Development Board
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-6-program-the-device-and-verify-it-on-the-board" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 6: Program the Device and Verify It on the Board
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-disconnecting-the-hardware-and-reconfiguring-the-device" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Disconnecting the Hardware and Reconfiguring the Device
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. Disconnecting the Hardware and Reconfiguring the Device">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#41-safe-disconnection" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.1 Safe Disconnection
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#42-changing-the-fpga-device-in-a-project" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.2 Changing the FPGA Device in a Project
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-laboratory-exercise" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Laboratory Exercise
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<div><div class="toc">
+<ul>
+<li><a href="#digital-logic-environment-setup-and-engineering-practice">Digital Logic: Environment Setup and Engineering Practice</a><ul>
+<li><a href="#objectives">Objectives</a></li>
+<li><a href="#1-experimental-platform">1. Experimental Platform</a><ul>
+<li><a href="#11-eda-tool-vivado-20183">1.1 EDA Tool: Vivado 2018.3</a></li>
+<li><a href="#12-fpga-development-board-ego1">1.2 FPGA Development Board: EGO1</a></li>
+</ul>
+</li>
+<li><a href="#2-installing-vivado">2. Installing Vivado</a><ul>
+<li><a href="#21-important-notes">2.1 Important Notes</a></li>
+<li><a href="#22-installation-procedure">2.2 Installation Procedure</a></li>
+</ul>
+</li>
+<li><a href="#3-standard-vivado-project-development-flow">3. Standard Vivado Project Development Flow</a><ul>
+<li><a href="#step-1-create-or-open-a-vivado-project">Step 1: Create or Open a Vivado Project</a></li>
+<li><a href="#step-2-add-or-create-source-files">Step 2: Add or Create Source Files</a></li>
+<li><a href="#step-3-run-functional-simulation">Step 3: Run Functional Simulation</a></li>
+<li><a href="#step-4-synthesize-implement-and-generate-the-bitstream">Step 4: Synthesize, Implement, and Generate the Bitstream</a></li>
+<li><a href="#step-5-connect-the-development-board">Step 5: Connect the Development Board</a></li>
+<li><a href="#step-6-program-the-device-and-verify-it-on-the-board">Step 6: Program the Device and Verify It on the Board</a></li>
+</ul>
+</li>
+<li><a href="#4-disconnecting-the-hardware-and-reconfiguring-the-device">4. Disconnecting the Hardware and Reconfiguring the Device</a><ul>
+<li><a href="#41-safe-disconnection">4.1 Safe Disconnection</a></li>
+<li><a href="#42-changing-the-fpga-device-in-a-project">4.2 Changing the FPGA Device in a Project</a></li>
+</ul>
+</li>
+<li><a href="#5-laboratory-exercise">5. Laboratory Exercise</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<h1 id="digital-logic-environment-setup-and-engineering-practice">Digital Logic: Environment Setup and Engineering Practice</h1>
+<h2 id="objectives">Objectives</h2>
+<ul>
+<li>Become familiar with the laboratory platform used in this course: the EDA tool and FPGA development board.</li>
+<li>Understand the key requirements for installing and configuring Vivado.</li>
+<li>Become familiar with the hardware components and basic architecture of the EGO1 development board.</li>
+<li>Master the complete Vivado project development flow: creating a project, adding files, functional simulation, synthesis and implementation, bitstream generation, and on-board verification.</li>
+<li>Understand the basic principles of FPGAs and how they differ from conventional CPUs.</li>
+</ul>
+<h2 id="1-experimental-platform">1. Experimental Platform</h2>
+<p>This course uses a combination of an <strong>EDA tool and an FPGA development board</strong> for hardware experiments.</p>
+<h3 id="11-eda-tool-vivado-20183">1.1 EDA Tool: Vivado 2018.3</h3>
+<ul>
+<li><strong>Purpose</strong>: Vivado is the development environment designed by Xilinx for its FPGA products. It enables developers to synthesize (compile) hardware designs, perform timing analysis, inspect RTL schematics, simulate circuit responses to different stimuli, and configure target devices through a programmer.</li>
+<li><strong>Version</strong>: This course standardizes on <strong>Vivado 2018.3</strong>.</li>
+</ul>
+<h3 id="12-fpga-development-board-ego1">1.2 FPGA Development Board: EGO1</h3>
+<ul>
+<li>
+<p><strong>Main device</strong>: A Xilinx Artix-7 FPGA, part number <code>xc7a35tcsg324-1</code>.</p>
+</li>
+<li>
+<p><strong>Main on-board peripherals</strong>:</p>
+</li>
+<li>
+<p>Power switch</p>
+</li>
+<li>Potentiometer</li>
+<li>Five push buttons</li>
+<li>Sixteen slide switches</li>
+<li>Reset button</li>
+<li>Eight seven-segment displays</li>
+<li>Sixteen LEDs</li>
+<li>Other interfaces: VGA, audio, USB-UART/JTAG (for connecting the board to a computer and programming it), and USB-PS/2</li>
+</ul>
+<p><img alt="image-20260609090907086" src="../../images/image-20260609090907086.png"></p>
+<h2 id="2-installing-vivado">2. Installing Vivado</h2>
+<h3 id="21-important-notes">2.1 Important Notes</h3>
+<p>Vivado requires substantial disk space and imposes strict requirements on paths. Observe the following points:</p>
+<ul>
+<li><strong>Disk space</strong>: Reserve at least <strong>20 GB</strong> of free space on the target drive.</li>
+<li><strong>Path naming</strong>: The operating-system username, the folder containing the installation package, and the final Vivado installation path <strong>must not contain Chinese characters or spaces</strong>.</li>
+<li><strong>Download link</strong>: Refer to 'resources' on top of the website.</li>
+<li><strong>Installer and license</strong>: Download the installer archive <code>Xilinx_Vivado_SDK_2018.3_1207_2324.tar.gz</code> and the license archive <code>Vivado2018.3_licence.zip</code>, then extract both archives.</li>
+<li><strong>Edition</strong>: Select <strong>Vivado HL Design Edition</strong> in the installer.</li>
+<li><strong>Custom installation (to save space)</strong>: On the component-selection screen, it is strongly recommended that you <strong>select only the components required for this course</strong>:</li>
+<li>Expand <code>7 Series</code> devices and <strong>select only Artix-7</strong>. Clear the selections for other devices such as Kintex-7 and Spartan-7.</li>
+<li><strong>Import the license</strong>: After installation, open Vivado License Manager, select <code>Load License</code> -&gt; <code>Copy License...</code>, and import the downloaded <code>.lic</code> file.</li>
+</ul>
+<h3 id="22-installation-procedure">2.2 Installation Procedure</h3>
+<ul>
+<li>Extract the installer package and double-click <code>xsetup.exe</code>:</li>
+</ul>
+<p><img alt="image-20260609091925734" src="../../images/image-20260609091925734.png"></p>
+<ul>
+<li>Skip the software update and click <code>Continue</code>:</li>
+</ul>
+<p><img alt="image-20260609091940618" src="../../images/image-20260609091940618.png"></p>
+<ul>
+<li>On this screen, select <code>I Agree</code>:</li>
+</ul>
+<p><img alt="image-20260609092403302" src="../../images/image-20260609092403302.png"></p>
+<ul>
+<li>Select the second option, <code>Vivado HL Design Edition</code>:</li>
+</ul>
+<p><img alt="image-20260609092426605" src="../../images/image-20260609092426605.png"></p>
+<ul>
+<li>To save disk space, select only the component required for this course, Artix-7:</li>
+</ul>
+<p><img alt="image-20260609092247803" src="../../images/1788143366847.png"></p>
+<ul>
+<li>You may change the installation directory. Ensure that its path contains no Chinese characters, then click <code>Next</code>:</li>
+</ul>
+<p><img alt="image-20260609092641053" src="../../images/1788143446913.png"></p>
+<ul>
+<li>After installation, open the license manager and click <code>Load License -&gt; Copy License</code>:</li>
+</ul>
+<p><img alt="image-20260609092744838" src="../../images/image-20260609092744838.png"></p>
+<ul>
+<li>Locate the license file and click <code>Open</code>:</li>
+</ul>
+<p><img alt="image-20260609093222134" src="../../images/image-20260609093222134.png"></p>
+<ul>
+<li>Click <code>View License Status</code> to inspect the license status:</li>
+</ul>
+<p><img alt="image-20260609093026495" src="../../images/image-20260609093026495.png"></p>
+<ul>
+<li>Double-click the desktop shortcut to start Vivado.</li>
+</ul>
+<h2 id="3-standard-vivado-project-development-flow">3. Standard Vivado Project Development Flow</h2>
+<p>The complete flow for hardware verification with Vivado and an FPGA development board consists of the following six steps:</p>
+<p><img alt="image-20260609093858464" src="../../images/image-20260609093858464.png"></p>
+<h3 id="step-1-create-or-open-a-vivado-project">Step 1: Create or Open a Vivado Project</h3>
+<ul>
+<li>Start Vivado. On the start screen, click <code>Create Project</code>; alternatively, select <code>File</code> -&gt; <code>Create Project</code> in the upper-left corner.</li>
+</ul>
+<p><img alt="image-20260609095107287" src="../../images/image-20260609095107287.png"></p>
+<ul>
+<li>Set the project name and path. <strong>Neither the project name nor its file path may contain Chinese characters or spaces.</strong></li>
+</ul>
+<p>Create project subdirectory: This option is selected by default. It creates a subfolder with the project name under the specified path.</p>
+<p><img alt="image-20260609100435393" src="../../images/image-20260609100435393.png"></p>
+<ul>
+<li>Select <strong>RTL Project</strong> as the project type.</li>
+</ul>
+<p><img alt="image-20260609095524239" src="../../images/image-20260609095524239.png"></p>
+<ul>
+<li>The next screens add source and constraint files. Click <code>Next</code> to skip them for now; the files will be created separately later.</li>
+</ul>
+<p><img alt="image-20260609100720362" src="../../images/image-20260609100720362.png"></p>
+<ul>
+<li>Under Default Part, search for and select the device used on the EGO1 development board: <strong><code>xc7a35tcsg324-1</code></strong>.</li>
+</ul>
+<p><img alt="image-20260609093744297" src="../../images/image-20260609093744297.png"></p>
+<h3 id="step-2-add-or-create-source-files">Step 2: Add or Create Source Files</h3>
+<ul>
+<li>Three types of files must be added to the project: design sources, simulation sources, and constraints.</li>
+<li>They can be added while creating the project (this method is not used here) or after the project has been created by clicking <code>Add Sources</code> (or the <code>+</code> icon).</li>
+</ul>
+<p><img alt="image-20260609094006099" src="../../images/image-20260609094006099.png"></p>
+<ul>
+<li>Create a circuit design file (<strong>Design Source</strong>) named <code>lab1_design.v</code>. Enter <code>lab1_design</code> in File name.</li>
+</ul>
+<p><img alt="image-20260609101002075" src="../../images/image-20260609101002075.png"></p>
+<ul>
+<li>Keep the default options, then click <code>Finish</code> -&gt; <code>OK</code>.</li>
+</ul>
+<p><img alt="image-20260609101110016" src="../../images/image-20260609101110016.png"></p>
+<ul>
+<li>The design file has now been created. The project view and the initial contents displayed after double-clicking the source file are shown below.</li>
+</ul>
+<p><img alt="image-20260609101252344" src="../../images/image-20260609101252344.png"></p>
+<ul>
+<li>Complete the source file and save it.</li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="k">module</span><span class="w"> </span><span class="n">lab1_design</span><span class="p">(</span>
+<span class="w">    </span><span class="k">input</span><span class="w"> </span><span class="p">[</span><span class="mh">7</span><span class="o">:</span><span class="mh">0</span><span class="p">]</span><span class="w"> </span><span class="n">sw</span><span class="p">,</span>
+<span class="w">    </span><span class="k">output</span><span class="w"> </span><span class="p">[</span><span class="mh">7</span><span class="o">:</span><span class="mh">0</span><span class="p">]</span><span class="w"> </span><span class="n">led</span>
+<span class="p">);</span>
+<span class="w">    </span><span class="k">assign</span><span class="w"> </span><span class="n">led</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sw</span><span class="p">;</span>
+<span class="k">endmodule</span>
+</code></pre></div>
+<ul>
+<li>In the same way, create the simulation file (Simulation Source) <code>lab1_sim.v</code>. Complete the simulation code and save it.</li>
+</ul>
+<p><img alt="image-20260609105542693" src="../../images/image-20260609105542693.png"></p>
+<div class="highlight"><pre><span></span><code><span class="no">`timescale</span><span class="w"> </span><span class="mh">1</span><span class="n">ns</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mh">1</span><span class="n">ps</span>
+
+<span class="k">module</span><span class="w"> </span><span class="n">lab1_sim</span><span class="p">(</span><span class="w"> </span><span class="p">);</span>
+
+<span class="w">    </span><span class="kt">reg</span><span class="w"> </span><span class="p">[</span><span class="mh">7</span><span class="o">:</span><span class="mh">0</span><span class="p">]</span><span class="w"> </span><span class="n">tb_sw</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">8'h0000</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">wire</span><span class="w"> </span><span class="p">[</span><span class="mh">7</span><span class="o">:</span><span class="mh">0</span><span class="p">]</span><span class="w"> </span><span class="n">tb_led</span><span class="p">;</span>
+
+<span class="w">    </span><span class="n">lab1_design</span><span class="w"> </span><span class="n">dut</span><span class="p">(</span>
+<span class="w">    </span><span class="p">.</span><span class="n">sw</span><span class="p">(</span><span class="n">tb_sw</span><span class="p">),</span>
+<span class="w">    </span><span class="p">.</span><span class="n">led</span><span class="p">(</span><span class="n">tb_led</span><span class="p">)</span>
+<span class="w">    </span><span class="p">);</span>
+
+<span class="w">    </span><span class="k">always</span><span class="w"> </span><span class="p">#</span><span class="mh">10</span><span class="w"> </span><span class="n">tb_sw</span><span class="o">=</span><span class="n">tb_sw</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mh">1</span><span class="mb">'b1</span><span class="p">;</span>
+<span class="k">endmodule</span>
+</code></pre></div>
+<ul>
+<li>Create the constraint file (Constrain Source) <code>lab1.xdc</code>.</li>
+</ul>
+<p><img alt="image-20260609105559166" src="../../images/image-20260609105559166.png"></p>
+<p><img alt="image-20260609104215961" src="../../images/image-20260609104215961.png"></p>
+<ul>
+<li>Enter the following pin constraints:</li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="n">set_property</span><span class="w"> </span><span class="n">IOSTANDARD</span><span class="w"> </span><span class="n">LVCMOS33</span><span class="w"> </span><span class="p">[</span><span class="n">get_ports</span><span class="w"> </span><span class="p">{</span><span class="n">led</span><span class="p">[</span><span class="mh">7</span><span class="p">]}]</span>
+<span class="n">set_property</span><span class="w"> </span><span class="n">IOSTANDARD</span><span class="w"> </span><span class="n">LVCMOS33</span><span class="w"> </span><span class="p">[</span><span class="n">get_ports</span><span class="w"> </span><span class="p">{</span><span class="n">led</span><span class="p">[</span><span class="mh">6</span><span class="p">]}]</span>
+<span class="n">set_property</span><span class="w"> </span><span class="n">IOSTANDARD</span><span class="w"> </span><span class="n">LVCMOS33</span><span class="w"> </span><span class="p">[</span><span class="n">get_ports</span><span class="w"> </span><span class="p">{</span><span class="n">led</span><span class="p">[</span><span class="mh">5</span><span class="p">]}]</span>
+<span class="n">set_property</span><span class="w"> </span><span class="n">IOSTANDARD</span><span class="w"> </span><span class="n">LVCMOS33</span><span class="w"> </span><span class="p">[</span><span class="n">get_ports</span><span class="w"> </span><span class="p">{</span><span class="n">led</span><span class="p">[</span><span class="mh">4</span><span class="p">]}]</span>
+<span class="n">set_property</span><span class="w"> </span><span class="n">IOSTANDARD</span><span class="w"> </span><span class="n">LVCMOS33</span><span class="w"> </span><span class="p">[</span><span class="n">get_ports</span><span class="w"> </span><span class="p">{</span><span class="n">led</span><span class="p">[</span><span class="mh">3</span><span class="p">]}]</span>
+<span class="n">set_property</span><span class="w"> </span><span class="n">IOSTANDARD</span><span class="w"> </span><span class="n">LVCMOS33</span><span class="w"> </span><span class="p">[</span><span class="n">get_ports</span><span class="w"> </span><span class="p">{</span><span class="n">led</span><span class="p">[</span><span class="mh">2</span><span class="p">]}]</span>
+<span class="n">set_property</span><span class="w"> </span><span class="n">IOSTANDARD</span><span class="w"> </span><span class="n">LVCMOS33</span><span class="w"> </span><span class="p">[</span><span class="n">get_ports</span><span class="w"> </span><span class="p">{</span><span class="n">led</span><span class="p">[</span><span class="mh">1</span><span class="p">]}]</span>
+<span class="n">set_property</span><span class="w"> </span><span class="n">IOSTANDARD</span><span class="w"> </span><span class="n">LVCMOS33</span><span class="w"> </span><span class="p">[</span><span class="n">get_ports</span><span class="w"> </span><span class="p">{</span><span class="n">led</span><span class="p">[</span><span class="mh">0</span><span class="p">]}]</span>
+
+<span class="n">set_property</span><span class="w"> </span><span class="n">PACKAGE_PIN</span><span class="w"> </span><span class="n">F6</span><span class="w"> </span><span class="p">[</span><span class="n">get_ports</span><span class="w"> </span><span class="p">{</span><span class="n">led</span><span class="p">[</span><span class="mh">7</span><span class="p">]}]</span>
+<span class="n">set_property</span><span class="w"> </span><span class="n">PACKAGE_PIN</span><span class="w"> </span><span class="n">G4</span><span class="w"> </span><span class="p">[</span><span class="n">get_ports</span><span class="w"> </span><span class="p">{</span><span class="n">led</span><span class="p">[</span><span class="mh">6</span><span class="p">]}]</span>
+<span class="n">set_property</span><span class="w"> </span><span class="n">PACKAGE_PIN</span><span class="w"> </span><span class="n">G3</span><span class="w"> </span><span class="p">[</span><span class="n">get_ports</span><span class="w"> </span><span class="p">{</span><span class="n">led</span><span class="p">[</span><span class="mh">5</span><span class="p">]}]</span>
+<span class="n">set_property</span><span class="w"> </span><span class="n">PACKAGE_PIN</span><span class="w"> </span><span class="n">J4</span><span class="w"> </span><span class="p">[</span><span class="n">get_ports</span><span class="w"> </span><span class="p">{</span><span class="n">led</span><span class="p">[</span><span class="mh">4</span><span class="p">]}]</span>
+<span class="n">set_property</span><span class="w"> </span><span class="n">PACKAGE_PIN</span><span class="w"> </span><span class="n">H4</span><span class="w"> </span><span class="p">[</span><span class="n">get_ports</span><span class="w"> </span><span class="p">{</span><span class="n">led</span><span class="p">[</span><span class="mh">3</span><span class="p">]}]</span>
+<span class="n">set_property</span><span class="w"> </span><span class="n">PACKAGE_PIN</span><span class="w"> </span><span class="n">J3</span><span class="w"> </span><span class="p">[</span><span class="n">get_ports</span><span class="w"> </span><span class="p">{</span><span class="n">led</span><span class="p">[</span><span class="mh">2</span><span class="p">]}]</span>
+<span class="n">set_property</span><span class="w"> </span><span class="n">PACKAGE_PIN</span><span class="w"> </span><span class="n">J2</span><span class="w"> </span><span class="p">[</span><span class="n">get_ports</span><span class="w"> </span><span class="p">{</span><span class="n">led</span><span class="p">[</span><span class="mh">1</span><span class="p">]}]</span>
+<span class="n">set_property</span><span class="w"> </span><span class="n">PACKAGE_PIN</span><span class="w"> </span><span class="n">K2</span><span class="w"> </span><span class="p">[</span><span class="n">get_ports</span><span class="w"> </span><span class="p">{</span><span class="n">led</span><span class="p">[</span><span class="mh">0</span><span class="p">]}]</span>
+
+<span class="n">set_property</span><span class="w"> </span><span class="n">IOSTANDARD</span><span class="w"> </span><span class="n">LVCMOS33</span><span class="w"> </span><span class="p">[</span><span class="n">get_ports</span><span class="w"> </span><span class="p">{</span><span class="n">sw</span><span class="p">[</span><span class="mh">7</span><span class="p">]}]</span>
+<span class="n">set_property</span><span class="w"> </span><span class="n">IOSTANDARD</span><span class="w"> </span><span class="n">LVCMOS33</span><span class="w"> </span><span class="p">[</span><span class="n">get_ports</span><span class="w"> </span><span class="p">{</span><span class="n">sw</span><span class="p">[</span><span class="mh">6</span><span class="p">]}]</span>
+<span class="n">set_property</span><span class="w"> </span><span class="n">IOSTANDARD</span><span class="w"> </span><span class="n">LVCMOS33</span><span class="w"> </span><span class="p">[</span><span class="n">get_ports</span><span class="w"> </span><span class="p">{</span><span class="n">sw</span><span class="p">[</span><span class="mh">5</span><span class="p">]}]</span>
+<span class="n">set_property</span><span class="w"> </span><span class="n">IOSTANDARD</span><span class="w"> </span><span class="n">LVCMOS33</span><span class="w"> </span><span class="p">[</span><span class="n">get_ports</span><span class="w"> </span><span class="p">{</span><span class="n">sw</span><span class="p">[</span><span class="mh">4</span><span class="p">]}]</span>
+<span class="n">set_property</span><span class="w"> </span><span class="n">IOSTANDARD</span><span class="w"> </span><span class="n">LVCMOS33</span><span class="w"> </span><span class="p">[</span><span class="n">get_ports</span><span class="w"> </span><span class="p">{</span><span class="n">sw</span><span class="p">[</span><span class="mh">3</span><span class="p">]}]</span>
+<span class="n">set_property</span><span class="w"> </span><span class="n">IOSTANDARD</span><span class="w"> </span><span class="n">LVCMOS33</span><span class="w"> </span><span class="p">[</span><span class="n">get_ports</span><span class="w"> </span><span class="p">{</span><span class="n">sw</span><span class="p">[</span><span class="mh">2</span><span class="p">]}]</span>
+<span class="n">set_property</span><span class="w"> </span><span class="n">IOSTANDARD</span><span class="w"> </span><span class="n">LVCMOS33</span><span class="w"> </span><span class="p">[</span><span class="n">get_ports</span><span class="w"> </span><span class="p">{</span><span class="n">sw</span><span class="p">[</span><span class="mh">1</span><span class="p">]}]</span>
+<span class="n">set_property</span><span class="w"> </span><span class="n">IOSTANDARD</span><span class="w"> </span><span class="n">LVCMOS33</span><span class="w"> </span><span class="p">[</span><span class="n">get_ports</span><span class="w"> </span><span class="p">{</span><span class="n">sw</span><span class="p">[</span><span class="mh">0</span><span class="p">]}]</span>
+
+<span class="n">set_property</span><span class="w"> </span><span class="n">PACKAGE_PIN</span><span class="w"> </span><span class="n">P5</span><span class="w"> </span><span class="p">[</span><span class="n">get_ports</span><span class="w"> </span><span class="p">{</span><span class="n">sw</span><span class="p">[</span><span class="mh">7</span><span class="p">]}]</span>
+<span class="n">set_property</span><span class="w"> </span><span class="n">PACKAGE_PIN</span><span class="w"> </span><span class="n">P4</span><span class="w"> </span><span class="p">[</span><span class="n">get_ports</span><span class="w"> </span><span class="p">{</span><span class="n">sw</span><span class="p">[</span><span class="mh">6</span><span class="p">]}]</span>
+<span class="n">set_property</span><span class="w"> </span><span class="n">PACKAGE_PIN</span><span class="w"> </span><span class="n">P3</span><span class="w"> </span><span class="p">[</span><span class="n">get_ports</span><span class="w"> </span><span class="p">{</span><span class="n">sw</span><span class="p">[</span><span class="mh">5</span><span class="p">]}]</span>
+<span class="n">set_property</span><span class="w"> </span><span class="n">PACKAGE_PIN</span><span class="w"> </span><span class="n">P2</span><span class="w"> </span><span class="p">[</span><span class="n">get_ports</span><span class="w"> </span><span class="p">{</span><span class="n">sw</span><span class="p">[</span><span class="mh">4</span><span class="p">]}]</span>
+<span class="n">set_property</span><span class="w"> </span><span class="n">PACKAGE_PIN</span><span class="w"> </span><span class="n">R2</span><span class="w"> </span><span class="p">[</span><span class="n">get_ports</span><span class="w"> </span><span class="p">{</span><span class="n">sw</span><span class="p">[</span><span class="mh">3</span><span class="p">]}]</span>
+<span class="n">set_property</span><span class="w"> </span><span class="n">PACKAGE_PIN</span><span class="w"> </span><span class="n">M4</span><span class="w"> </span><span class="p">[</span><span class="n">get_ports</span><span class="w"> </span><span class="p">{</span><span class="n">sw</span><span class="p">[</span><span class="mh">2</span><span class="p">]}]</span>
+<span class="n">set_property</span><span class="w"> </span><span class="n">PACKAGE_PIN</span><span class="w"> </span><span class="n">N4</span><span class="w"> </span><span class="p">[</span><span class="n">get_ports</span><span class="w"> </span><span class="p">{</span><span class="n">sw</span><span class="p">[</span><span class="mh">1</span><span class="p">]}]</span>
+<span class="n">set_property</span><span class="w"> </span><span class="n">PACKAGE_PIN</span><span class="w"> </span><span class="n">R1</span><span class="w"> </span><span class="p">[</span><span class="n">get_ports</span><span class="w"> </span><span class="p">{</span><span class="n">sw</span><span class="p">[</span><span class="mh">0</span><span class="p">]}]</span>
+</code></pre></div>
+<ul>
+<li>Pin constraints consist of <strong>IOSTANDARD</strong> settings and <strong>PIN</strong> assignments. Set the IOSTANDARD of every port to <strong>LVCMOS33</strong>. The corresponding pins (<strong>PIN</strong>) can be found in <code>Ego1_UserManual_v2.2.pdf</code> or printed next to the associated peripherals on the development board.</li>
+</ul>
+<p><img alt="image-20260609111803927" src="../../images/image-20260609111803927.png"></p>
+<h3 id="step-3-run-functional-simulation">Step 3: Run Functional Simulation</h3>
+<ul>
+<li>In the Flow Navigator on the left, click <strong>Run Simulation</strong>.</li>
+</ul>
+<p><img alt="image-20260609104731608" src="../../images/image-20260609104731608.png"></p>
+<ul>
+<li>Vivado generates a waveform that records the states of the circuit's input and output signals.</li>
+</ul>
+<p><img alt="image-20260609104654969" src="../../images/image-20260609104654969.png"></p>
+<ul>
+<li><strong>Important</strong>: Inspect the waveform carefully to verify the circuit's function. If the logic is incorrect, modify the design file and rerun the simulation. <strong>Proceed to on-board implementation only after the functional simulation passes.</strong> You may also experiment with the following controls and learn what each one does.</li>
+</ul>
+<p><img alt="image-20260609110039890" src="../../images/image-20260609110039890.png"></p>
+<h3 id="step-4-synthesize-implement-and-generate-the-bitstream">Step 4: Synthesize, Implement, and Generate the Bitstream</h3>
+<p>After confirming correct functionality, perform the following operations in order to convert the code into a hardware netlist:</p>
+<ol>
+<li>Click <strong>Run Synthesis</strong>.</li>
+<li>Click <strong>Run Implementation</strong>.</li>
+<li>Click <strong>Generate Bitstream</strong> to generate the final <code>.bit</code> file used to program the board.</li>
+</ol>
+<blockquote>
+<p>Important: If any Error or Critical Warning occurs during these steps, inspect and correct the project settings, design code, or constraint file before generating the bitstream again.</p>
+</blockquote>
+<p><img alt="image-20260609094049611" src="../../images/image-20260609094049611.png"></p>
+<h3 id="step-5-connect-the-development-board">Step 5: Connect the Development Board</h3>
+<ul>
+<li>Connect the computer to the <strong>USB-UART/JTAG</strong> port on the EGO1 development board using a data cable.</li>
+</ul>
+<p><img alt="image-20260609094112800" src="../../images/image-20260609094112800.png"></p>
+<ul>
+<li>Turn on the EGO1 development board.</li>
+</ul>
+<p><img alt="image-20260609094128225" src="../../images/image-20260609094128225.png"></p>
+<ul>
+<li>In Vivado, click <strong>Open Hardware Manager</strong>, followed by <strong>Open Target</strong> -&gt; <code>Auto Connect</code>.</li>
+<li>If the connection succeeds, the target device <code>xc7a35t_0</code> appears in the Hardware window.</li>
+</ul>
+<p><img alt="image-20260609094203751" src="../../images/image-20260609094203751.png"></p>
+<h3 id="step-6-program-the-device-and-verify-it-on-the-board">Step 6: Program the Device and Verify It on the Board</h3>
+<ul>
+<li>In Hardware Manager, click <strong>Program Device</strong>, select the newly generated <code>.bit</code> file, and click <strong>Program</strong>.</li>
+</ul>
+<p><img alt="image-20260609094222704" src="../../images/image-20260609094222704.png"></p>
+<ul>
+<li>When programming is complete, the "Done" LED on the EGO1 board lights up, indicating that the circuit has been successfully implemented on the FPGA.</li>
+<li>Toggle the input switches and observe the outputs to verify that the hardware behaves as designed.</li>
+</ul>
+<p><img alt="image-20260609110238611" src="../../images/image-20260609110238611.png"></p>
+<h2 id="4-disconnecting-the-hardware-and-reconfiguring-the-device">4. Disconnecting the Hardware and Reconfiguring the Device</h2>
+<h3 id="41-safe-disconnection">4.1 Safe Disconnection</h3>
+<p>At the end of the laboratory session, it is <strong>strongly recommended</strong> that you disconnect the development board in the following order. Never hot-plug the board while it is powered:</p>
+<ol>
+<li><strong>Disconnect the software connection</strong>: Enter <code>disconnect_hw_server</code> in the Tcl Console at the bottom of Vivado and press Enter to disconnect Vivado from the FPGA.</li>
+<li><strong>Disconnect the hardware</strong>: Turn off the EGO1 development board before unplugging the USB cable.</li>
+</ol>
+<p><img alt="image-20260609110335791" src="../../images/image-20260609110335791.png"></p>
+<h3 id="42-changing-the-fpga-device-in-a-project">4.2 Changing the FPGA Device in a Project</h3>
+<p><strong>If you selected the wrong device when creating the project</strong>, use the following steps to change it:</p>
+<ul>
+<li>
+<p>Under PROJECT MANAGER in the Flow Navigator, click <strong>Settings</strong>.</p>
+</li>
+<li>
+<p>Select <strong>General</strong>, then click the <code>...</code> button next to <code>Project device</code> to open the device selector.</p>
+</li>
+</ul>
+<p><img alt="image-20260609110542003" src="../../images/image-20260609110542003.png"></p>
+<ul>
+<li>
+<p>Search for and select <strong><code>xc7a35tcsg324-1</code></strong>, then click OK.</p>
+</li>
+<li>
+<p>Click <strong>Apply</strong> at the bottom of the Settings window to apply the configuration.</p>
+</li>
+</ul>
+<p><img alt="image-20260609110554163" src="../../images/image-20260609110554163.png"></p>
+<ul>
+<li>Close the Vivado project. In the project directory, delete the entire <code>xxx.runs</code> directory. This removes temporary files containing information about the previous device so that the change takes effect. Then restart Vivado.</li>
+</ul>
+<p><img alt="image-20260609110811089" src="../../images/image-20260609110811089.png"></p>
+<h2 id="5-laboratory-exercise">5. Laboratory Exercise</h2>
+<ol>
+<li>
+<p>Follow the development flow in this tutorial to implement and verify a simple switch-controlled LED circuit on the EGO1 development board.</p>
+</li>
+<li>
+<p><strong>Input</strong>: Eight slide switches (<code>sw[7:0]</code>)</p>
+</li>
+<li><strong>Output</strong>: Eight LEDs (<code>led[7:0]</code>)</li>
+<li><strong>Function</strong>: The position of each switch directly controls whether the corresponding LED is on or off.</li>
+<li>
+<p><strong>Check-off requirement</strong>: Reproduce the simulation waveform and demonstrate the circuit on the board.</p>
+</li>
+<li>
+<p>To support later exercises, you may download and install Vivado 2018.3 on your personal computer (optional).</p>
+</li>
+</ol>
+<blockquote>
+<p>Vivado supports only Windows and Linux. Download the Linux installer from the AMD website.</p>
+<p>Running Vivado on macOS requires a virtual machine.</p>
+</blockquote></div>
+
+
+
+
+
+
+
+
+  <aside class="md-source-file">
+    
+    
+    
+      
+  
+  <span class="md-source-file__fact">
+    <span class="md-icon" title="Contributors">
+      
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 4a4 4 0 0 1 4 4 4 4 0 0 1-4 4 4 4 0 0 1-4-4 4 4 0 0 1 4-4m0 10c4.42 0 8 1.79 8 4v2H4v-2c0-2.21 3.58-4 8-4"/></svg>
+      
+    </span>
+    <nav>
+      baiyhsz
+    </nav>
+  </span>
+
+    
+    
+  </aside>
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright &copy; 2025 Southern University of Science and Technology
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["search.suggest", "search.highlight", "content.tabs.link", "navigation.tabs", "navigation.top", "content.code.copy"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>

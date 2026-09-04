@@ -1,0 +1,255 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
+    <url>
+        <loc>https://cs207digitallogic.github.io/site/</loc>
+        <lastmod>2026-09-04</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://cs207digitallogic.github.io/site/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://cs207digitallogic.github.io/site/en/"/>
+    </url>
+    <url>
+        <loc>https://cs207digitallogic.github.io/site/DigitalLogic_BehaviorModeling/</loc>
+        <lastmod>2026-09-04</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://cs207digitallogic.github.io/site/DigitalLogic_BehaviorModeling/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://cs207digitallogic.github.io/site/en/DigitalLogic_BehaviorModeling/"/>
+    </url>
+    <url>
+        <loc>https://cs207digitallogic.github.io/site/DigitalLogic_ButtonDebounce/</loc>
+        <lastmod>2026-09-04</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://cs207digitallogic.github.io/site/DigitalLogic_ButtonDebounce/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://cs207digitallogic.github.io/site/en/DigitalLogic_ButtonDebounce/"/>
+    </url>
+    <url>
+        <loc>https://cs207digitallogic.github.io/site/DigitalLogic_Dataflow/</loc>
+        <lastmod>2026-09-04</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://cs207digitallogic.github.io/site/DigitalLogic_Dataflow/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://cs207digitallogic.github.io/site/en/DigitalLogic_Dataflow/"/>
+    </url>
+    <url>
+        <loc>https://cs207digitallogic.github.io/site/DigitalLogic_DynamicDisplay/</loc>
+        <lastmod>2026-09-04</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://cs207digitallogic.github.io/site/DigitalLogic_DynamicDisplay/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://cs207digitallogic.github.io/site/en/DigitalLogic_DynamicDisplay/"/>
+    </url>
+    <url>
+        <loc>https://cs207digitallogic.github.io/site/DigitalLogic_EnvironmentSetup/</loc>
+        <lastmod>2026-09-04</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://cs207digitallogic.github.io/site/DigitalLogic_EnvironmentSetup/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://cs207digitallogic.github.io/site/en/DigitalLogic_EnvironmentSetup/"/>
+    </url>
+    <url>
+        <loc>https://cs207digitallogic.github.io/site/DigitalLogic_Memory/</loc>
+        <lastmod>2026-09-04</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://cs207digitallogic.github.io/site/DigitalLogic_Memory/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://cs207digitallogic.github.io/site/en/DigitalLogic_Memory/"/>
+    </url>
+    <url>
+        <loc>https://cs207digitallogic.github.io/site/DigitalLogic_ModuleIntegration/</loc>
+        <lastmod>2026-09-04</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://cs207digitallogic.github.io/site/DigitalLogic_ModuleIntegration/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://cs207digitallogic.github.io/site/en/DigitalLogic_ModuleIntegration/"/>
+    </url>
+    <url>
+        <loc>https://cs207digitallogic.github.io/site/DigitalLogic_SequentialLogic/</loc>
+        <lastmod>2026-09-04</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://cs207digitallogic.github.io/site/DigitalLogic_SequentialLogic/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://cs207digitallogic.github.io/site/en/DigitalLogic_SequentialLogic/"/>
+    </url>
+    <url>
+        <loc>https://cs207digitallogic.github.io/site/DigitalLogic_StateMachine/</loc>
+        <lastmod>2026-09-04</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://cs207digitallogic.github.io/site/DigitalLogic_StateMachine/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://cs207digitallogic.github.io/site/en/DigitalLogic_StateMachine/"/>
+    </url>
+    <url>
+        <loc>https://cs207digitallogic.github.io/site/DigitalLogic_StopwatchControl/</loc>
+        <lastmod>2026-09-04</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://cs207digitallogic.github.io/site/DigitalLogic_StopwatchControl/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://cs207digitallogic.github.io/site/en/DigitalLogic_StopwatchControl/"/>
+    </url>
+    <url>
+        <loc>https://cs207digitallogic.github.io/site/DigitalLogic_StopwatchCore/</loc>
+        <lastmod>2026-09-04</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://cs207digitallogic.github.io/site/DigitalLogic_StopwatchCore/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://cs207digitallogic.github.io/site/en/DigitalLogic_StopwatchCore/"/>
+    </url>
+    <url>
+        <loc>https://cs207digitallogic.github.io/site/DigitalLogic_StopwatchIntegration/</loc>
+        <lastmod>2026-09-04</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://cs207digitallogic.github.io/site/DigitalLogic_StopwatchIntegration/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://cs207digitallogic.github.io/site/en/DigitalLogic_StopwatchIntegration/"/>
+    </url>
+    <url>
+        <loc>https://cs207digitallogic.github.io/site/DigitalLogic_UART/</loc>
+        <lastmod>2026-09-04</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://cs207digitallogic.github.io/site/DigitalLogic_UART/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://cs207digitallogic.github.io/site/en/DigitalLogic_UART/"/>
+    </url>
+    <url>
+        <loc>https://cs207digitallogic.github.io/site/DigitalLogic_VerilogBasics/</loc>
+        <lastmod>2026-09-04</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://cs207digitallogic.github.io/site/DigitalLogic_VerilogBasics/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://cs207digitallogic.github.io/site/en/DigitalLogic_VerilogBasics/"/>
+    </url>
+    <url>
+        <loc>https://cs207digitallogic.github.io/site/links/</loc>
+        <lastmod>2026-09-04</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://cs207digitallogic.github.io/site/links/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://cs207digitallogic.github.io/site/en/links/"/>
+    </url>
+    <url>
+        <loc>https://cs207digitallogic.github.io/site/projects/</loc>
+        <lastmod>2026-09-04</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://cs207digitallogic.github.io/site/projects/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://cs207digitallogic.github.io/site/en/projects/"/>
+    </url>
+    <url>
+        <loc>https://cs207digitallogic.github.io/site/resources/</loc>
+        <lastmod>2026-09-04</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://cs207digitallogic.github.io/site/resources/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://cs207digitallogic.github.io/site/en/resources/"/>
+    </url>
+    <url>
+        <loc>https://cs207digitallogic.github.io/site/en/</loc>
+        <lastmod>2026-09-04</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://cs207digitallogic.github.io/site/en/"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://cs207digitallogic.github.io/site/"/>
+    </url>
+    <url>
+        <loc>https://cs207digitallogic.github.io/site/en/DigitalLogic_BehaviorModeling/</loc>
+        <lastmod>2026-09-04</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://cs207digitallogic.github.io/site/en/DigitalLogic_BehaviorModeling/"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://cs207digitallogic.github.io/site/DigitalLogic_BehaviorModeling/"/>
+    </url>
+    <url>
+        <loc>https://cs207digitallogic.github.io/site/en/DigitalLogic_ButtonDebounce/</loc>
+        <lastmod>2026-09-04</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://cs207digitallogic.github.io/site/en/DigitalLogic_ButtonDebounce/"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://cs207digitallogic.github.io/site/DigitalLogic_ButtonDebounce/"/>
+    </url>
+    <url>
+        <loc>https://cs207digitallogic.github.io/site/en/DigitalLogic_Dataflow/</loc>
+        <lastmod>2026-09-04</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://cs207digitallogic.github.io/site/en/DigitalLogic_Dataflow/"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://cs207digitallogic.github.io/site/DigitalLogic_Dataflow/"/>
+    </url>
+    <url>
+        <loc>https://cs207digitallogic.github.io/site/en/DigitalLogic_DynamicDisplay/</loc>
+        <lastmod>2026-09-04</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://cs207digitallogic.github.io/site/en/DigitalLogic_DynamicDisplay/"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://cs207digitallogic.github.io/site/DigitalLogic_DynamicDisplay/"/>
+    </url>
+    <url>
+        <loc>https://cs207digitallogic.github.io/site/en/DigitalLogic_EnvironmentSetup/</loc>
+        <lastmod>2026-09-04</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://cs207digitallogic.github.io/site/en/DigitalLogic_EnvironmentSetup/"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://cs207digitallogic.github.io/site/DigitalLogic_EnvironmentSetup/"/>
+    </url>
+    <url>
+        <loc>https://cs207digitallogic.github.io/site/en/DigitalLogic_Memory/</loc>
+        <lastmod>2026-09-04</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://cs207digitallogic.github.io/site/en/DigitalLogic_Memory/"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://cs207digitallogic.github.io/site/DigitalLogic_Memory/"/>
+    </url>
+    <url>
+        <loc>https://cs207digitallogic.github.io/site/en/DigitalLogic_ModuleIntegration/</loc>
+        <lastmod>2026-09-04</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://cs207digitallogic.github.io/site/en/DigitalLogic_ModuleIntegration/"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://cs207digitallogic.github.io/site/DigitalLogic_ModuleIntegration/"/>
+    </url>
+    <url>
+        <loc>https://cs207digitallogic.github.io/site/en/DigitalLogic_SequentialLogic/</loc>
+        <lastmod>2026-09-04</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://cs207digitallogic.github.io/site/en/DigitalLogic_SequentialLogic/"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://cs207digitallogic.github.io/site/DigitalLogic_SequentialLogic/"/>
+    </url>
+    <url>
+        <loc>https://cs207digitallogic.github.io/site/en/DigitalLogic_StateMachine/</loc>
+        <lastmod>2026-09-04</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://cs207digitallogic.github.io/site/en/DigitalLogic_StateMachine/"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://cs207digitallogic.github.io/site/DigitalLogic_StateMachine/"/>
+    </url>
+    <url>
+        <loc>https://cs207digitallogic.github.io/site/en/DigitalLogic_StopwatchControl/</loc>
+        <lastmod>2026-09-04</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://cs207digitallogic.github.io/site/en/DigitalLogic_StopwatchControl/"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://cs207digitallogic.github.io/site/DigitalLogic_StopwatchControl/"/>
+    </url>
+    <url>
+        <loc>https://cs207digitallogic.github.io/site/en/DigitalLogic_StopwatchCore/</loc>
+        <lastmod>2026-09-04</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://cs207digitallogic.github.io/site/en/DigitalLogic_StopwatchCore/"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://cs207digitallogic.github.io/site/DigitalLogic_StopwatchCore/"/>
+    </url>
+    <url>
+        <loc>https://cs207digitallogic.github.io/site/en/DigitalLogic_StopwatchIntegration/</loc>
+        <lastmod>2026-09-04</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://cs207digitallogic.github.io/site/en/DigitalLogic_StopwatchIntegration/"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://cs207digitallogic.github.io/site/DigitalLogic_StopwatchIntegration/"/>
+    </url>
+    <url>
+        <loc>https://cs207digitallogic.github.io/site/en/DigitalLogic_UART/</loc>
+        <lastmod>2026-09-04</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://cs207digitallogic.github.io/site/en/DigitalLogic_UART/"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://cs207digitallogic.github.io/site/DigitalLogic_UART/"/>
+    </url>
+    <url>
+        <loc>https://cs207digitallogic.github.io/site/en/DigitalLogic_VerilogBasics/</loc>
+        <lastmod>2026-09-04</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://cs207digitallogic.github.io/site/en/DigitalLogic_VerilogBasics/"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://cs207digitallogic.github.io/site/DigitalLogic_VerilogBasics/"/>
+    </url>
+    <url>
+        <loc>https://cs207digitallogic.github.io/site/en/links/</loc>
+        <lastmod>2026-09-04</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://cs207digitallogic.github.io/site/en/links/"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://cs207digitallogic.github.io/site/links/"/>
+    </url>
+    <url>
+        <loc>https://cs207digitallogic.github.io/site/en/projects/</loc>
+        <lastmod>2026-09-04</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://cs207digitallogic.github.io/site/en/projects/"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://cs207digitallogic.github.io/site/projects/"/>
+    </url>
+    <url>
+        <loc>https://cs207digitallogic.github.io/site/en/resources/</loc>
+        <lastmod>2026-09-04</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://cs207digitallogic.github.io/site/en/resources/"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://cs207digitallogic.github.io/site/resources/"/>
+    </url>
+</urlset>

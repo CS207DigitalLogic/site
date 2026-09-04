@@ -1,0 +1,1885 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Digital Logic Laboratory Course Materials">
+      
+      
+      
+        <link rel="canonical" href="https://cs207digitallogic.github.io/site/en/DigitalLogic_StopwatchControl/">
+      
+      
+        <link rel="prev" href="../DigitalLogic_StopwatchCore/">
+      
+      
+        <link rel="next" href="../DigitalLogic_StopwatchIntegration/">
+      
+      
+        
+          <link rel="alternate" href="../../DigitalLogic_StopwatchControl/" hreflang="zh">
+        
+          <link rel="alternate" href="./" hreflang="en">
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>Lab 12 Demo: Stopwatch Control - Digital Logic Course</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#digital-logic-integrated-project-iidisplay-and-control" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../" title="Digital Logic Course" class="md-header__button md-logo" aria-label="Digital Logic Course" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Digital Logic Course
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Lab 12 Demo: Stopwatch Control
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-hidden="true"  type="radio" name="__palette" id="__palette_0">
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+      <div class="md-header__option">
+  <div class="md-select">
+    
+    <button class="md-header__button md-icon" aria-label="Select language">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m12.87 15.07-2.54-2.51.03-.03A17.5 17.5 0 0 0 14.07 6H17V4h-7V2H8v2H1v2h11.17C11.5 7.92 10.44 9.75 9 11.35 8.07 10.32 7.3 9.19 6.69 8h-2c.73 1.63 1.73 3.17 2.98 4.56l-5.09 5.02L4 19l5-5 3.11 3.11zM18.5 10h-2L12 22h2l1.12-3h4.75L21 22h2zm-2.62 7 1.62-4.33L19.12 17z"/></svg>
+    </button>
+    <div class="md-select__inner">
+      <ul class="md-select__list">
+        
+          <li class="md-select__item">
+            <a href="../../DigitalLogic_StopwatchControl/" hreflang="zh" class="md-select__link">
+              中文
+            </a>
+          </li>
+        
+          <li class="md-select__item">
+            <a href="./" hreflang="en" class="md-select__link">
+              English
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</div>
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://cs207digitallogic.github.io" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub Repository
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../DigitalLogic_EnvironmentSetup/" class="md-tabs__link">
+          
+  
+  
+  Labs
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../projects/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Projects
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../links/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  OJ Platforms
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../resources/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Course Resources
+
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../" title="Digital Logic Course" class="md-nav__button md-logo" aria-label="Digital Logic Course" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Digital Logic Course
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://cs207digitallogic.github.io" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub Repository
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Labs
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Labs
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../DigitalLogic_EnvironmentSetup/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 1: Environment Setup
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../DigitalLogic_VerilogBasics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 2: Verilog Basics and Structural Modeling
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../DigitalLogic_Dataflow/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 3: Dataflow Modeling and FPGA Verification
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../DigitalLogic_BehaviorModeling/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 4: Behavioral Modeling and Seven-Segment Display
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../DigitalLogic_SequentialLogic/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 5: Sequential Logic—Counters and Clock Dividers
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../DigitalLogic_DynamicDisplay/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 6: Multiplexed Display—Chasing LEDs and Seven-Segment Displays
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../DigitalLogic_ButtonDebounce/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 7: Button Debouncing and Edge Detection
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../DigitalLogic_StateMachine/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 8: State Machines
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../DigitalLogic_ModuleIntegration/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 9: Module Integration
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../DigitalLogic_UART/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 10: UART
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../DigitalLogic_StopwatchCore/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 11 Demo: Stopwatch Core
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 12 Demo: Stopwatch Control
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 12 Demo: Stopwatch Control
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#objectives" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Objectives
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1-review-and-this-weeks-tasks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Review and This Week's Tasks
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. Review and This Week&#39;s Tasks">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#11-modules" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.1 Modules
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-connecting-the-multiplexed-display" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Connecting the Multiplexed Display
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-stopwatch-state-machine-design" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Stopwatch State-Machine Design
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Stopwatch State-Machine Design">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#31-state-definitions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.1 State Definitions
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#32-state-transition-diagram" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.2 State-Transition Diagram
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#33-state-machine-code" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.3 State-Machine Code
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#34-using-the-control-signals" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.4 Using the Control Signals
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-button-processing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Button Processing
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. Button Processing">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#41-debouncing-and-edge-detection-for-two-buttons" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.1 Debouncing and Edge Detection for Two Buttons
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#42-connecting-the-state-machine" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.2 Connecting the State Machine
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-laboratory-tasks-for-this-week-complete-independently-not-checked-in-class" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Laboratory Tasks for This Week (Complete Independently; Not Checked in Class)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5. Laboratory Tasks for This Week (Complete Independently; Not Checked in Class)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#step-1-reuse-existing-modules" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 1: Reuse Existing Modules
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-2-write-stopwatch_ctrlv" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 2: Write stopwatch_ctrl.v
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-3-write-a-temporary-top-level-module" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 3: Write a Temporary Top-Level Module
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-4-simulate-and-verify" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 4: Simulate and Verify
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-5-verify-on-the-board" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 5: Verify on the Board
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../DigitalLogic_StopwatchIntegration/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 13 Demo: System Integration
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../DigitalLogic_Memory/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 14: Memory Design and IP Cores
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../projects/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Projects
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../links/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    OJ Platforms
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../resources/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Course Resources
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#objectives" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Objectives
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1-review-and-this-weeks-tasks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Review and This Week's Tasks
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. Review and This Week&#39;s Tasks">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#11-modules" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.1 Modules
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-connecting-the-multiplexed-display" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Connecting the Multiplexed Display
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-stopwatch-state-machine-design" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Stopwatch State-Machine Design
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Stopwatch State-Machine Design">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#31-state-definitions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.1 State Definitions
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#32-state-transition-diagram" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.2 State-Transition Diagram
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#33-state-machine-code" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.3 State-Machine Code
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#34-using-the-control-signals" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.4 Using the Control Signals
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-button-processing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Button Processing
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. Button Processing">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#41-debouncing-and-edge-detection-for-two-buttons" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.1 Debouncing and Edge Detection for Two Buttons
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#42-connecting-the-state-machine" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.2 Connecting the State Machine
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-laboratory-tasks-for-this-week-complete-independently-not-checked-in-class" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Laboratory Tasks for This Week (Complete Independently; Not Checked in Class)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5. Laboratory Tasks for This Week (Complete Independently; Not Checked in Class)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#step-1-reuse-existing-modules" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 1: Reuse Existing Modules
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-2-write-stopwatch_ctrlv" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 2: Write stopwatch_ctrl.v
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-3-write-a-temporary-top-level-module" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 3: Write a Temporary Top-Level Module
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-4-simulate-and-verify" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 4: Simulate and Verify
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-5-verify-on-the-board" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 5: Verify on the Board
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<div><div class="toc">
+<ul>
+<li><a href="#digital-logic-integrated-project-iidisplay-and-control">Digital Logic: Integrated Project II—Display and Control</a><ul>
+<li><a href="#objectives">Objectives</a></li>
+<li><a href="#1-review-and-this-weeks-tasks">1. Review and This Week's Tasks</a><ul>
+<li><a href="#11-modules">1.1 Modules</a></li>
+</ul>
+</li>
+<li><a href="#2-connecting-the-multiplexed-display">2. Connecting the Multiplexed Display</a></li>
+<li><a href="#3-stopwatch-state-machine-design">3. Stopwatch State-Machine Design</a><ul>
+<li><a href="#31-state-definitions">3.1 State Definitions</a></li>
+<li><a href="#32-state-transition-diagram">3.2 State-Transition Diagram</a></li>
+<li><a href="#33-state-machine-code">3.3 State-Machine Code</a></li>
+<li><a href="#34-using-the-control-signals">3.4 Using the Control Signals</a></li>
+</ul>
+</li>
+<li><a href="#4-button-processing">4. Button Processing</a><ul>
+<li><a href="#41-debouncing-and-edge-detection-for-two-buttons">4.1 Debouncing and Edge Detection for Two Buttons</a></li>
+<li><a href="#42-connecting-the-state-machine">4.2 Connecting the State Machine</a></li>
+</ul>
+</li>
+<li><a href="#5-laboratory-tasks-for-this-week-complete-independently-not-checked-in-class">5. Laboratory Tasks for This Week (Complete Independently; Not Checked in Class)</a><ul>
+<li><a href="#step-1-reuse-existing-modules">Step 1: Reuse Existing Modules</a></li>
+<li><a href="#step-2-write-stopwatch_ctrlv">Step 2: Write stopwatch_ctrl.v</a></li>
+<li><a href="#step-3-write-a-temporary-top-level-module">Step 3: Write a Temporary Top-Level Module</a></li>
+<li><a href="#step-4-simulate-and-verify">Step 4: Simulate and Verify</a></li>
+<li><a href="#step-5-verify-on-the-board">Step 5: Verify on the Board</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+<hr>
+<h1 id="digital-logic-integrated-project-iidisplay-and-control">Digital Logic: Integrated Project II—Display and Control</h1>
+<h2 id="objectives">Objectives</h2>
+<ul>
+<li>Connect the timing core to the multiplexed display module and show <code>SS.cc</code> on the seven-segment display.</li>
+<li>Add button-debounce and edge-detection modules.</li>
+<li>Implement a stopwatch finite state machine (FSM) to control start, pause, and clear operations.</li>
+<li>Complete simulation and verification of the stopwatch's core functions.</li>
+</ul>
+<hr>
+<h2 id="1-review-and-this-weeks-tasks">1. Review and This Week's Tasks</h2>
+<h3 id="11-modules">1.1 Modules</h3>
+<ul>
+<li><code>clk_div</code>: 100 Hz reference pulse</li>
+<li>Four <code>bcd_counter</code> modules: Counting chain from 00.00 through 99.99</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>Module</th>
+<th>Function</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>dynamic_display</code></td>
+<td>Display <code>SS.cc</code> on four seven-segment digits</td>
+</tr>
+<tr>
+<td>Two <code>btn_debounce</code> instances</td>
+<td>Debounce two buttons</td>
+</tr>
+<tr>
+<td>Two <code>edge_detect</code> instances</td>
+<td>Detect button edges</td>
+</tr>
+<tr>
+<td><code>stopwatch_ctrl</code></td>
+<td>State-machine control</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="2-connecting-the-multiplexed-display">2. Connecting the Multiplexed Display</h2>
+<p>Connect the four BCD count values to <code>dynamic_display</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="n">dynamic_display</span><span class="w"> </span><span class="n">u_disp</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="p">.</span><span class="n">clk</span><span class="p">(</span><span class="n">clk</span><span class="p">),</span><span class="w"> </span><span class="p">.</span><span class="n">rst_n</span><span class="p">(</span><span class="n">rst_n</span><span class="p">),</span>
+<span class="w">    </span><span class="p">.</span><span class="n">digit3</span><span class="p">(</span><span class="n">cnt3</span><span class="p">),</span><span class="w">       </span><span class="c1">// 秒十位</span>
+<span class="w">    </span><span class="p">.</span><span class="n">digit2</span><span class="p">(</span><span class="n">cnt2</span><span class="p">),</span><span class="w">       </span><span class="c1">// 秒个位</span>
+<span class="w">    </span><span class="p">.</span><span class="n">digit1</span><span class="p">(</span><span class="n">cnt1</span><span class="p">),</span><span class="w">       </span><span class="c1">// 百分秒十位</span>
+<span class="w">    </span><span class="p">.</span><span class="n">digit0</span><span class="p">(</span><span class="n">cnt0</span><span class="p">),</span><span class="w">       </span><span class="c1">// 百分秒个位</span>
+<span class="w">    </span><span class="p">.</span><span class="n">dp_in</span><span class="p">(</span><span class="mh">4</span><span class="mb">'b0100</span><span class="p">),</span><span class="w">     </span><span class="c1">// 小数点在 digit2 后面（秒与百分秒之间）</span>
+<span class="w">    </span><span class="p">.</span><span class="n">seg</span><span class="p">(</span><span class="n">seg</span><span class="p">),</span><span class="w"> </span><span class="p">.</span><span class="n">an</span><span class="p">(</span><span class="n">an</span><span class="p">)</span>
+<span class="p">);</span>
+</code></pre></div>
+<p>The display should now use the <code>XX.XX</code> format.</p>
+<hr>
+<h2 id="3-stopwatch-state-machine-design">3. Stopwatch State-Machine Design</h2>
+<h3 id="31-state-definitions">3.1 State Definitions</h3>
+<p>The stopwatch has three states:</p>
+<table>
+<thead>
+<tr>
+<th>State</th>
+<th>Meaning</th>
+<th>Behavior</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>IDLE</code></td>
+<td>Idle/cleared</td>
+<td>Display 00.00 and wait to start</td>
+</tr>
+<tr>
+<td><code>RUNNING</code></td>
+<td>Running</td>
+<td>Measure elapsed time</td>
+</tr>
+<tr>
+<td><code>PAUSED</code></td>
+<td>Paused</td>
+<td>Freeze the count; it may be resumed or cleared</td>
+</tr>
+</tbody>
+</table>
+<h3 id="32-state-transition-diagram">3.2 State-Transition Diagram</h3>
+<p><img alt="image-20260522142004249" src="../../images/image-20260522142004249.png"></p>
+<ul>
+<li><code>btn_ss</code> (Start/Stop button): IDLE→RUNNING, RUNNING→PAUSED, PAUSED→RUNNING</li>
+<li><code>btn_reset</code> (Reset button): PAUSED→IDLE; effective only while paused</li>
+</ul>
+<h3 id="33-state-machine-code">3.3 State-Machine Code</h3>
+<div class="highlight"><pre><span></span><code><span class="k">module</span><span class="w"> </span><span class="n">stopwatch_ctrl</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="k">input</span><span class="w">      </span><span class="n">clk</span><span class="p">,</span>
+<span class="w">    </span><span class="k">input</span><span class="w">      </span><span class="n">rst_n</span><span class="p">,</span>
+<span class="w">    </span><span class="k">input</span><span class="w">      </span><span class="n">btn_ss</span><span class="p">,</span><span class="w">      </span><span class="c1">// Start/Stop 按键脉冲（已消抖+边沿检测）</span>
+<span class="w">    </span><span class="k">input</span><span class="w">      </span><span class="n">btn_reset</span><span class="p">,</span><span class="w">   </span><span class="c1">// Reset 按键脉冲（已消抖+边沿检测）</span>
+<span class="w">    </span><span class="k">output</span><span class="w"> </span><span class="kt">reg</span><span class="w"> </span><span class="n">running</span><span class="p">,</span><span class="w">     </span><span class="c1">// 1 = 计时器运行中</span>
+<span class="w">    </span><span class="k">output</span><span class="w"> </span><span class="kt">reg</span><span class="w"> </span><span class="n">clear</span><span class="w">        </span><span class="c1">// 1 = 清零脉冲（单周期）</span>
+<span class="p">);</span>
+
+<span class="w">    </span><span class="c1">// 状态定义</span>
+<span class="w">    </span><span class="k">localparam</span><span class="w"> </span><span class="n">S_IDLE</span><span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="mh">2</span><span class="mi">'d0</span><span class="p">;</span>
+<span class="w">    </span><span class="k">localparam</span><span class="w"> </span><span class="n">S_RUNNING</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">2</span><span class="mi">'d1</span><span class="p">;</span>
+<span class="w">    </span><span class="k">localparam</span><span class="w"> </span><span class="n">S_PAUSED</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="mh">2</span><span class="mi">'d2</span><span class="p">;</span>
+
+<span class="w">    </span><span class="kt">reg</span><span class="w"> </span><span class="p">[</span><span class="mh">1</span><span class="o">:</span><span class="mh">0</span><span class="p">]</span><span class="w"> </span><span class="n">state</span><span class="p">,</span><span class="w"> </span><span class="n">next_state</span><span class="p">;</span>
+
+<span class="w">    </span><span class="c1">// 第一段：状态寄存器</span>
+<span class="w">    </span><span class="k">always</span><span class="w"> </span><span class="p">@(</span><span class="k">posedge</span><span class="w"> </span><span class="n">clk</span><span class="w"> </span><span class="k">or</span><span class="w"> </span><span class="k">negedge</span><span class="w"> </span><span class="n">rst_n</span><span class="p">)</span><span class="w"> </span><span class="k">begin</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">rst_n</span><span class="p">)</span>
+<span class="w">            </span><span class="n">state</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">S_IDLE</span><span class="p">;</span>
+<span class="w">        </span><span class="k">else</span>
+<span class="w">            </span><span class="n">state</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">next_state</span><span class="p">;</span>
+<span class="w">    </span><span class="k">end</span>
+
+<span class="w">    </span><span class="c1">// 第二段：次态逻辑</span>
+<span class="w">    </span><span class="k">always</span><span class="w"> </span><span class="p">@(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="k">begin</span>
+<span class="w">        </span><span class="n">next_state</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">state</span><span class="p">;</span>
+<span class="w">        </span><span class="k">case</span><span class="w"> </span><span class="p">(</span><span class="n">state</span><span class="p">)</span>
+<span class="w">            </span><span class="nl">S_IDLE:</span><span class="w"> </span><span class="k">begin</span>
+<span class="w">                </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">btn_ss</span><span class="p">)</span>
+<span class="w">                    </span><span class="n">next_state</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">S_RUNNING</span><span class="p">;</span>
+<span class="w">            </span><span class="k">end</span>
+<span class="w">            </span><span class="nl">S_RUNNING:</span><span class="w"> </span><span class="k">begin</span>
+<span class="w">                </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">btn_ss</span><span class="p">)</span>
+<span class="w">                    </span><span class="n">next_state</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">S_PAUSED</span><span class="p">;</span>
+<span class="w">            </span><span class="k">end</span>
+<span class="w">            </span><span class="nl">S_PAUSED:</span><span class="w"> </span><span class="k">begin</span>
+<span class="w">                </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">btn_ss</span><span class="p">)</span>
+<span class="w">                    </span><span class="n">next_state</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">S_RUNNING</span><span class="p">;</span>
+<span class="w">                </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">btn_reset</span><span class="p">)</span>
+<span class="w">                    </span><span class="n">next_state</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">S_IDLE</span><span class="p">;</span>
+<span class="w">            </span><span class="k">end</span>
+<span class="w">            </span><span class="k">default</span><span class="o">:</span><span class="w"> </span><span class="n">next_state</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">S_IDLE</span><span class="p">;</span>
+<span class="w">        </span><span class="k">endcase</span>
+<span class="w">    </span><span class="k">end</span>
+
+<span class="w">    </span><span class="c1">// 第三段：输出逻辑</span>
+<span class="w">    </span><span class="k">always</span><span class="w"> </span><span class="p">@(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="k">begin</span>
+<span class="w">        </span><span class="n">running</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">1</span><span class="mb">'b0</span><span class="p">;</span>
+<span class="w">        </span><span class="n">clear</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="mh">1</span><span class="mb">'b0</span><span class="p">;</span>
+<span class="w">        </span><span class="k">case</span><span class="w"> </span><span class="p">(</span><span class="n">state</span><span class="p">)</span>
+<span class="w">            </span><span class="nl">S_IDLE:</span><span class="w">    </span><span class="n">clear</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">1</span><span class="mb">'b0</span><span class="p">;</span><span class="w">    </span><span class="c1">// 空闲状态</span>
+<span class="w">            </span><span class="nl">S_RUNNING:</span><span class="w"> </span><span class="n">running</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">1</span><span class="mb">'b1</span><span class="p">;</span><span class="w">  </span><span class="c1">// 运行中</span>
+<span class="w">            </span><span class="nl">S_PAUSED:</span><span class="w">  </span><span class="n">clear</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">btn_reset</span><span class="p">;</span><span class="w"> </span><span class="c1">// 暂停时按reset产生清零</span>
+<span class="w">            </span><span class="k">default</span><span class="o">:</span><span class="w"> </span><span class="p">;</span>
+<span class="w">        </span><span class="k">endcase</span>
+<span class="w">    </span><span class="k">end</span>
+
+<span class="k">endmodule</span>
+</code></pre></div>
+<h3 id="34-using-the-control-signals">3.4 Using the Control Signals</h3>
+<p>The state machine produces two control signals:</p>
+<ul>
+<li><strong><code>running</code></strong> controls whether the counters increment:</li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="c1">// 修改计数器的使能：只在 running 时计数</span>
+<span class="n">bcd_counter</span><span class="w"> </span><span class="n">u_cs0</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="p">.</span><span class="n">clk</span><span class="p">(</span><span class="n">clk</span><span class="p">),</span><span class="w"> </span><span class="p">.</span><span class="n">rst_n</span><span class="p">(</span><span class="o">~</span><span class="n">clear</span><span class="p">),</span><span class="w"> </span><span class="p">.</span><span class="n">en</span><span class="p">(</span><span class="n">tick_100hz</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">running</span><span class="p">),</span>
+<span class="w">    </span><span class="p">.</span><span class="n">cnt</span><span class="p">(</span><span class="n">cnt0</span><span class="p">),</span><span class="w"> </span><span class="p">.</span><span class="n">carry</span><span class="p">(</span><span class="n">carry0</span><span class="p">)</span>
+<span class="p">);</span>
+</code></pre></div>
+<ul>
+<li><strong><code>clear</code></strong> clears all counters:</li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="c1">// 清零信号连接到计数器的 rst_n 端</span>
+<span class="kt">wire</span><span class="w"> </span><span class="n">counter_rst_n</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">rst_n</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="o">~</span><span class="n">clear</span><span class="p">;</span>
+<span class="n">bcd_counter</span><span class="w"> </span><span class="n">u_cs0</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="p">.</span><span class="n">clk</span><span class="p">(</span><span class="n">clk</span><span class="p">),</span><span class="w"> </span><span class="p">.</span><span class="n">rst_n</span><span class="p">(</span><span class="n">counter_rst_n</span><span class="p">),</span><span class="w"> </span><span class="p">.</span><span class="n">en</span><span class="p">(</span><span class="n">tick_100hz</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">running</span><span class="p">),</span>
+<span class="w">    </span><span class="p">...</span>
+<span class="p">);</span>
+</code></pre></div>
+<hr>
+<h2 id="4-button-processing">4. Button Processing</h2>
+<h3 id="41-debouncing-and-edge-detection-for-two-buttons">4.1 Debouncing and Edge Detection for Two Buttons</h3>
+<div class="highlight"><pre><span></span><code><span class="c1">// ---- Start/Stop 按键 ----</span>
+<span class="kt">wire</span><span class="w"> </span><span class="n">btn_ss_clean</span><span class="p">,</span><span class="w"> </span><span class="n">btn_ss_pulse</span><span class="p">;</span>
+
+<span class="n">btn_debounce</span><span class="w"> </span><span class="n">u_deb_ss</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="p">.</span><span class="n">clk</span><span class="p">(</span><span class="n">clk</span><span class="p">),</span><span class="w"> </span><span class="p">.</span><span class="n">rst_n</span><span class="p">(</span><span class="n">rst_n</span><span class="p">),</span>
+<span class="w">    </span><span class="p">.</span><span class="n">btn_in</span><span class="p">(</span><span class="n">btn_ss_raw</span><span class="p">),</span><span class="w"> </span><span class="p">.</span><span class="n">btn_out</span><span class="p">(</span><span class="n">btn_ss_clean</span><span class="p">)</span>
+<span class="p">);</span>
+<span class="n">edge_detect</span><span class="w"> </span><span class="n">u_edge_ss</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="p">.</span><span class="n">clk</span><span class="p">(</span><span class="n">clk</span><span class="p">),</span><span class="w"> </span><span class="p">.</span><span class="n">rst_n</span><span class="p">(</span><span class="n">rst_n</span><span class="p">),</span>
+<span class="w">    </span><span class="p">.</span><span class="n">sig_in</span><span class="p">(</span><span class="n">btn_ss_clean</span><span class="p">),</span>
+<span class="w">    </span><span class="p">.</span><span class="n">pos_edge</span><span class="p">(</span><span class="n">btn_ss_pulse</span><span class="p">),</span><span class="w"> </span><span class="p">.</span><span class="n">neg_edge</span><span class="p">()</span>
+<span class="p">);</span>
+
+<span class="c1">// ---- Reset 按键 ----</span>
+<span class="kt">wire</span><span class="w"> </span><span class="n">btn_rst_clean</span><span class="p">,</span><span class="w"> </span><span class="n">btn_rst_pulse</span><span class="p">;</span>
+
+<span class="n">btn_debounce</span><span class="w"> </span><span class="n">u_deb_rst</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="p">.</span><span class="n">clk</span><span class="p">(</span><span class="n">clk</span><span class="p">),</span><span class="w"> </span><span class="p">.</span><span class="n">rst_n</span><span class="p">(</span><span class="n">rst_n</span><span class="p">),</span>
+<span class="w">    </span><span class="p">.</span><span class="n">btn_in</span><span class="p">(</span><span class="n">btn_rst_raw</span><span class="p">),</span><span class="w"> </span><span class="p">.</span><span class="n">btn_out</span><span class="p">(</span><span class="n">btn_rst_clean</span><span class="p">)</span>
+<span class="p">);</span>
+<span class="n">edge_detect</span><span class="w"> </span><span class="n">u_edge_rst</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="p">.</span><span class="n">clk</span><span class="p">(</span><span class="n">clk</span><span class="p">),</span><span class="w"> </span><span class="p">.</span><span class="n">rst_n</span><span class="p">(</span><span class="n">rst_n</span><span class="p">),</span>
+<span class="w">    </span><span class="p">.</span><span class="n">sig_in</span><span class="p">(</span><span class="n">btn_rst_clean</span><span class="p">),</span>
+<span class="w">    </span><span class="p">.</span><span class="n">pos_edge</span><span class="p">(</span><span class="n">btn_rst_pulse</span><span class="p">),</span><span class="w"> </span><span class="p">.</span><span class="n">neg_edge</span><span class="p">()</span>
+<span class="p">);</span>
+</code></pre></div>
+<h3 id="42-connecting-the-state-machine">4.2 Connecting the State Machine</h3>
+<div class="highlight"><pre><span></span><code><span class="n">stopwatch_ctrl</span><span class="w"> </span><span class="n">u_ctrl</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="p">.</span><span class="n">clk</span><span class="p">(</span><span class="n">clk</span><span class="p">),</span><span class="w"> </span><span class="p">.</span><span class="n">rst_n</span><span class="p">(</span><span class="n">rst_n</span><span class="p">),</span>
+<span class="w">    </span><span class="p">.</span><span class="n">btn_ss</span><span class="p">(</span><span class="n">btn_ss_pulse</span><span class="p">),</span>
+<span class="w">    </span><span class="p">.</span><span class="n">btn_reset</span><span class="p">(</span><span class="n">btn_rst_pulse</span><span class="p">),</span>
+<span class="w">    </span><span class="p">.</span><span class="n">running</span><span class="p">(</span><span class="n">running</span><span class="p">),</span>
+<span class="w">    </span><span class="p">.</span><span class="n">clear</span><span class="p">(</span><span class="n">clear</span><span class="p">)</span>
+<span class="p">);</span>
+</code></pre></div>
+<hr>
+<h2 id="5-laboratory-tasks-for-this-week-complete-independently-not-checked-in-class">5. Laboratory Tasks for This Week (Complete Independently; Not Checked in Class)</h2>
+<h3 id="step-1-reuse-existing-modules">Step 1: Reuse Existing Modules</h3>
+<p>Add the following files to the project, including the files from earlier exercises:</p>
+<ul>
+<li><code>clk_div.v</code></li>
+<li><code>bcd_counter.v</code></li>
+<li><code>dynamic_display.v</code> </li>
+<li><code>btn_debounce.v</code> </li>
+<li><code>edge_detect.v</code> </li>
+</ul>
+<h3 id="step-2-write-stopwatch_ctrlv">Step 2: Write <code>stopwatch_ctrl.v</code></h3>
+<p>Implement the stopwatch state machine using the code in Section 3 as a reference.</p>
+<h3 id="step-3-write-a-temporary-top-level-module">Step 3: Write a Temporary Top-Level Module</h3>
+<p>Connect all modules. This does not yet need to be the final <code>stopwatch_top</code>; a temporary top-level may be used for testing:</p>
+<div class="highlight"><pre><span></span><code><span class="k">module</span><span class="w"> </span><span class="n">stopwatch_test</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="k">input</span><span class="w">        </span><span class="n">clk</span><span class="p">,</span>
+<span class="w">    </span><span class="k">input</span><span class="w">        </span><span class="n">rst_n</span><span class="p">,</span>
+<span class="w">    </span><span class="k">input</span><span class="w">        </span><span class="n">btn_ss</span><span class="p">,</span>
+<span class="w">    </span><span class="k">input</span><span class="w">        </span><span class="n">btn_reset</span><span class="p">,</span>
+<span class="w">    </span><span class="k">output</span><span class="w"> </span><span class="p">[</span><span class="mh">7</span><span class="o">:</span><span class="mh">0</span><span class="p">]</span><span class="w"> </span><span class="n">seg</span><span class="p">,</span>
+<span class="w">    </span><span class="k">output</span><span class="w"> </span><span class="p">[</span><span class="mh">3</span><span class="o">:</span><span class="mh">0</span><span class="p">]</span><span class="w"> </span><span class="n">an</span>
+<span class="p">);</span>
+<span class="w">    </span><span class="kt">wire</span><span class="w"> </span><span class="n">tick_100hz</span><span class="p">,</span><span class="w"> </span><span class="n">running</span><span class="p">,</span><span class="w"> </span><span class="n">clear</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">wire</span><span class="w"> </span><span class="n">counter_rst_n</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">rst_n</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="o">~</span><span class="n">clear</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">wire</span><span class="w"> </span><span class="n">btn_ss_pulse</span><span class="p">,</span><span class="w"> </span><span class="n">btn_rst_pulse</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">wire</span><span class="w"> </span><span class="n">btn_ss_clean</span><span class="p">,</span><span class="w"> </span><span class="n">btn_rst_clean</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">wire</span><span class="w"> </span><span class="n">carry0</span><span class="p">,</span><span class="w"> </span><span class="n">carry1</span><span class="p">,</span><span class="w"> </span><span class="n">carry2</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">wire</span><span class="w"> </span><span class="p">[</span><span class="mh">3</span><span class="o">:</span><span class="mh">0</span><span class="p">]</span><span class="w"> </span><span class="n">cnt0</span><span class="p">,</span><span class="w"> </span><span class="n">cnt1</span><span class="p">,</span><span class="w"> </span><span class="n">cnt2</span><span class="p">,</span><span class="w"> </span><span class="n">cnt3</span><span class="p">;</span>
+
+<span class="w">    </span><span class="c1">// 分频</span>
+<span class="w">    </span><span class="n">clk_div</span><span class="w"> </span><span class="p">#(.</span><span class="n">MAX_COUNT</span><span class="p">(</span><span class="mh">1</span><span class="n">_000_000</span><span class="p">))</span><span class="w"> </span><span class="n">u_100hz</span><span class="w"> </span><span class="p">(</span>
+<span class="w">        </span><span class="p">.</span><span class="n">clk</span><span class="p">(</span><span class="n">clk</span><span class="p">),</span><span class="w"> </span><span class="p">.</span><span class="n">rst_n</span><span class="p">(</span><span class="n">counter_rst_n</span><span class="p">),</span><span class="w"> </span><span class="p">.</span><span class="n">tick</span><span class="p">(</span><span class="n">tick_100hz</span><span class="p">)</span>
+<span class="w">    </span><span class="p">);</span>
+
+<span class="w">    </span><span class="c1">// 按键处理</span>
+<span class="w">    </span><span class="n">btn_debounce</span><span class="w"> </span><span class="n">u_deb_ss</span><span class="w"> </span><span class="p">(.</span><span class="n">clk</span><span class="p">(</span><span class="n">clk</span><span class="p">),</span><span class="w"> </span><span class="p">.</span><span class="n">rst_n</span><span class="p">(</span><span class="n">rst_n</span><span class="p">),</span><span class="w"> </span><span class="p">.</span><span class="n">btn_in</span><span class="p">(</span><span class="n">btn_ss</span><span class="p">),</span><span class="w"> </span><span class="p">.</span><span class="n">btn_out</span><span class="p">(</span><span class="n">btn_ss_clean</span><span class="p">));</span>
+<span class="w">    </span><span class="n">edge_detect</span><span class="w"> </span><span class="n">u_edge_ss</span><span class="w"> </span><span class="p">(.</span><span class="n">clk</span><span class="p">(</span><span class="n">clk</span><span class="p">),</span><span class="w"> </span><span class="p">.</span><span class="n">rst_n</span><span class="p">(</span><span class="n">rst_n</span><span class="p">),</span><span class="w"> </span><span class="p">.</span><span class="n">sig_in</span><span class="p">(</span><span class="n">btn_ss_clean</span><span class="p">),</span><span class="w"> </span><span class="p">.</span><span class="n">pos_edge</span><span class="p">(</span><span class="n">btn_ss_pulse</span><span class="p">),</span><span class="w"> </span><span class="p">.</span><span class="n">neg_edge</span><span class="p">());</span>
+<span class="w">    </span><span class="n">btn_debounce</span><span class="w"> </span><span class="n">u_deb_rst</span><span class="w"> </span><span class="p">(.</span><span class="n">clk</span><span class="p">(</span><span class="n">clk</span><span class="p">),</span><span class="w"> </span><span class="p">.</span><span class="n">rst_n</span><span class="p">(</span><span class="n">rst_n</span><span class="p">),</span><span class="w"> </span><span class="p">.</span><span class="n">btn_in</span><span class="p">(</span><span class="n">btn_reset</span><span class="p">),</span><span class="w"> </span><span class="p">.</span><span class="n">btn_out</span><span class="p">(</span><span class="n">btn_rst_clean</span><span class="p">));</span>
+<span class="w">    </span><span class="n">edge_detect</span><span class="w"> </span><span class="n">u_edge_rst</span><span class="w"> </span><span class="p">(.</span><span class="n">clk</span><span class="p">(</span><span class="n">clk</span><span class="p">),</span><span class="w"> </span><span class="p">.</span><span class="n">rst_n</span><span class="p">(</span><span class="n">rst_n</span><span class="p">),</span><span class="w"> </span><span class="p">.</span><span class="n">sig_in</span><span class="p">(</span><span class="n">btn_rst_clean</span><span class="p">),</span><span class="w"> </span><span class="p">.</span><span class="n">pos_edge</span><span class="p">(</span><span class="n">btn_rst_pulse</span><span class="p">),</span><span class="w"> </span><span class="p">.</span><span class="n">neg_edge</span><span class="p">());</span>
+
+<span class="w">    </span><span class="c1">// 状态机</span>
+<span class="w">    </span><span class="n">stopwatch_ctrl</span><span class="w"> </span><span class="n">u_ctrl</span><span class="w"> </span><span class="p">(</span>
+<span class="w">        </span><span class="p">.</span><span class="n">clk</span><span class="p">(</span><span class="n">clk</span><span class="p">),</span><span class="w"> </span><span class="p">.</span><span class="n">rst_n</span><span class="p">(</span><span class="n">rst_n</span><span class="p">),</span>
+<span class="w">        </span><span class="p">.</span><span class="n">btn_ss</span><span class="p">(</span><span class="n">btn_ss_pulse</span><span class="p">),</span><span class="w"> </span><span class="p">.</span><span class="n">btn_reset</span><span class="p">(</span><span class="n">btn_rst_pulse</span><span class="p">),</span>
+<span class="w">        </span><span class="p">.</span><span class="n">running</span><span class="p">(</span><span class="n">running</span><span class="p">),</span><span class="w"> </span><span class="p">.</span><span class="n">clear</span><span class="p">(</span><span class="n">clear</span><span class="p">)</span>
+<span class="w">    </span><span class="p">);</span>
+
+<span class="w">    </span><span class="c1">// 计数器链</span>
+<span class="w">    </span><span class="n">bcd_counter</span><span class="w"> </span><span class="n">u_cs0</span><span class="w"> </span><span class="p">(.</span><span class="n">clk</span><span class="p">(</span><span class="n">clk</span><span class="p">),</span><span class="w"> </span><span class="p">.</span><span class="n">rst_n</span><span class="p">(</span><span class="n">counter_rst_n</span><span class="p">),</span><span class="w"> </span><span class="p">.</span><span class="n">en</span><span class="p">(</span><span class="n">tick_100hz</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">running</span><span class="p">),</span><span class="w"> </span><span class="p">.</span><span class="n">cnt</span><span class="p">(</span><span class="n">cnt0</span><span class="p">),</span><span class="w"> </span><span class="p">.</span><span class="n">carry</span><span class="p">(</span><span class="n">carry0</span><span class="p">));</span>
+<span class="w">    </span><span class="n">bcd_counter</span><span class="w"> </span><span class="n">u_cs1</span><span class="w"> </span><span class="p">(.</span><span class="n">clk</span><span class="p">(</span><span class="n">clk</span><span class="p">),</span><span class="w"> </span><span class="p">.</span><span class="n">rst_n</span><span class="p">(</span><span class="n">counter_rst_n</span><span class="p">),</span><span class="w"> </span><span class="p">.</span><span class="n">en</span><span class="p">(</span><span class="n">carry0</span><span class="p">),</span><span class="w"> </span><span class="p">.</span><span class="n">cnt</span><span class="p">(</span><span class="n">cnt1</span><span class="p">),</span><span class="w"> </span><span class="p">.</span><span class="n">carry</span><span class="p">(</span><span class="n">carry1</span><span class="p">));</span>
+<span class="w">    </span><span class="n">bcd_counter</span><span class="w"> </span><span class="n">u_s0</span><span class="w">  </span><span class="p">(.</span><span class="n">clk</span><span class="p">(</span><span class="n">clk</span><span class="p">),</span><span class="w"> </span><span class="p">.</span><span class="n">rst_n</span><span class="p">(</span><span class="n">counter_rst_n</span><span class="p">),</span><span class="w"> </span><span class="p">.</span><span class="n">en</span><span class="p">(</span><span class="n">carry1</span><span class="p">),</span><span class="w"> </span><span class="p">.</span><span class="n">cnt</span><span class="p">(</span><span class="n">cnt2</span><span class="p">),</span><span class="w"> </span><span class="p">.</span><span class="n">carry</span><span class="p">(</span><span class="n">carry2</span><span class="p">));</span>
+<span class="w">    </span><span class="n">bcd_counter</span><span class="w"> </span><span class="n">u_s1</span><span class="w">  </span><span class="p">(.</span><span class="n">clk</span><span class="p">(</span><span class="n">clk</span><span class="p">),</span><span class="w"> </span><span class="p">.</span><span class="n">rst_n</span><span class="p">(</span><span class="n">counter_rst_n</span><span class="p">),</span><span class="w"> </span><span class="p">.</span><span class="n">en</span><span class="p">(</span><span class="n">carry2</span><span class="p">),</span><span class="w"> </span><span class="p">.</span><span class="n">cnt</span><span class="p">(</span><span class="n">cnt3</span><span class="p">),</span><span class="w"> </span><span class="p">.</span><span class="n">carry</span><span class="p">());</span>
+
+<span class="w">    </span><span class="c1">// 显示</span>
+<span class="w">    </span><span class="n">dynamic_display</span><span class="w"> </span><span class="n">u_disp</span><span class="w"> </span><span class="p">(</span>
+<span class="w">        </span><span class="p">.</span><span class="n">clk</span><span class="p">(</span><span class="n">clk</span><span class="p">),</span><span class="w"> </span><span class="p">.</span><span class="n">rst_n</span><span class="p">(</span><span class="n">rst_n</span><span class="p">),</span>
+<span class="w">        </span><span class="p">.</span><span class="n">digit3</span><span class="p">(</span><span class="n">cnt3</span><span class="p">),</span><span class="w"> </span><span class="p">.</span><span class="n">digit2</span><span class="p">(</span><span class="n">cnt2</span><span class="p">),</span><span class="w"> </span><span class="p">.</span><span class="n">digit1</span><span class="p">(</span><span class="n">cnt1</span><span class="p">),</span><span class="w"> </span><span class="p">.</span><span class="n">digit0</span><span class="p">(</span><span class="n">cnt0</span><span class="p">),</span>
+<span class="w">        </span><span class="p">.</span><span class="n">dp_in</span><span class="p">(</span><span class="mh">4</span><span class="mb">'b0100</span><span class="p">),</span>
+<span class="w">        </span><span class="p">.</span><span class="n">seg</span><span class="p">(</span><span class="n">seg</span><span class="p">),</span><span class="w"> </span><span class="p">.</span><span class="n">an</span><span class="p">(</span><span class="n">an</span><span class="p">)</span>
+<span class="w">    </span><span class="p">);</span>
+<span class="k">endmodule</span>
+</code></pre></div>
+<h3 id="step-4-simulate-and-verify">Step 4: Simulate and Verify</h3>
+<p>Verify the following behaviors:</p>
+<ol>
+<li>The initial display is 00.00.</li>
+<li>Pressing <code>btn_ss</code> starts the count.</li>
+<li>Pressing <code>btn_ss</code> again pauses the stopwatch and freezes the count.</li>
+<li>Pressing <code>btn_reset</code> while paused clears the display to 00.00.</li>
+<li>Pressing <code>btn_ss</code> again restarts the stopwatch.</li>
+</ol>
+<h3 id="step-5-verify-on-the-board">Step 5: Verify on the Board</h3>
+<p>If time permits, perform preliminary on-board verification. The complete pin constraints and final top-level module will be completed later.</p></div>
+
+
+
+
+
+
+
+
+  <aside class="md-source-file">
+    
+    
+    
+      
+  
+  <span class="md-source-file__fact">
+    <span class="md-icon" title="Contributors">
+      
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 4a4 4 0 0 1 4 4 4 4 0 0 1-4 4 4 4 0 0 1-4-4 4 4 0 0 1 4-4m0 10c4.42 0 8 1.79 8 4v2H4v-2c0-2.21 3.58-4 8-4"/></svg>
+      
+    </span>
+    <nav>
+      baiyhsz
+    </nav>
+  </span>
+
+    
+    
+  </aside>
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright &copy; 2025 Southern University of Science and Technology
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["search.suggest", "search.highlight", "content.tabs.link", "navigation.tabs", "navigation.top", "content.code.copy"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>
