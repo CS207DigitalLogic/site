@@ -1,0 +1,2911 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Digital Logic Laboratory Course Materials">
+      
+      
+      
+        <link rel="canonical" href="https://cs207digitallogic.github.io/site/en/DigitalLogic_UART/">
+      
+      
+        <link rel="prev" href="../DigitalLogic_ModuleIntegration/">
+      
+      
+        <link rel="next" href="../DigitalLogic_StopwatchCore/">
+      
+      
+        
+          <link rel="alternate" href="../../DigitalLogic_UART/" hreflang="zh">
+        
+          <link rel="alternate" href="./" hreflang="en">
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>Lab 10: UART - Digital Logic Course</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#digital-logic-uart-serial-communication-and-simulation-debugging" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../" title="Digital Logic Course" class="md-header__button md-logo" aria-label="Digital Logic Course" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Digital Logic Course
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Lab 10: UART
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-hidden="true"  type="radio" name="__palette" id="__palette_0">
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+      <div class="md-header__option">
+  <div class="md-select">
+    
+    <button class="md-header__button md-icon" aria-label="Select language">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m12.87 15.07-2.54-2.51.03-.03A17.5 17.5 0 0 0 14.07 6H17V4h-7V2H8v2H1v2h11.17C11.5 7.92 10.44 9.75 9 11.35 8.07 10.32 7.3 9.19 6.69 8h-2c.73 1.63 1.73 3.17 2.98 4.56l-5.09 5.02L4 19l5-5 3.11 3.11zM18.5 10h-2L12 22h2l1.12-3h4.75L21 22h2zm-2.62 7 1.62-4.33L19.12 17z"/></svg>
+    </button>
+    <div class="md-select__inner">
+      <ul class="md-select__list">
+        
+          <li class="md-select__item">
+            <a href="../../DigitalLogic_UART/" hreflang="zh" class="md-select__link">
+              中文
+            </a>
+          </li>
+        
+          <li class="md-select__item">
+            <a href="./" hreflang="en" class="md-select__link">
+              English
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</div>
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://cs207digitallogic.github.io" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub Repository
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../DigitalLogic_EnvironmentSetup/" class="md-tabs__link">
+          
+  
+  
+  Labs
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../projects/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Projects
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../links/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  OJ Platforms
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../resources/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Course Resources
+
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../" title="Digital Logic Course" class="md-nav__button md-logo" aria-label="Digital Logic Course" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Digital Logic Course
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://cs207digitallogic.github.io" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub Repository
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Labs
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Labs
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../DigitalLogic_EnvironmentSetup/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 1: Environment Setup
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../DigitalLogic_VerilogBasics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 2: Verilog Basics and Structural Modeling
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../DigitalLogic_Dataflow/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 3: Dataflow Modeling and FPGA Verification
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../DigitalLogic_BehaviorModeling/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 4: Behavioral Modeling and Seven-Segment Display
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../DigitalLogic_SequentialLogic/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 5: Sequential Logic—Counters and Clock Dividers
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../DigitalLogic_DynamicDisplay/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 6: Multiplexed Display—Chasing LEDs and Seven-Segment Displays
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../DigitalLogic_ButtonDebounce/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 7: Button Debouncing and Edge Detection
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../DigitalLogic_StateMachine/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 8: State Machines
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../DigitalLogic_ModuleIntegration/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 9: Module Integration
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 10: UART
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 10: UART
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#lab-objectives" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Lab Objectives
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1-uart-basics" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. UART Basics
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. UART Basics">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#11-what-is-uart" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.1 What Is UART?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#12-uart-data-frame" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.2 UART Data Frame
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#13-baud-rate-divider" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.3 Baud-Rate Divider
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#14-improving-module-reusability-with-parameters" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.4 Improving Module Reusability with Parameters
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-uart-demo-functionality-and-structure" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. UART Demo Functionality and Structure
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. UART Demo Functionality and Structure">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#21-demo-functionality" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.1 Demo Functionality
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#22-top-level-ports" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.2 Top-Level Ports
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#23-module-organization" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.3 Module Organization
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-uart-receiver-module" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. UART Receiver Module
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. UART Receiver Module">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#31-receive-process" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.1 Receive Process
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#32-receiver-module-code" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.2 Receiver Module Code
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-uart-transmitter-module" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. UART Transmitter Module
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. UART Transmitter Module">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#41-transmit-process" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.1 Transmit Process
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#42-transmitter-module-code" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.2 Transmitter Module Code
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-top-level-module-design" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Top-Level Module Design
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5. Top-Level Module Design">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#51-send-button-edge-detection" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.1 Send-Button Edge Detection
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#52-complete-top-level-code" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.2 Complete Top-Level Code
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-pin-constraints" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Pin Constraints
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-uart-loopback-simulation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. UART Loopback Simulation
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="7. UART Loopback Simulation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#71-testbench" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.1 Testbench
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#72-simulation-checkpoints" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.2 Simulation Checkpoints
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#73-adding-internal-signals-in-vivado" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.3 Adding Internal Signals in Vivado
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-on-board-testing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8. On-Board Testing
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="8. On-Board Testing">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#81-preparation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8.1 Preparation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#82-serial-terminal-settings" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8.2 Serial Terminal Settings
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#83-fpga-computer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8.3 FPGA → Computer
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#84-computer-fpga" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8.4 Computer → FPGA
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#85-ascii-character-test" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8.5 ASCII Character Test
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#9-lab-tasks-for-this-week" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9. Lab Tasks for This Week
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="9. Lab Tasks for This Week">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#task-1-complete-the-uart-demo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task 1: Complete the UART Demo
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#task-2-transmit-the-ascii-character" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task 2: Transmit the ASCII Character *
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#task-3-simulation-debugging-record" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task 3: Simulation Debugging Record
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#on-board-acceptance-criteria" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        On-Board Acceptance Criteria
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#appendix-common-problems" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Appendix: Common Problems
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Appendix: Common Problems">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#discussion-questions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Discussion Questions
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../DigitalLogic_StopwatchCore/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 11 Demo: Stopwatch Core
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../DigitalLogic_StopwatchControl/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 12 Demo: Stopwatch Control
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../DigitalLogic_StopwatchIntegration/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 13 Demo: System Integration
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../DigitalLogic_Memory/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 14: Memory Design and IP Cores
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../projects/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Projects
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../links/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    OJ Platforms
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../resources/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Course Resources
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#lab-objectives" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Lab Objectives
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1-uart-basics" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. UART Basics
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. UART Basics">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#11-what-is-uart" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.1 What Is UART?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#12-uart-data-frame" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.2 UART Data Frame
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#13-baud-rate-divider" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.3 Baud-Rate Divider
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#14-improving-module-reusability-with-parameters" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.4 Improving Module Reusability with Parameters
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-uart-demo-functionality-and-structure" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. UART Demo Functionality and Structure
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. UART Demo Functionality and Structure">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#21-demo-functionality" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.1 Demo Functionality
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#22-top-level-ports" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.2 Top-Level Ports
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#23-module-organization" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.3 Module Organization
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-uart-receiver-module" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. UART Receiver Module
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. UART Receiver Module">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#31-receive-process" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.1 Receive Process
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#32-receiver-module-code" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.2 Receiver Module Code
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-uart-transmitter-module" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. UART Transmitter Module
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. UART Transmitter Module">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#41-transmit-process" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.1 Transmit Process
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#42-transmitter-module-code" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.2 Transmitter Module Code
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-top-level-module-design" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Top-Level Module Design
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5. Top-Level Module Design">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#51-send-button-edge-detection" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.1 Send-Button Edge Detection
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#52-complete-top-level-code" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.2 Complete Top-Level Code
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-pin-constraints" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Pin Constraints
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-uart-loopback-simulation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. UART Loopback Simulation
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="7. UART Loopback Simulation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#71-testbench" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.1 Testbench
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#72-simulation-checkpoints" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.2 Simulation Checkpoints
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#73-adding-internal-signals-in-vivado" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.3 Adding Internal Signals in Vivado
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-on-board-testing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8. On-Board Testing
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="8. On-Board Testing">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#81-preparation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8.1 Preparation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#82-serial-terminal-settings" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8.2 Serial Terminal Settings
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#83-fpga-computer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8.3 FPGA → Computer
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#84-computer-fpga" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8.4 Computer → FPGA
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#85-ascii-character-test" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8.5 ASCII Character Test
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#9-lab-tasks-for-this-week" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9. Lab Tasks for This Week
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="9. Lab Tasks for This Week">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#task-1-complete-the-uart-demo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task 1: Complete the UART Demo
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#task-2-transmit-the-ascii-character" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task 2: Transmit the ASCII Character *
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#task-3-simulation-debugging-record" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task 3: Simulation Debugging Record
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#on-board-acceptance-criteria" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        On-Board Acceptance Criteria
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#appendix-common-problems" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Appendix: Common Problems
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Appendix: Common Problems">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#discussion-questions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Discussion Questions
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<div><div class="toc">
+<ul>
+<li><a href="#digital-logic-uart-serial-communication-and-simulation-debugging">Digital Logic: UART Serial Communication and Simulation Debugging</a><ul>
+<li><a href="#lab-objectives">Lab Objectives</a></li>
+<li><a href="#1-uart-basics">1. UART Basics</a><ul>
+<li><a href="#11-what-is-uart">1.1 What Is UART?</a></li>
+<li><a href="#12-uart-data-frame">1.2 UART Data Frame</a></li>
+<li><a href="#13-baud-rate-divider">1.3 Baud-Rate Divider</a></li>
+<li><a href="#14-improving-module-reusability-with-parameters">1.4 Improving Module Reusability with Parameters</a></li>
+</ul>
+</li>
+<li><a href="#2-uart-demo-functionality-and-structure">2. UART Demo Functionality and Structure</a><ul>
+<li><a href="#21-demo-functionality">2.1 Demo Functionality</a></li>
+<li><a href="#22-top-level-ports">2.2 Top-Level Ports</a></li>
+<li><a href="#23-module-organization">2.3 Module Organization</a></li>
+</ul>
+</li>
+<li><a href="#3-uart-receiver-module">3. UART Receiver Module</a><ul>
+<li><a href="#31-receive-process">3.1 Receive Process</a></li>
+<li><a href="#32-receiver-module-code">3.2 Receiver Module Code</a></li>
+</ul>
+</li>
+<li><a href="#4-uart-transmitter-module">4. UART Transmitter Module</a><ul>
+<li><a href="#41-transmit-process">4.1 Transmit Process</a></li>
+<li><a href="#42-transmitter-module-code">4.2 Transmitter Module Code</a></li>
+</ul>
+</li>
+<li><a href="#5-top-level-module-design">5. Top-Level Module Design</a><ul>
+<li><a href="#51-send-button-edge-detection">5.1 Send-Button Edge Detection</a></li>
+<li><a href="#52-complete-top-level-code">5.2 Complete Top-Level Code</a></li>
+</ul>
+</li>
+<li><a href="#6-pin-constraints">6. Pin Constraints</a></li>
+<li><a href="#7-uart-loopback-simulation">7. UART Loopback Simulation</a><ul>
+<li><a href="#71-testbench">7.1 Testbench</a></li>
+<li><a href="#72-simulation-checkpoints">7.2 Simulation Checkpoints</a></li>
+<li><a href="#73-adding-internal-signals-in-vivado">7.3 Adding Internal Signals in Vivado</a></li>
+</ul>
+</li>
+<li><a href="#8-on-board-testing">8. On-Board Testing</a><ul>
+<li><a href="#81-preparation">8.1 Preparation</a></li>
+<li><a href="#82-serial-terminal-settings">8.2 Serial Terminal Settings</a></li>
+<li><a href="#83-fpga-computer">8.3 FPGA → Computer</a></li>
+<li><a href="#84-computer-fpga">8.4 Computer → FPGA</a></li>
+<li><a href="#85-ascii-character-test">8.5 ASCII Character Test</a></li>
+</ul>
+</li>
+<li><a href="#9-lab-tasks-for-this-week">9. Lab Tasks for This Week</a><ul>
+<li><a href="#task-1-complete-the-uart-demo">Task 1: Complete the UART Demo</a></li>
+<li><a href="#task-2-transmit-the-ascii-character">Task 2: Transmit the ASCII Character *</a></li>
+<li><a href="#task-3-simulation-debugging-record">Task 3: Simulation Debugging Record</a></li>
+<li><a href="#on-board-acceptance-criteria">On-Board Acceptance Criteria</a></li>
+</ul>
+</li>
+<li><a href="#appendix-common-problems">Appendix: Common Problems</a><ul>
+<li><a href="#discussion-questions">Discussion Questions</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+<hr>
+<h1 id="digital-logic-uart-serial-communication-and-simulation-debugging">Digital Logic: UART Serial Communication and Simulation Debugging</h1>
+<h2 id="lab-objectives">Lab Objectives</h2>
+<ul>
+<li>Understand the basic principles of UART asynchronous serial communication and the <code>8N1</code> data frame format</li>
+<li>Learn how to calculate the baud-rate divider and how to use the Verilog module parameter <code>parameter</code></li>
+<li>Implement UART transmitter and receiver modules in Verilog</li>
+<li>Establish bidirectional communication between the EGO1 board and a serial terminal on a computer</li>
+<li>Learn the basic method of locating problems using the Vivado Waveform window and internal signals</li>
+</ul>
+<hr>
+<h2 id="1-uart-basics">1. UART Basics</h2>
+<h3 id="11-what-is-uart">1.1 What Is UART?</h3>
+<p>UART (Universal Asynchronous Receiver/Transmitter) is a commonly used serial communication interface.</p>
+<p>Unlike synchronous communication, UART does not transmit a clock signal. The transmitter and receiver must agree in advance on the same baud rate and frame format, and then transmit and sample data at the agreed timing intervals.</p>
+<p>Full-duplex UART communication typically requires only three wires:</p>
+<table>
+<thead>
+<tr>
+<th>Signal</th>
+<th>Direction</th>
+<th>Function</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>TX</code></td>
+<td>Transmitter output</td>
+<td>Serial data transmission</td>
+</tr>
+<tr>
+<td><code>RX</code></td>
+<td>Receiver input</td>
+<td>Serial data reception</td>
+</tr>
+<tr>
+<td><code>GND</code></td>
+<td>Common ground</td>
+<td>Provides a common voltage reference</td>
+</tr>
+</tbody>
+</table>
+<p>When connecting two devices, the data lines should be crossed: the <code>TX</code> of one device connects to the <code>RX</code> of the other, and the two devices must share a common ground.</p>
+<h3 id="12-uart-data-frame">1.2 UART Data Frame</h3>
+<p>The UART data line remains high when idle. A transmission consists of a start bit, data bits, an optional parity bit, and stop bit(s).</p>
+<p><img alt="UART Data Frame Structure" src="../../images/uart-frame-structure.png"></p>
+<p>This lab uses <code>115200-8-N-1</code> throughout:</p>
+<table>
+<thead>
+<tr>
+<th>Configuration</th>
+<th>Setting in This Lab</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Baud rate</td>
+<td><code>115200</code></td>
+<td>Transmits 115200 symbols per second</td>
+</tr>
+<tr>
+<td>Data bits</td>
+<td><code>8</code></td>
+<td>Transfers 1 byte per frame (LSB first)</td>
+</tr>
+<tr>
+<td>Parity</td>
+<td><code>None</code></td>
+<td>No parity bit</td>
+</tr>
+<tr>
+<td>Stop bits</td>
+<td><code>1</code></td>
+<td>Uses one high-level stop bit</td>
+</tr>
+</tbody>
+</table>
+<p>The transmission order of one frame is:</p>
+<ol>
+<li>Idle state: <code>1</code></li>
+<li>Start bit: <code>0</code></li>
+<li>8 data bits: from the least significant bit (<code>LSB</code>) to the most significant bit (<code>MSB</code>)</li>
+<li>Stop bit: <code>1</code></li>
+</ol>
+<p>For example, when transmitting <code>8'h53</code>, the binary value is <code>0101_0011</code>. UART transmits the data bits LSB first, so the bits on the line are sent in the order <code>1, 1, 0, 0, 1, 0, 1, 0</code>.</p>
+<h3 id="13-baud-rate-divider">1.3 Baud-Rate Divider</h3>
+<p>The FPGA uses a 100 MHz system clock, while each UART bit must remain stable for one baud period. A divider counter is used in the design to generate the sampling or shifting instants:</p>
+<div class="highlight"><pre><span></span><code><span class="k">localparam</span><span class="w"> </span><span class="n">BAUD_DIV</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">CLK_FREQ</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">BAUD_RATE</span><span class="p">;</span>
+</code></pre></div>
+<p>In this lab:</p>
+<div class="highlight"><pre><span></span><code>BAUD_DIV = 100_000_000 / 115_200 = 868 (integer division)
+</code></pre></div>
+<p>Therefore, each UART bit lasts for approximately 868 system clock cycles. The actual baud rate is approximately <code>100_000_000 / 868 = 115207.37</code>, corresponding to an error of about <code>0.0064%</code> from the target value, which is sufficiently small for normal communication.</p>
+<h3 id="14-improving-module-reusability-with-parameters">1.4 Improving Module Reusability with Parameters</h3>
+<p>A <code>parameter</code> is a compile-time constant. By defining the clock frequency and baud rate as parameters, the same UART module can be reused with different clock frequencies and communication rates:</p>
+<div class="highlight"><pre><span></span><code><span class="k">module</span><span class="w"> </span><span class="n">uart_tx</span><span class="w"> </span><span class="p">#(</span>
+<span class="w">    </span><span class="k">parameter</span><span class="w"> </span><span class="n">CLK_FREQ</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="mh">100</span><span class="n">_000_000</span><span class="p">,</span>
+<span class="w">    </span><span class="k">parameter</span><span class="w"> </span><span class="n">BAUD_RATE</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">115200</span>
+<span class="p">)(</span>
+<span class="w">    </span><span class="c1">// Port definitions</span>
+<span class="p">);</span>
+</code></pre></div>
+<p>The parameters can be overridden when the module is instantiated in the top-level design:</p>
+<div class="highlight"><pre><span></span><code><span class="n">uart_tx</span><span class="w"> </span><span class="p">#(</span>
+<span class="w">    </span><span class="p">.</span><span class="n">CLK_FREQ</span><span class="p">(</span><span class="mh">100</span><span class="n">_000_000</span><span class="p">),</span>
+<span class="w">    </span><span class="p">.</span><span class="n">BAUD_RATE</span><span class="p">(</span><span class="mh">115200</span><span class="p">)</span>
+<span class="p">)</span><span class="w"> </span><span class="n">uart_tx_inst</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="c1">// Port connections</span>
+<span class="p">);</span>
+</code></pre></div>
+<hr>
+<h2 id="2-uart-demo-functionality-and-structure">2. UART Demo Functionality and Structure</h2>
+<h3 id="21-demo-functionality">2.1 Demo Functionality</h3>
+<p>After programming the UART design onto the EGO1 board, the following bidirectional communication should be supported:</p>
+<ul>
+<li><strong>FPGA → Computer</strong>: Use the 8-bit slide switches to specify one byte. After pressing the send button, the byte is transmitted through <code>uart_tx</code> to the computer and displayed in the receive window of the serial terminal.</li>
+<li><strong>Computer → FPGA</strong>: Send one byte from the serial terminal. The FPGA receives it through <code>uart_rx</code> and displays the byte using eight LEDs.</li>
+</ul>
+<p><img alt="EGO1 UART Bidirectional Communication Example" src="../../images/uart-board-demo.png"></p>
+<h3 id="22-top-level-ports">2.2 Top-Level Ports</h3>
+<div class="highlight"><pre><span></span><code><span class="k">module</span><span class="w"> </span><span class="n">top</span><span class="p">(</span>
+<span class="w">    </span><span class="k">input</span><span class="w">  </span><span class="kt">wire</span><span class="w">       </span><span class="n">clk</span><span class="p">,</span><span class="w">             </span><span class="c1">// 100 MHz system clock</span>
+<span class="w">    </span><span class="k">input</span><span class="w">  </span><span class="kt">wire</span><span class="w"> </span><span class="p">[</span><span class="mh">7</span><span class="o">:</span><span class="mh">0</span><span class="p">]</span><span class="w"> </span><span class="n">key</span><span class="p">,</span><span class="w">             </span><span class="c1">// 8-bit slide switches</span>
+<span class="w">    </span><span class="k">input</span><span class="w">  </span><span class="kt">wire</span><span class="w">       </span><span class="n">uart_rx</span><span class="p">,</span><span class="w">         </span><span class="c1">// Data sent from the computer to the FPGA</span>
+<span class="w">    </span><span class="k">output</span><span class="w"> </span><span class="kt">wire</span><span class="w">       </span><span class="n">uart_tx</span><span class="p">,</span><span class="w">         </span><span class="c1">// Data sent from the FPGA to the computer</span>
+<span class="w">    </span><span class="k">output</span><span class="w"> </span><span class="kt">reg</span><span class="w">  </span><span class="p">[</span><span class="mh">7</span><span class="o">:</span><span class="mh">0</span><span class="p">]</span><span class="w"> </span><span class="n">led</span><span class="p">,</span><span class="w">             </span><span class="c1">// Displays the received data</span>
+<span class="w">    </span><span class="k">input</span><span class="w">  </span><span class="kt">wire</span><span class="w">       </span><span class="n">uart_tx_rst_n</span><span class="p">,</span><span class="w">   </span><span class="c1">// UART TX reset/enable, active low</span>
+<span class="w">    </span><span class="k">input</span><span class="w">  </span><span class="kt">wire</span><span class="w">       </span><span class="n">uart_rx_rst_n</span><span class="p">,</span><span class="w">   </span><span class="c1">// UART RX reset/enable, active low</span>
+<span class="w">    </span><span class="k">input</span><span class="w">  </span><span class="kt">wire</span><span class="w">       </span><span class="n">send_one</span><span class="p">,</span><span class="w">        </span><span class="c1">// Send button, active low</span>
+<span class="w">    </span><span class="k">output</span><span class="w"> </span><span class="kt">wire</span><span class="w">       </span><span class="n">uart_tx_work</span><span class="p">,</span><span class="w">    </span><span class="c1">// TX operating-status indicator</span>
+<span class="w">    </span><span class="k">output</span><span class="w"> </span><span class="kt">wire</span><span class="w">       </span><span class="n">uart_rx_work</span><span class="w">     </span><span class="c1">// RX operating-status indicator</span>
+<span class="p">);</span>
+</code></pre></div>
+<table>
+<thead>
+<tr>
+<th>Top-Level Port</th>
+<th>On-Board Resource</th>
+<th>Function</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>key[7:0]</code></td>
+<td>8 slide switches</td>
+<td>Sets the byte to be transmitted</td>
+</tr>
+<tr>
+<td><code>send_one</code></td>
+<td>Push button</td>
+<td>Triggers one transmission when pressed</td>
+</tr>
+<tr>
+<td><code>led[7:0]</code></td>
+<td>8 LEDs</td>
+<td>Displays the byte received from the computer</td>
+</tr>
+<tr>
+<td><code>uart_tx_rst_n</code></td>
+<td>Slide switch</td>
+<td>Enables the transmitter when set to 1</td>
+</tr>
+<tr>
+<td><code>uart_rx_rst_n</code></td>
+<td>Slide switch</td>
+<td>Enables the receiver when set to 1</td>
+</tr>
+<tr>
+<td><code>uart_tx_work</code></td>
+<td>LED</td>
+<td>Indicates whether the transmitter has been released from reset</td>
+</tr>
+<tr>
+<td><code>uart_rx_work</code></td>
+<td>LED</td>
+<td>Indicates whether the receiver has been released from reset</td>
+</tr>
+<tr>
+<td><code>uart_tx</code> / <code>uart_rx</code></td>
+<td>On-board UART</td>
+<td>Provides serial communication with the computer</td>
+</tr>
+</tbody>
+</table>
+<h3 id="23-module-organization">2.3 Module Organization</h3>
+<p><img alt="UART Demo Overall Structure" src="../../images/uart-top-structure.png"></p>
+<p>The system can be divided into four main parts:</p>
+<ol>
+<li><code>uart_rx</code>: Synchronizes and samples <code>uart_rx</code>, then outputs the received byte and a completion pulse.</li>
+<li>LED latch: Detects <code>rx_done</code> and stores <code>rx_data</code> into <code>led</code>.</li>
+<li>Button edge detector: Converts one button press into a single-clock-cycle <code>send_flag</code>.</li>
+<li><code>uart_tx</code>: After receiving <code>send_flag</code>, serially transmits the slide-switch data to the computer.</li>
+</ol>
+<hr>
+<h2 id="3-uart-receiver-module">3. UART Receiver Module</h2>
+<h3 id="31-receive-process">3.1 Receive Process</h3>
+<p><img alt="UART Receive Process" src="../../images/uart-rx-flow.png"></p>
+<p>The receiver operates as follows:</p>
+<ol>
+<li>Use two registers, <code>rx_d1</code> and <code>rx_d2</code>, to synchronize the asynchronous input into the system clock domain and reduce the risk of metastability propagation.</li>
+<li>While idle, wait for <code>rx_d2</code> to transition from high to low, indicating the detection of a start bit.</li>
+<li>Wait for approximately half a baud period to align the sampling point with the middle of the start bit.</li>
+<li>Sample one bit every baud period thereafter.</li>
+<li>Store the eight data bits in LSB-first order.</li>
+<li>At the stop-bit sampling instant, update <code>rx_data</code> and generate a one-clock-cycle <code>rx_done</code> pulse.</li>
+</ol>
+<h3 id="32-receiver-module-code">3.2 Receiver Module Code</h3>
+<div class="highlight"><pre><span></span><code><span class="no">`timescale</span><span class="w"> </span><span class="mh">1</span><span class="n">ns</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mh">1</span><span class="n">ps</span>
+
+<span class="k">module</span><span class="w"> </span><span class="n">uart_rx</span><span class="w"> </span><span class="p">#(</span>
+<span class="w">    </span><span class="k">parameter</span><span class="w"> </span><span class="n">CLK_FREQ</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="mh">100</span><span class="n">_000_000</span><span class="p">,</span>
+<span class="w">    </span><span class="k">parameter</span><span class="w"> </span><span class="n">BAUD_RATE</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">115200</span>
+<span class="p">)(</span>
+<span class="w">    </span><span class="k">input</span><span class="w">  </span><span class="kt">wire</span><span class="w">       </span><span class="n">clk</span><span class="p">,</span>
+<span class="w">    </span><span class="k">input</span><span class="w">  </span><span class="kt">wire</span><span class="w">       </span><span class="n">rst_n</span><span class="p">,</span>
+<span class="w">    </span><span class="k">input</span><span class="w">  </span><span class="kt">wire</span><span class="w">       </span><span class="n">rx</span><span class="p">,</span><span class="w">          </span><span class="c1">// Serial input signal</span>
+<span class="w">    </span><span class="k">output</span><span class="w"> </span><span class="kt">reg</span><span class="w">  </span><span class="p">[</span><span class="mh">7</span><span class="o">:</span><span class="mh">0</span><span class="p">]</span><span class="w"> </span><span class="n">rx_data</span><span class="p">,</span><span class="w">     </span><span class="c1">// Received byte</span>
+<span class="w">    </span><span class="k">output</span><span class="w"> </span><span class="kt">reg</span><span class="w">        </span><span class="n">rx_done</span><span class="w">      </span><span class="c1">// Receive-complete pulse</span>
+<span class="p">);</span>
+
+<span class="w">    </span><span class="k">localparam</span><span class="w"> </span><span class="n">BAUD_DIV</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">CLK_FREQ</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">BAUD_RATE</span><span class="p">;</span>
+
+<span class="w">    </span><span class="kt">reg</span><span class="w"> </span><span class="p">[</span><span class="mh">15</span><span class="o">:</span><span class="mh">0</span><span class="p">]</span><span class="w"> </span><span class="n">baud_cnt</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">reg</span><span class="w"> </span><span class="p">[</span><span class="mh">3</span><span class="o">:</span><span class="mh">0</span><span class="p">]</span><span class="w">  </span><span class="n">bit_idx</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">reg</span><span class="w"> </span><span class="p">[</span><span class="mh">9</span><span class="o">:</span><span class="mh">0</span><span class="p">]</span><span class="w">  </span><span class="n">rx_shift</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">reg</span><span class="w">        </span><span class="n">rx_busy</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">reg</span><span class="w">        </span><span class="n">rx_d1</span><span class="p">,</span><span class="w"> </span><span class="n">rx_d2</span><span class="p">;</span>
+
+<span class="w">    </span><span class="c1">// Two-stage synchronization to reduce the risk of metastability</span>
+<span class="w">    </span><span class="c1">// caused by the asynchronous input</span>
+<span class="w">    </span><span class="k">always</span><span class="w"> </span><span class="p">@(</span><span class="k">posedge</span><span class="w"> </span><span class="n">clk</span><span class="p">)</span><span class="w"> </span><span class="k">begin</span>
+<span class="w">        </span><span class="n">rx_d1</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">rx</span><span class="p">;</span>
+<span class="w">        </span><span class="n">rx_d2</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">rx_d1</span><span class="p">;</span>
+<span class="w">    </span><span class="k">end</span>
+
+<span class="w">    </span><span class="k">always</span><span class="w"> </span><span class="p">@(</span><span class="k">posedge</span><span class="w"> </span><span class="n">clk</span><span class="w"> </span><span class="k">or</span><span class="w"> </span><span class="k">negedge</span><span class="w"> </span><span class="n">rst_n</span><span class="p">)</span><span class="w"> </span><span class="k">begin</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">rst_n</span><span class="p">)</span><span class="w"> </span><span class="k">begin</span>
+<span class="w">            </span><span class="n">baud_cnt</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mh">16</span><span class="mi">'d0</span><span class="p">;</span>
+<span class="w">            </span><span class="n">bit_idx</span><span class="w">  </span><span class="o">&lt;=</span><span class="w"> </span><span class="mh">4</span><span class="mi">'d0</span><span class="p">;</span>
+<span class="w">            </span><span class="n">rx_busy</span><span class="w">  </span><span class="o">&lt;=</span><span class="w"> </span><span class="mh">1</span><span class="mb">'b0</span><span class="p">;</span>
+<span class="w">            </span><span class="n">rx_done</span><span class="w">  </span><span class="o">&lt;=</span><span class="w"> </span><span class="mh">1</span><span class="mb">'b0</span><span class="p">;</span>
+<span class="w">            </span><span class="n">rx_data</span><span class="w">  </span><span class="o">&lt;=</span><span class="w"> </span><span class="mh">8</span><span class="mb">'b0</span><span class="p">;</span>
+<span class="w">        </span><span class="k">end</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="k">begin</span>
+<span class="w">            </span><span class="c1">// Deassert by default so that rx_done remains high</span>
+<span class="w">            </span><span class="c1">// for only one clock cycle</span>
+<span class="w">            </span><span class="n">rx_done</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mh">1</span><span class="mb">'b0</span><span class="p">;</span>
+
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">rx_busy</span><span class="p">)</span><span class="w"> </span><span class="k">begin</span>
+<span class="w">                </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">rx_d2</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mh">1</span><span class="mb">'b0</span><span class="p">)</span><span class="w"> </span><span class="k">begin</span>
+<span class="w">                    </span><span class="c1">// Start bit detected; first align to its midpoint</span>
+<span class="w">                    </span><span class="n">rx_busy</span><span class="w">  </span><span class="o">&lt;=</span><span class="w"> </span><span class="mh">1</span><span class="mb">'b1</span><span class="p">;</span>
+<span class="w">                    </span><span class="n">baud_cnt</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">BAUD_DIV</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mh">2</span><span class="p">;</span>
+<span class="w">                    </span><span class="n">bit_idx</span><span class="w">  </span><span class="o">&lt;=</span><span class="w"> </span><span class="mh">4</span><span class="mi">'d0</span><span class="p">;</span>
+<span class="w">                </span><span class="k">end</span>
+<span class="w">            </span><span class="k">end</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="k">begin</span>
+<span class="w">                </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">baud_cnt</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">BAUD_DIV</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mh">1</span><span class="p">)</span><span class="w"> </span><span class="k">begin</span>
+<span class="w">                    </span><span class="n">baud_cnt</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mh">16</span><span class="mi">'d0</span><span class="p">;</span>
+<span class="w">                    </span><span class="n">bit_idx</span><span class="w">  </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">bit_idx</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mh">1</span><span class="mb">'b1</span><span class="p">;</span>
+
+<span class="w">                    </span><span class="k">case</span><span class="w"> </span><span class="p">(</span><span class="n">bit_idx</span><span class="p">)</span>
+<span class="w">                        </span><span class="mh">4</span><span class="mi">'d0</span><span class="o">:</span><span class="w"> </span><span class="p">;</span><span class="w">  </span><span class="c1">// Start-bit sampling instant</span>
+<span class="w">                        </span><span class="mh">4</span><span class="mi">'d1</span><span class="p">,</span><span class="w"> </span><span class="mh">4</span><span class="mi">'d2</span><span class="p">,</span><span class="w"> </span><span class="mh">4</span><span class="mi">'d3</span><span class="p">,</span><span class="w"> </span><span class="mh">4</span><span class="mi">'d4</span><span class="p">,</span>
+<span class="w">                        </span><span class="mh">4</span><span class="mi">'d5</span><span class="p">,</span><span class="w"> </span><span class="mh">4</span><span class="mi">'d6</span><span class="p">,</span><span class="w"> </span><span class="mh">4</span><span class="mi">'d7</span><span class="p">,</span><span class="w"> </span><span class="mh">4</span><span class="mi">'d8</span><span class="o">:</span>
+<span class="w">                            </span><span class="n">rx_shift</span><span class="p">[</span><span class="n">bit_idx</span><span class="o">-</span><span class="mh">1</span><span class="p">]</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">rx_d2</span><span class="p">;</span>
+<span class="w">                        </span><span class="mh">4</span><span class="mi">'d9</span><span class="o">:</span><span class="w"> </span><span class="k">begin</span>
+<span class="w">                            </span><span class="c1">// Stop-bit sampling instant</span>
+<span class="w">                            </span><span class="n">rx_busy</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mh">1</span><span class="mb">'b0</span><span class="p">;</span>
+<span class="w">                            </span><span class="n">rx_data</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">rx_shift</span><span class="p">[</span><span class="mh">7</span><span class="o">:</span><span class="mh">0</span><span class="p">];</span>
+<span class="w">                            </span><span class="n">rx_done</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mh">1</span><span class="mb">'b1</span><span class="p">;</span>
+<span class="w">                        </span><span class="k">end</span>
+<span class="w">                        </span><span class="k">default</span><span class="o">:</span><span class="w"> </span><span class="p">;</span>
+<span class="w">                    </span><span class="k">endcase</span>
+<span class="w">                </span><span class="k">end</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="k">begin</span>
+<span class="w">                    </span><span class="n">baud_cnt</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">baud_cnt</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mh">1</span><span class="mb">'b1</span><span class="p">;</span>
+<span class="w">                </span><span class="k">end</span>
+<span class="w">            </span><span class="k">end</span>
+<span class="w">        </span><span class="k">end</span>
+<span class="w">    </span><span class="k">end</span>
+
+<span class="k">endmodule</span>
+</code></pre></div>
+<blockquote>
+<p><strong>Note</strong>: The code in this lab is intended to demonstrate the basic receive process. It does not implement oversampling, start-bit revalidation, stop-bit validity checking, or error flags. High-reliability UART implementations used in engineering systems typically add these features.</p>
+</blockquote>
+<hr>
+<h2 id="4-uart-transmitter-module">4. UART Transmitter Module</h2>
+<h3 id="41-transmit-process">4.1 Transmit Process</h3>
+<p><img alt="UART Transmit Process" src="../../images/uart-tx-flow.png"></p>
+<p>The transmitter has two main operating states:</p>
+<ul>
+<li><strong>Idle</strong>: <code>tx_busy = 0</code>; the serial line remains high while waiting for <code>tx_start</code>.</li>
+<li><strong>Transmit</strong>: <code>tx_busy = 1</code>; the least significant bit of the shift register is transmitted once per baud period.</li>
+</ul>
+<p>When a valid <code>tx_start</code> is received, the complete 10-bit UART frame is loaded into the shift register:</p>
+<div class="highlight"><pre><span></span><code><span class="n">tx_shift</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="p">{</span><span class="mh">1</span><span class="mb">'b1</span><span class="p">,</span><span class="w"> </span><span class="n">tx_data</span><span class="p">,</span><span class="w"> </span><span class="mh">1</span><span class="mb">'b0</span><span class="p">};</span>
+</code></pre></div>
+<p>From right to left, the fields are the start bit, eight data bits, and the stop bit. During transmission, <code>tx_shift[0]</code> is output and the shift register is then shifted right by one bit.</p>
+<h3 id="42-transmitter-module-code">4.2 Transmitter Module Code</h3>
+<div class="highlight"><pre><span></span><code><span class="no">`timescale</span><span class="w"> </span><span class="mh">1</span><span class="n">ns</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mh">1</span><span class="n">ps</span>
+
+<span class="k">module</span><span class="w"> </span><span class="n">uart_tx</span><span class="w"> </span><span class="p">#(</span>
+<span class="w">    </span><span class="k">parameter</span><span class="w"> </span><span class="n">CLK_FREQ</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="mh">100</span><span class="n">_000_000</span><span class="p">,</span>
+<span class="w">    </span><span class="k">parameter</span><span class="w"> </span><span class="n">BAUD_RATE</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">115200</span>
+<span class="p">)(</span>
+<span class="w">    </span><span class="k">input</span><span class="w">  </span><span class="kt">wire</span><span class="w">       </span><span class="n">clk</span><span class="p">,</span>
+<span class="w">    </span><span class="k">input</span><span class="w">  </span><span class="kt">wire</span><span class="w">       </span><span class="n">rst_n</span><span class="p">,</span>
+<span class="w">    </span><span class="k">input</span><span class="w">  </span><span class="kt">wire</span><span class="w">       </span><span class="n">tx_start</span><span class="p">,</span><span class="w">    </span><span class="c1">// One-clock-cycle transmit trigger</span>
+<span class="w">    </span><span class="k">input</span><span class="w">  </span><span class="kt">wire</span><span class="w"> </span><span class="p">[</span><span class="mh">7</span><span class="o">:</span><span class="mh">0</span><span class="p">]</span><span class="w"> </span><span class="n">tx_data</span><span class="p">,</span><span class="w">     </span><span class="c1">// Byte to be transmitted</span>
+<span class="w">    </span><span class="k">output</span><span class="w"> </span><span class="kt">reg</span><span class="w">        </span><span class="n">tx</span><span class="p">,</span><span class="w">          </span><span class="c1">// Serial output</span>
+<span class="w">    </span><span class="k">output</span><span class="w"> </span><span class="kt">reg</span><span class="w">        </span><span class="n">tx_busy</span><span class="w">      </span><span class="c1">// Transmitter busy flag</span>
+<span class="p">);</span>
+
+<span class="w">    </span><span class="k">localparam</span><span class="w"> </span><span class="n">BAUD_DIV</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">CLK_FREQ</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">BAUD_RATE</span><span class="p">;</span>
+
+<span class="w">    </span><span class="kt">reg</span><span class="w"> </span><span class="p">[</span><span class="mh">15</span><span class="o">:</span><span class="mh">0</span><span class="p">]</span><span class="w"> </span><span class="n">baud_cnt</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">reg</span><span class="w"> </span><span class="p">[</span><span class="mh">3</span><span class="o">:</span><span class="mh">0</span><span class="p">]</span><span class="w">  </span><span class="n">bit_idx</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">reg</span><span class="w"> </span><span class="p">[</span><span class="mh">9</span><span class="o">:</span><span class="mh">0</span><span class="p">]</span><span class="w">  </span><span class="n">tx_shift</span><span class="p">;</span>
+
+<span class="w">    </span><span class="k">always</span><span class="w"> </span><span class="p">@(</span><span class="k">posedge</span><span class="w"> </span><span class="n">clk</span><span class="w"> </span><span class="k">or</span><span class="w"> </span><span class="k">negedge</span><span class="w"> </span><span class="n">rst_n</span><span class="p">)</span><span class="w"> </span><span class="k">begin</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">rst_n</span><span class="p">)</span><span class="w"> </span><span class="k">begin</span>
+<span class="w">            </span><span class="n">baud_cnt</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mh">16</span><span class="mi">'d0</span><span class="p">;</span>
+<span class="w">            </span><span class="n">bit_idx</span><span class="w">  </span><span class="o">&lt;=</span><span class="w"> </span><span class="mh">4</span><span class="mi">'d0</span><span class="p">;</span>
+<span class="w">            </span><span class="n">tx_shift</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mh">10</span><span class="mb">'b11</span><span class="n">_1111_1111</span><span class="p">;</span>
+<span class="w">            </span><span class="n">tx</span><span class="w">        </span><span class="o">&lt;=</span><span class="w"> </span><span class="mh">1</span><span class="mb">'b1</span><span class="p">;</span>
+<span class="w">            </span><span class="n">tx_busy</span><span class="w">   </span><span class="o">&lt;=</span><span class="w"> </span><span class="mh">1</span><span class="mb">'b0</span><span class="p">;</span>
+<span class="w">        </span><span class="k">end</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="k">begin</span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">tx_start</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="o">!</span><span class="n">tx_busy</span><span class="p">)</span><span class="w"> </span><span class="k">begin</span>
+<span class="w">                </span><span class="c1">// Stop bit + 8 data bits + start bit</span>
+<span class="w">                </span><span class="n">tx_shift</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="p">{</span><span class="mh">1</span><span class="mb">'b1</span><span class="p">,</span><span class="w"> </span><span class="n">tx_data</span><span class="p">,</span><span class="w"> </span><span class="mh">1</span><span class="mb">'b0</span><span class="p">};</span>
+<span class="w">                </span><span class="n">tx_busy</span><span class="w">  </span><span class="o">&lt;=</span><span class="w"> </span><span class="mh">1</span><span class="mb">'b1</span><span class="p">;</span>
+<span class="w">                </span><span class="n">baud_cnt</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mh">16</span><span class="mi">'d0</span><span class="p">;</span>
+<span class="w">                </span><span class="n">bit_idx</span><span class="w">  </span><span class="o">&lt;=</span><span class="w"> </span><span class="mh">4</span><span class="mi">'d0</span><span class="p">;</span>
+<span class="w">            </span><span class="k">end</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">tx_busy</span><span class="p">)</span><span class="w"> </span><span class="k">begin</span>
+<span class="w">                </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">baud_cnt</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">BAUD_DIV</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mh">1</span><span class="p">)</span><span class="w"> </span><span class="k">begin</span>
+<span class="w">                    </span><span class="n">baud_cnt</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">baud_cnt</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mh">1</span><span class="mb">'b1</span><span class="p">;</span>
+<span class="w">                </span><span class="k">end</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="k">begin</span>
+<span class="w">                    </span><span class="n">baud_cnt</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mh">16</span><span class="mi">'d0</span><span class="p">;</span>
+<span class="w">                    </span><span class="n">tx</span><span class="w">       </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">tx_shift</span><span class="p">[</span><span class="mh">0</span><span class="p">];</span>
+<span class="w">                    </span><span class="n">tx_shift</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="p">{</span><span class="mh">1</span><span class="mb">'b1</span><span class="p">,</span><span class="w"> </span><span class="n">tx_shift</span><span class="p">[</span><span class="mh">9</span><span class="o">:</span><span class="mh">1</span><span class="p">]};</span>
+<span class="w">                    </span><span class="n">bit_idx</span><span class="w">  </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">bit_idx</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mh">1</span><span class="mb">'b1</span><span class="p">;</span>
+
+<span class="w">                    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">bit_idx</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mh">4</span><span class="mi">'d9</span><span class="p">)</span>
+<span class="w">                        </span><span class="n">tx_busy</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mh">1</span><span class="mb">'b0</span><span class="p">;</span>
+<span class="w">                </span><span class="k">end</span>
+<span class="w">            </span><span class="k">end</span>
+<span class="w">        </span><span class="k">end</span>
+<span class="w">    </span><span class="k">end</span>
+
+<span class="k">endmodule</span>
+</code></pre></div>
+<blockquote>
+<p><strong>Note</strong>: When <code>tx_busy = 1</code>, a new <code>tx_start</code> is not accepted. The top-level control logic should wait until the current transmission has completed before initiating the next one.</p>
+</blockquote>
+<hr>
+<h2 id="5-top-level-module-design">5. Top-Level Module Design</h2>
+<h3 id="51-send-button-edge-detection">5.1 Send-Button Edge Detection</h3>
+<p>The EGO1 push button used in this lab is active low: it is <code>1</code> when released and changes to <code>0</code> when pressed. The following logic detects the falling edge and generates a one-clock-cycle <code>send_flag</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="kt">reg</span><span class="w"> </span><span class="n">send_one_d1</span><span class="p">,</span><span class="w"> </span><span class="n">send_one_d2</span><span class="p">;</span>
+
+<span class="k">always</span><span class="w"> </span><span class="p">@(</span><span class="k">posedge</span><span class="w"> </span><span class="n">clk</span><span class="w"> </span><span class="k">or</span><span class="w"> </span><span class="k">negedge</span><span class="w"> </span><span class="n">uart_tx_rst_n</span><span class="p">)</span><span class="w"> </span><span class="k">begin</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">uart_tx_rst_n</span><span class="p">)</span><span class="w"> </span><span class="k">begin</span>
+<span class="w">        </span><span class="n">send_one_d1</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mh">1</span><span class="mb">'b0</span><span class="p">;</span>
+<span class="w">        </span><span class="n">send_one_d2</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mh">1</span><span class="mb">'b0</span><span class="p">;</span>
+<span class="w">    </span><span class="k">end</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="k">begin</span>
+<span class="w">        </span><span class="n">send_one_d1</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">send_one</span><span class="p">;</span>
+<span class="w">        </span><span class="n">send_one_d2</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">send_one_d1</span><span class="p">;</span>
+<span class="w">    </span><span class="k">end</span>
+<span class="k">end</span>
+
+<span class="kt">wire</span><span class="w"> </span><span class="n">send_flag</span><span class="p">;</span>
+<span class="k">assign</span><span class="w"> </span><span class="n">send_flag</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">~</span><span class="n">send_one_d1</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">send_one_d2</span><span class="p">;</span>
+</code></pre></div>
+<p>When this expression is true, the current sampled value is <code>0</code> and the previous sampled value is <code>1</code>, indicating that a button press has been detected.</p>
+<p>This demo does not include button debouncing. If one button press causes multiple transmissions, reuse the <code>btn_debounce</code> module from Lab 7 and perform edge detection after debouncing.</p>
+<h3 id="52-complete-top-level-code">5.2 Complete Top-Level Code</h3>
+<div class="highlight"><pre><span></span><code><span class="no">`timescale</span><span class="w"> </span><span class="mh">1</span><span class="n">ns</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mh">1</span><span class="n">ps</span>
+
+<span class="k">module</span><span class="w"> </span><span class="n">top</span><span class="p">(</span>
+<span class="w">    </span><span class="k">input</span><span class="w">  </span><span class="kt">wire</span><span class="w">       </span><span class="n">clk</span><span class="p">,</span>
+<span class="w">    </span><span class="k">input</span><span class="w">  </span><span class="kt">wire</span><span class="w"> </span><span class="p">[</span><span class="mh">7</span><span class="o">:</span><span class="mh">0</span><span class="p">]</span><span class="w"> </span><span class="n">key</span><span class="p">,</span>
+<span class="w">    </span><span class="k">input</span><span class="w">  </span><span class="kt">wire</span><span class="w">       </span><span class="n">uart_rx</span><span class="p">,</span>
+<span class="w">    </span><span class="k">output</span><span class="w"> </span><span class="kt">wire</span><span class="w">       </span><span class="n">uart_tx</span><span class="p">,</span>
+<span class="w">    </span><span class="k">output</span><span class="w"> </span><span class="kt">reg</span><span class="w">  </span><span class="p">[</span><span class="mh">7</span><span class="o">:</span><span class="mh">0</span><span class="p">]</span><span class="w"> </span><span class="n">led</span><span class="p">,</span>
+<span class="w">    </span><span class="k">input</span><span class="w">  </span><span class="kt">wire</span><span class="w">       </span><span class="n">uart_tx_rst_n</span><span class="p">,</span>
+<span class="w">    </span><span class="k">input</span><span class="w">  </span><span class="kt">wire</span><span class="w">       </span><span class="n">uart_rx_rst_n</span><span class="p">,</span>
+<span class="w">    </span><span class="k">input</span><span class="w">  </span><span class="kt">wire</span><span class="w">       </span><span class="n">send_one</span><span class="p">,</span>
+<span class="w">    </span><span class="k">output</span><span class="w"> </span><span class="kt">wire</span><span class="w">       </span><span class="n">uart_tx_work</span><span class="p">,</span>
+<span class="w">    </span><span class="k">output</span><span class="w"> </span><span class="kt">wire</span><span class="w">       </span><span class="n">uart_rx_work</span>
+<span class="p">);</span>
+
+<span class="w">    </span><span class="c1">// UART RX outputs</span>
+<span class="w">    </span><span class="kt">wire</span><span class="w"> </span><span class="p">[</span><span class="mh">7</span><span class="o">:</span><span class="mh">0</span><span class="p">]</span><span class="w"> </span><span class="n">rx_data</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">wire</span><span class="w">       </span><span class="n">rx_done</span><span class="p">;</span>
+
+<span class="w">    </span><span class="c1">// UART TX status</span>
+<span class="w">    </span><span class="kt">wire</span><span class="w">       </span><span class="n">tx_busy</span><span class="p">;</span>
+
+<span class="w">    </span><span class="k">assign</span><span class="w"> </span><span class="n">uart_tx_work</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">uart_tx_rst_n</span><span class="p">;</span>
+<span class="w">    </span><span class="k">assign</span><span class="w"> </span><span class="n">uart_rx_work</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">uart_rx_rst_n</span><span class="p">;</span>
+
+<span class="w">    </span><span class="n">uart_rx</span><span class="w"> </span><span class="p">#(</span>
+<span class="w">        </span><span class="p">.</span><span class="n">CLK_FREQ</span><span class="p">(</span><span class="mh">100</span><span class="n">_000_000</span><span class="p">),</span>
+<span class="w">        </span><span class="p">.</span><span class="n">BAUD_RATE</span><span class="p">(</span><span class="mh">115200</span><span class="p">)</span>
+<span class="w">    </span><span class="p">)</span><span class="w"> </span><span class="n">uart_rx_inst</span><span class="w"> </span><span class="p">(</span>
+<span class="w">        </span><span class="p">.</span><span class="n">clk</span><span class="p">(</span><span class="n">clk</span><span class="p">),</span>
+<span class="w">        </span><span class="p">.</span><span class="n">rst_n</span><span class="p">(</span><span class="n">uart_rx_rst_n</span><span class="p">),</span>
+<span class="w">        </span><span class="p">.</span><span class="n">rx</span><span class="p">(</span><span class="n">uart_rx</span><span class="p">),</span>
+<span class="w">        </span><span class="p">.</span><span class="n">rx_data</span><span class="p">(</span><span class="n">rx_data</span><span class="p">),</span>
+<span class="w">        </span><span class="p">.</span><span class="n">rx_done</span><span class="p">(</span><span class="n">rx_done</span><span class="p">)</span>
+<span class="w">    </span><span class="p">);</span>
+
+<span class="w">    </span><span class="c1">// Falling-edge detection for the active-low push button</span>
+<span class="w">    </span><span class="kt">reg</span><span class="w"> </span><span class="n">send_one_d1</span><span class="p">,</span><span class="w"> </span><span class="n">send_one_d2</span><span class="p">;</span>
+
+<span class="w">    </span><span class="k">always</span><span class="w"> </span><span class="p">@(</span><span class="k">posedge</span><span class="w"> </span><span class="n">clk</span><span class="w"> </span><span class="k">or</span><span class="w"> </span><span class="k">negedge</span><span class="w"> </span><span class="n">uart_tx_rst_n</span><span class="p">)</span><span class="w"> </span><span class="k">begin</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">uart_tx_rst_n</span><span class="p">)</span><span class="w"> </span><span class="k">begin</span>
+<span class="w">            </span><span class="n">send_one_d1</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mh">1</span><span class="mb">'b0</span><span class="p">;</span>
+<span class="w">            </span><span class="n">send_one_d2</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mh">1</span><span class="mb">'b0</span><span class="p">;</span>
+<span class="w">        </span><span class="k">end</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="k">begin</span>
+<span class="w">            </span><span class="n">send_one_d1</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">send_one</span><span class="p">;</span>
+<span class="w">            </span><span class="n">send_one_d2</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">send_one_d1</span><span class="p">;</span>
+<span class="w">        </span><span class="k">end</span>
+<span class="w">    </span><span class="k">end</span>
+
+<span class="w">    </span><span class="kt">wire</span><span class="w"> </span><span class="n">send_flag</span><span class="p">;</span>
+<span class="w">    </span><span class="k">assign</span><span class="w"> </span><span class="n">send_flag</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">~</span><span class="n">send_one_d1</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">send_one_d2</span><span class="p">;</span>
+
+<span class="w">    </span><span class="n">uart_tx</span><span class="w"> </span><span class="p">#(</span>
+<span class="w">        </span><span class="p">.</span><span class="n">CLK_FREQ</span><span class="p">(</span><span class="mh">100</span><span class="n">_000_000</span><span class="p">),</span>
+<span class="w">        </span><span class="p">.</span><span class="n">BAUD_RATE</span><span class="p">(</span><span class="mh">115200</span><span class="p">)</span>
+<span class="w">    </span><span class="p">)</span><span class="w"> </span><span class="n">uart_tx_inst</span><span class="w"> </span><span class="p">(</span>
+<span class="w">        </span><span class="p">.</span><span class="n">clk</span><span class="p">(</span><span class="n">clk</span><span class="p">),</span>
+<span class="w">        </span><span class="p">.</span><span class="n">rst_n</span><span class="p">(</span><span class="n">uart_tx_rst_n</span><span class="p">),</span>
+<span class="w">        </span><span class="p">.</span><span class="n">tx_start</span><span class="p">(</span><span class="n">send_flag</span><span class="p">),</span>
+<span class="w">        </span><span class="p">.</span><span class="n">tx_data</span><span class="p">(</span><span class="n">key</span><span class="p">),</span>
+<span class="w">        </span><span class="p">.</span><span class="n">tx</span><span class="p">(</span><span class="n">uart_tx</span><span class="p">),</span>
+<span class="w">        </span><span class="p">.</span><span class="n">tx_busy</span><span class="p">(</span><span class="n">tx_busy</span><span class="p">)</span>
+<span class="w">    </span><span class="p">);</span>
+
+<span class="w">    </span><span class="c1">// Latch the received data when reception completes.</span>
+<span class="w">    </span><span class="c1">// The LEDs keep displaying the most recently received byte.</span>
+<span class="w">    </span><span class="k">always</span><span class="w"> </span><span class="p">@(</span><span class="k">posedge</span><span class="w"> </span><span class="n">clk</span><span class="w"> </span><span class="k">or</span><span class="w"> </span><span class="k">negedge</span><span class="w"> </span><span class="n">uart_rx_rst_n</span><span class="p">)</span><span class="w"> </span><span class="k">begin</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">uart_rx_rst_n</span><span class="p">)</span>
+<span class="w">            </span><span class="n">led</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mh">8</span><span class="mb">'b0</span><span class="p">;</span>
+<span class="w">        </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">rx_done</span><span class="p">)</span>
+<span class="w">            </span><span class="n">led</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">rx_data</span><span class="p">;</span>
+<span class="w">    </span><span class="k">end</span>
+
+<span class="k">endmodule</span>
+</code></pre></div>
+<hr>
+<h2 id="6-pin-constraints">6. Pin Constraints</h2>
+<p><img alt="EGO1 UART Control Locations" src="../../images/uart-board-controls.png"></p>
+<p>Save the following constraints as <code>top.xdc</code>. The port names must exactly match those in the top-level module.</p>
+<div class="highlight"><pre><span></span><code><span class="c">## LED[7:0]</span>
+<span class="nv">set_property</span><span class="w"> </span>IOSTANDARD<span class="w"> </span>LVCMOS33<span class="w"> </span><span class="k">[</span><span class="nv">get_ports</span><span class="w"> </span><span class="k">{</span><span class="nv">led</span><span class="k">[</span><span class="nv">7</span><span class="k">]}]</span>
+<span class="nv">set_property</span><span class="w"> </span>IOSTANDARD<span class="w"> </span>LVCMOS33<span class="w"> </span><span class="k">[</span><span class="nv">get_ports</span><span class="w"> </span><span class="k">{</span><span class="nv">led</span><span class="k">[</span><span class="nv">6</span><span class="k">]}]</span>
+<span class="nv">set_property</span><span class="w"> </span>IOSTANDARD<span class="w"> </span>LVCMOS33<span class="w"> </span><span class="k">[</span><span class="nv">get_ports</span><span class="w"> </span><span class="k">{</span><span class="nv">led</span><span class="k">[</span><span class="nv">5</span><span class="k">]}]</span>
+<span class="nv">set_property</span><span class="w"> </span>IOSTANDARD<span class="w"> </span>LVCMOS33<span class="w"> </span><span class="k">[</span><span class="nv">get_ports</span><span class="w"> </span><span class="k">{</span><span class="nv">led</span><span class="k">[</span><span class="nv">4</span><span class="k">]}]</span>
+<span class="nv">set_property</span><span class="w"> </span>IOSTANDARD<span class="w"> </span>LVCMOS33<span class="w"> </span><span class="k">[</span><span class="nv">get_ports</span><span class="w"> </span><span class="k">{</span><span class="nv">led</span><span class="k">[</span><span class="nv">3</span><span class="k">]}]</span>
+<span class="nv">set_property</span><span class="w"> </span>IOSTANDARD<span class="w"> </span>LVCMOS33<span class="w"> </span><span class="k">[</span><span class="nv">get_ports</span><span class="w"> </span><span class="k">{</span><span class="nv">led</span><span class="k">[</span><span class="nv">2</span><span class="k">]}]</span>
+<span class="nv">set_property</span><span class="w"> </span>IOSTANDARD<span class="w"> </span>LVCMOS33<span class="w"> </span><span class="k">[</span><span class="nv">get_ports</span><span class="w"> </span><span class="k">{</span><span class="nv">led</span><span class="k">[</span><span class="nv">1</span><span class="k">]}]</span>
+<span class="nv">set_property</span><span class="w"> </span>IOSTANDARD<span class="w"> </span>LVCMOS33<span class="w"> </span><span class="k">[</span><span class="nv">get_ports</span><span class="w"> </span><span class="k">{</span><span class="nv">led</span><span class="k">[</span><span class="nv">0</span><span class="k">]}]</span>
+
+<span class="nv">set_property</span><span class="w"> </span>PACKAGE_PIN<span class="w"> </span>F6<span class="w"> </span><span class="k">[</span><span class="nv">get_ports</span><span class="w"> </span><span class="k">{</span><span class="nv">led</span><span class="k">[</span><span class="nv">7</span><span class="k">]}]</span>
+<span class="nv">set_property</span><span class="w"> </span>PACKAGE_PIN<span class="w"> </span>G4<span class="w"> </span><span class="k">[</span><span class="nv">get_ports</span><span class="w"> </span><span class="k">{</span><span class="nv">led</span><span class="k">[</span><span class="nv">6</span><span class="k">]}]</span>
+<span class="nv">set_property</span><span class="w"> </span>PACKAGE_PIN<span class="w"> </span>G3<span class="w"> </span><span class="k">[</span><span class="nv">get_ports</span><span class="w"> </span><span class="k">{</span><span class="nv">led</span><span class="k">[</span><span class="nv">5</span><span class="k">]}]</span>
+<span class="nv">set_property</span><span class="w"> </span>PACKAGE_PIN<span class="w"> </span>J4<span class="w"> </span><span class="k">[</span><span class="nv">get_ports</span><span class="w"> </span><span class="k">{</span><span class="nv">led</span><span class="k">[</span><span class="nv">4</span><span class="k">]}]</span>
+<span class="nv">set_property</span><span class="w"> </span>PACKAGE_PIN<span class="w"> </span>H4<span class="w"> </span><span class="k">[</span><span class="nv">get_ports</span><span class="w"> </span><span class="k">{</span><span class="nv">led</span><span class="k">[</span><span class="nv">3</span><span class="k">]}]</span>
+<span class="nv">set_property</span><span class="w"> </span>PACKAGE_PIN<span class="w"> </span>J3<span class="w"> </span><span class="k">[</span><span class="nv">get_ports</span><span class="w"> </span><span class="k">{</span><span class="nv">led</span><span class="k">[</span><span class="nv">2</span><span class="k">]}]</span>
+<span class="nv">set_property</span><span class="w"> </span>PACKAGE_PIN<span class="w"> </span>J2<span class="w"> </span><span class="k">[</span><span class="nv">get_ports</span><span class="w"> </span><span class="k">{</span><span class="nv">led</span><span class="k">[</span><span class="nv">1</span><span class="k">]}]</span>
+<span class="nv">set_property</span><span class="w"> </span>PACKAGE_PIN<span class="w"> </span>K2<span class="w"> </span><span class="k">[</span><span class="nv">get_ports</span><span class="w"> </span><span class="k">{</span><span class="nv">led</span><span class="k">[</span><span class="nv">0</span><span class="k">]}]</span>
+
+<span class="c">## Slide switches key[7:0]</span>
+<span class="nv">set_property</span><span class="w"> </span>IOSTANDARD<span class="w"> </span>LVCMOS33<span class="w"> </span><span class="k">[</span><span class="nv">get_ports</span><span class="w"> </span><span class="k">{</span><span class="nv">key</span><span class="k">[</span><span class="nv">7</span><span class="k">]}]</span>
+<span class="nv">set_property</span><span class="w"> </span>IOSTANDARD<span class="w"> </span>LVCMOS33<span class="w"> </span><span class="k">[</span><span class="nv">get_ports</span><span class="w"> </span><span class="k">{</span><span class="nv">key</span><span class="k">[</span><span class="nv">6</span><span class="k">]}]</span>
+<span class="nv">set_property</span><span class="w"> </span>IOSTANDARD<span class="w"> </span>LVCMOS33<span class="w"> </span><span class="k">[</span><span class="nv">get_ports</span><span class="w"> </span><span class="k">{</span><span class="nv">key</span><span class="k">[</span><span class="nv">5</span><span class="k">]}]</span>
+<span class="nv">set_property</span><span class="w"> </span>IOSTANDARD<span class="w"> </span>LVCMOS33<span class="w"> </span><span class="k">[</span><span class="nv">get_ports</span><span class="w"> </span><span class="k">{</span><span class="nv">key</span><span class="k">[</span><span class="nv">4</span><span class="k">]}]</span>
+<span class="nv">set_property</span><span class="w"> </span>IOSTANDARD<span class="w"> </span>LVCMOS33<span class="w"> </span><span class="k">[</span><span class="nv">get_ports</span><span class="w"> </span><span class="k">{</span><span class="nv">key</span><span class="k">[</span><span class="nv">3</span><span class="k">]}]</span>
+<span class="nv">set_property</span><span class="w"> </span>IOSTANDARD<span class="w"> </span>LVCMOS33<span class="w"> </span><span class="k">[</span><span class="nv">get_ports</span><span class="w"> </span><span class="k">{</span><span class="nv">key</span><span class="k">[</span><span class="nv">2</span><span class="k">]}]</span>
+<span class="nv">set_property</span><span class="w"> </span>IOSTANDARD<span class="w"> </span>LVCMOS33<span class="w"> </span><span class="k">[</span><span class="nv">get_ports</span><span class="w"> </span><span class="k">{</span><span class="nv">key</span><span class="k">[</span><span class="nv">1</span><span class="k">]}]</span>
+<span class="nv">set_property</span><span class="w"> </span>IOSTANDARD<span class="w"> </span>LVCMOS33<span class="w"> </span><span class="k">[</span><span class="nv">get_ports</span><span class="w"> </span><span class="k">{</span><span class="nv">key</span><span class="k">[</span><span class="nv">0</span><span class="k">]}]</span>
+
+<span class="nv">set_property</span><span class="w"> </span>PACKAGE_PIN<span class="w"> </span>P5<span class="w"> </span><span class="k">[</span><span class="nv">get_ports</span><span class="w"> </span><span class="k">{</span><span class="nv">key</span><span class="k">[</span><span class="nv">7</span><span class="k">]}]</span>
+<span class="nv">set_property</span><span class="w"> </span>PACKAGE_PIN<span class="w"> </span>P4<span class="w"> </span><span class="k">[</span><span class="nv">get_ports</span><span class="w"> </span><span class="k">{</span><span class="nv">key</span><span class="k">[</span><span class="nv">6</span><span class="k">]}]</span>
+<span class="nv">set_property</span><span class="w"> </span>PACKAGE_PIN<span class="w"> </span>P3<span class="w"> </span><span class="k">[</span><span class="nv">get_ports</span><span class="w"> </span><span class="k">{</span><span class="nv">key</span><span class="k">[</span><span class="nv">5</span><span class="k">]}]</span>
+<span class="nv">set_property</span><span class="w"> </span>PACKAGE_PIN<span class="w"> </span>P2<span class="w"> </span><span class="k">[</span><span class="nv">get_ports</span><span class="w"> </span><span class="k">{</span><span class="nv">key</span><span class="k">[</span><span class="nv">4</span><span class="k">]}]</span>
+<span class="nv">set_property</span><span class="w"> </span>PACKAGE_PIN<span class="w"> </span>R2<span class="w"> </span><span class="k">[</span><span class="nv">get_ports</span><span class="w"> </span><span class="k">{</span><span class="nv">key</span><span class="k">[</span><span class="nv">3</span><span class="k">]}]</span>
+<span class="nv">set_property</span><span class="w"> </span>PACKAGE_PIN<span class="w"> </span>M4<span class="w"> </span><span class="k">[</span><span class="nv">get_ports</span><span class="w"> </span><span class="k">{</span><span class="nv">key</span><span class="k">[</span><span class="nv">2</span><span class="k">]}]</span>
+<span class="nv">set_property</span><span class="w"> </span>PACKAGE_PIN<span class="w"> </span>N4<span class="w"> </span><span class="k">[</span><span class="nv">get_ports</span><span class="w"> </span><span class="k">{</span><span class="nv">key</span><span class="k">[</span><span class="nv">1</span><span class="k">]}]</span>
+<span class="nv">set_property</span><span class="w"> </span>PACKAGE_PIN<span class="w"> </span>R1<span class="w"> </span><span class="k">[</span><span class="nv">get_ports</span><span class="w"> </span><span class="k">{</span><span class="nv">key</span><span class="k">[</span><span class="nv">0</span><span class="k">]}]</span>
+
+<span class="c">## System clock and push button</span>
+<span class="nv">set_property</span><span class="w"> </span>IOSTANDARD<span class="w"> </span>LVCMOS33<span class="w"> </span><span class="k">[</span><span class="nv">get_ports</span><span class="w"> </span>clk<span class="k">]</span>
+<span class="nv">set_property</span><span class="w"> </span>IOSTANDARD<span class="w"> </span>LVCMOS33<span class="w"> </span><span class="k">[</span><span class="nv">get_ports</span><span class="w"> </span>send_one<span class="k">]</span>
+<span class="nv">set_property</span><span class="w"> </span>PACKAGE_PIN<span class="w"> </span>P17<span class="w"> </span><span class="k">[</span><span class="nv">get_ports</span><span class="w"> </span>clk<span class="k">]</span>
+<span class="nv">set_property</span><span class="w"> </span>PACKAGE_PIN<span class="w"> </span>R11<span class="w"> </span><span class="k">[</span><span class="nv">get_ports</span><span class="w"> </span>send_one<span class="k">]</span>
+
+<span class="c">## UART TX/RX reset switches and status LEDs</span>
+<span class="nv">set_property</span><span class="w"> </span>IOSTANDARD<span class="w"> </span>LVCMOS33<span class="w"> </span><span class="k">[</span><span class="nv">get_ports</span><span class="w"> </span>uart_tx_rst_n<span class="k">]</span>
+<span class="nv">set_property</span><span class="w"> </span>IOSTANDARD<span class="w"> </span>LVCMOS33<span class="w"> </span><span class="k">[</span><span class="nv">get_ports</span><span class="w"> </span>uart_rx_rst_n<span class="k">]</span>
+<span class="nv">set_property</span><span class="w"> </span>IOSTANDARD<span class="w"> </span>LVCMOS33<span class="w"> </span><span class="k">[</span><span class="nv">get_ports</span><span class="w"> </span>uart_tx_work<span class="k">]</span>
+<span class="nv">set_property</span><span class="w"> </span>IOSTANDARD<span class="w"> </span>LVCMOS33<span class="w"> </span><span class="k">[</span><span class="nv">get_ports</span><span class="w"> </span>uart_rx_work<span class="k">]</span>
+
+<span class="nv">set_property</span><span class="w"> </span>PACKAGE_PIN<span class="w"> </span>T3<span class="w"> </span><span class="k">[</span><span class="nv">get_ports</span><span class="w"> </span>uart_tx_rst_n<span class="k">]</span>
+<span class="nv">set_property</span><span class="w"> </span>PACKAGE_PIN<span class="w"> </span>T5<span class="w"> </span><span class="k">[</span><span class="nv">get_ports</span><span class="w"> </span>uart_rx_rst_n<span class="k">]</span>
+<span class="nv">set_property</span><span class="w"> </span>PACKAGE_PIN<span class="w"> </span>M1<span class="w"> </span><span class="k">[</span><span class="nv">get_ports</span><span class="w"> </span>uart_tx_work<span class="k">]</span>
+<span class="nv">set_property</span><span class="w"> </span>PACKAGE_PIN<span class="w"> </span>K3<span class="w"> </span><span class="k">[</span><span class="nv">get_ports</span><span class="w"> </span>uart_rx_work<span class="k">]</span>
+
+<span class="c">## On-board UART</span>
+<span class="nv">set_property</span><span class="w"> </span>IOSTANDARD<span class="w"> </span>LVCMOS33<span class="w"> </span><span class="k">[</span><span class="nv">get_ports</span><span class="w"> </span>uart_tx<span class="k">]</span>
+<span class="nv">set_property</span><span class="w"> </span>IOSTANDARD<span class="w"> </span>LVCMOS33<span class="w"> </span><span class="k">[</span><span class="nv">get_ports</span><span class="w"> </span>uart_rx<span class="k">]</span>
+<span class="nv">set_property</span><span class="w"> </span>PACKAGE_PIN<span class="w"> </span>T4<span class="w"> </span><span class="k">[</span><span class="nv">get_ports</span><span class="w"> </span>uart_tx<span class="k">]</span>
+<span class="nv">set_property</span><span class="w"> </span>PACKAGE_PIN<span class="w"> </span>N5<span class="w"> </span><span class="k">[</span><span class="nv">get_ports</span><span class="w"> </span>uart_rx<span class="k">]</span>
+</code></pre></div>
+<hr>
+<h2 id="7-uart-loopback-simulation">7. UART Loopback Simulation</h2>
+<p>Before testing on the board, directly connect the output of <code>uart_tx</code> to the input of <code>uart_rx</code> and perform a loopback test in the testbench. This allows the transmit frame format, receive sampling, and completion pulse to be verified simultaneously.</p>
+<p>To reduce simulation time, the testbench temporarily increases the baud rate to 1 MHz. The transmitter and receiver only need to use the same parameters. The design should still use 115200 baud when synthesized and programmed onto the board.</p>
+<h3 id="71-testbench">7.1 Testbench</h3>
+<div class="highlight"><pre><span></span><code><span class="no">`timescale</span><span class="w"> </span><span class="mh">1</span><span class="n">ns</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mh">1</span><span class="n">ps</span>
+
+<span class="k">module</span><span class="w"> </span><span class="n">tb_uart_loopback</span><span class="p">;</span>
+<span class="w">    </span><span class="k">localparam</span><span class="w"> </span><span class="n">CLK_FREQ</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="mh">100</span><span class="n">_000_000</span><span class="p">;</span>
+<span class="w">    </span><span class="k">localparam</span><span class="w"> </span><span class="n">BAUD_RATE</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">1</span><span class="n">_000_000</span><span class="p">;</span><span class="w">  </span><span class="c1">// Used only to speed up simulation</span>
+
+<span class="w">    </span><span class="kt">reg</span><span class="w">        </span><span class="n">clk</span><span class="w">      </span><span class="o">=</span><span class="w"> </span><span class="mh">1</span><span class="mb">'b0</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">reg</span><span class="w">        </span><span class="n">rst_n</span><span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="mh">1</span><span class="mb">'b0</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">reg</span><span class="w">        </span><span class="n">tx_start</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">1</span><span class="mb">'b0</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">reg</span><span class="w">  </span><span class="p">[</span><span class="mh">7</span><span class="o">:</span><span class="mh">0</span><span class="p">]</span><span class="w"> </span><span class="n">tx_data</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="mh">8'h00</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">wire</span><span class="w">       </span><span class="n">uart_line</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">wire</span><span class="w">       </span><span class="n">tx_busy</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">wire</span><span class="w"> </span><span class="p">[</span><span class="mh">7</span><span class="o">:</span><span class="mh">0</span><span class="p">]</span><span class="w"> </span><span class="n">rx_data</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">wire</span><span class="w">       </span><span class="n">rx_done</span><span class="p">;</span>
+
+<span class="w">    </span><span class="k">always</span><span class="w"> </span><span class="p">#</span><span class="mh">5</span><span class="w"> </span><span class="n">clk</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">~</span><span class="n">clk</span><span class="p">;</span><span class="w">  </span><span class="c1">// 100 MHz</span>
+
+<span class="w">    </span><span class="n">uart_tx</span><span class="w"> </span><span class="p">#(</span>
+<span class="w">        </span><span class="p">.</span><span class="n">CLK_FREQ</span><span class="p">(</span><span class="n">CLK_FREQ</span><span class="p">),</span>
+<span class="w">        </span><span class="p">.</span><span class="n">BAUD_RATE</span><span class="p">(</span><span class="n">BAUD_RATE</span><span class="p">)</span>
+<span class="w">    </span><span class="p">)</span><span class="w"> </span><span class="n">u_tx</span><span class="w"> </span><span class="p">(</span>
+<span class="w">        </span><span class="p">.</span><span class="n">clk</span><span class="p">(</span><span class="n">clk</span><span class="p">),</span>
+<span class="w">        </span><span class="p">.</span><span class="n">rst_n</span><span class="p">(</span><span class="n">rst_n</span><span class="p">),</span>
+<span class="w">        </span><span class="p">.</span><span class="n">tx_start</span><span class="p">(</span><span class="n">tx_start</span><span class="p">),</span>
+<span class="w">        </span><span class="p">.</span><span class="n">tx_data</span><span class="p">(</span><span class="n">tx_data</span><span class="p">),</span>
+<span class="w">        </span><span class="p">.</span><span class="n">tx</span><span class="p">(</span><span class="n">uart_line</span><span class="p">),</span>
+<span class="w">        </span><span class="p">.</span><span class="n">tx_busy</span><span class="p">(</span><span class="n">tx_busy</span><span class="p">)</span>
+<span class="w">    </span><span class="p">);</span>
+
+<span class="w">    </span><span class="n">uart_rx</span><span class="w"> </span><span class="p">#(</span>
+<span class="w">        </span><span class="p">.</span><span class="n">CLK_FREQ</span><span class="p">(</span><span class="n">CLK_FREQ</span><span class="p">),</span>
+<span class="w">        </span><span class="p">.</span><span class="n">BAUD_RATE</span><span class="p">(</span><span class="n">BAUD_RATE</span><span class="p">)</span>
+<span class="w">    </span><span class="p">)</span><span class="w"> </span><span class="n">u_rx</span><span class="w"> </span><span class="p">(</span>
+<span class="w">        </span><span class="p">.</span><span class="n">clk</span><span class="p">(</span><span class="n">clk</span><span class="p">),</span>
+<span class="w">        </span><span class="p">.</span><span class="n">rst_n</span><span class="p">(</span><span class="n">rst_n</span><span class="p">),</span>
+<span class="w">        </span><span class="p">.</span><span class="n">rx</span><span class="p">(</span><span class="n">uart_line</span><span class="p">),</span>
+<span class="w">        </span><span class="p">.</span><span class="n">rx_data</span><span class="p">(</span><span class="n">rx_data</span><span class="p">),</span>
+<span class="w">        </span><span class="p">.</span><span class="n">rx_done</span><span class="p">(</span><span class="n">rx_done</span><span class="p">)</span>
+<span class="w">    </span><span class="p">);</span>
+
+<span class="w">    </span><span class="k">task</span><span class="w"> </span><span class="n">send_byte</span><span class="p">;</span>
+<span class="w">        </span><span class="k">input</span><span class="w"> </span><span class="p">[</span><span class="mh">7</span><span class="o">:</span><span class="mh">0</span><span class="p">]</span><span class="w"> </span><span class="n">data</span><span class="p">;</span>
+<span class="w">        </span><span class="k">begin</span>
+<span class="w">            </span><span class="k">wait</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">tx_busy</span><span class="p">);</span>
+<span class="w">            </span><span class="p">@(</span><span class="k">posedge</span><span class="w"> </span><span class="n">clk</span><span class="p">);</span>
+<span class="w">            </span><span class="n">tx_data</span><span class="w">  </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">data</span><span class="p">;</span>
+<span class="w">            </span><span class="n">tx_start</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mh">1</span><span class="mb">'b1</span><span class="p">;</span>
+<span class="w">            </span><span class="p">@(</span><span class="k">posedge</span><span class="w"> </span><span class="n">clk</span><span class="p">);</span>
+<span class="w">            </span><span class="n">tx_start</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mh">1</span><span class="mb">'b0</span><span class="p">;</span>
+
+<span class="w">            </span><span class="p">@(</span><span class="k">posedge</span><span class="w"> </span><span class="n">rx_done</span><span class="p">);</span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">rx_data</span><span class="w"> </span><span class="o">!==</span><span class="w"> </span><span class="n">data</span><span class="p">)</span><span class="w"> </span><span class="k">begin</span>
+<span class="w">                </span><span class="nb">$display</span><span class="p">(</span><span class="s">"ERROR: expected %02h, received %02h"</span><span class="p">,</span><span class="w"> </span><span class="n">data</span><span class="p">,</span><span class="w"> </span><span class="n">rx_data</span><span class="p">);</span>
+<span class="w">                </span><span class="n">$fatal</span><span class="p">;</span>
+<span class="w">            </span><span class="k">end</span>
+<span class="w">            </span><span class="nb">$display</span><span class="p">(</span><span class="s">"PASS: sent %02h, received %02h"</span><span class="p">,</span><span class="w"> </span><span class="n">data</span><span class="p">,</span><span class="w"> </span><span class="n">rx_data</span><span class="p">);</span>
+<span class="w">        </span><span class="k">end</span>
+<span class="w">    </span><span class="k">endtask</span>
+
+<span class="w">    </span><span class="k">initial</span><span class="w"> </span><span class="k">begin</span>
+<span class="w">        </span><span class="p">#</span><span class="mh">100</span><span class="p">;</span>
+<span class="w">        </span><span class="n">rst_n</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">1</span><span class="mb">'b1</span><span class="p">;</span>
+
+<span class="w">        </span><span class="n">send_byte</span><span class="p">(</span><span class="mh">8'h48</span><span class="p">);</span>
+<span class="w">        </span><span class="n">send_byte</span><span class="p">(</span><span class="mh">8'h83</span><span class="p">);</span>
+<span class="w">        </span><span class="n">send_byte</span><span class="p">(</span><span class="mh">8'h2A</span><span class="p">);</span>
+
+<span class="w">        </span><span class="p">#</span><span class="mh">1000</span><span class="p">;</span>
+<span class="w">        </span><span class="nb">$finish</span><span class="p">;</span>
+<span class="w">    </span><span class="k">end</span>
+<span class="k">endmodule</span>
+</code></pre></div>
+<h3 id="72-simulation-checkpoints">7.2 Simulation Checkpoints</h3>
+<p>After running the simulation, verify the following:</p>
+<ol>
+<li><code>tx_start</code> remains asserted for only one system clock cycle.</li>
+<li><code>tx_busy</code> remains high throughout the complete 10-bit data frame.</li>
+<li><code>uart_line</code> is high while idle, followed by the start bit, eight data bits, and the stop bit in sequence.</li>
+<li><code>rx_done</code> is asserted for only one system clock cycle when each byte has been completely received.</li>
+<li><code>rx_data</code> receives <code>8'h48</code>, <code>8'h83</code>, and <code>8'h2A</code> in sequence.</li>
+</ol>
+<p>When tested with the provided <code>uart_tx.v</code> and <code>uart_rx.v</code>, this testbench should produce the following output:</p>
+<div class="highlight"><pre><span></span><code>PASS: sent 48, received 48
+PASS: sent 83, received 83
+PASS: sent 2a, received 2a
+</code></pre></div>
+<h3 id="73-adding-internal-signals-in-vivado">7.3 Adding Internal Signals in Vivado</h3>
+<p><img alt="Scope, Objects, and Waveform Windows in Vivado Simulation" src="../../images/vivado-simulation-windows.png"></p>
+<p>Three commonly used windows in the Vivado simulation interface are:</p>
+<table>
+<thead>
+<tr>
+<th>Window</th>
+<th>Function</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Scope</td>
+<td>Selects the testbench, DUT, and submodule instances</td>
+</tr>
+<tr>
+<td>Objects</td>
+<td>Displays ports and internal signals of the selected instance</td>
+</tr>
+<tr>
+<td>Waveform</td>
+<td>Displays signal values over time</td>
+</tr>
+</tbody>
+</table>
+<p>During debugging, first select <code>u_tx</code> or <code>u_rx</code> in the Scope window. Then add internal signals such as <code>baud_cnt</code>, <code>bit_idx</code>, <code>tx_shift</code>, <code>rx_shift</code>, <code>tx_busy</code>, and <code>rx_busy</code> from the Objects window to the Waveform window. Rerun the simulation and trace the problem starting from the first signal that does not behave as expected.</p>
+<hr>
+<h2 id="8-on-board-testing">8. On-Board Testing</h2>
+<h3 id="81-preparation">8.1 Preparation</h3>
+<ol>
+<li>Add <code>uart_rx.v</code>, <code>uart_tx.v</code>, <code>top.v</code>, and <code>top.xdc</code> to the Vivado project.</li>
+<li>Set <code>top</code> as the top-level module.</li>
+<li>Run synthesis and implementation, and then generate the bitstream.</li>
+<li>Connect the EGO1 <strong>JTAG &amp; UART</strong> interface to the computer using a USB cable.</li>
+<li>Program the bitstream onto the FPGA.</li>
+<li>Set the switches corresponding to <code>uart_tx_rst_n</code> and <code>uart_rx_rst_n</code> to 1 so that the transmitter and receiver are released from reset.</li>
+</ol>
+<h3 id="82-serial-terminal-settings">8.2 Serial Terminal Settings</h3>
+<p><img alt="Serial Terminal Settings" src="../../images/uart-serial-settings.png"></p>
+<p>Select the serial port corresponding to the EGO1 board and configure:</p>
+<ul>
+<li>Baud rate: <code>115200</code></li>
+<li>Parity: <code>None</code></li>
+<li>Data bits: <code>8</code></li>
+<li>Stop bits: <code>1</code></li>
+<li>When testing binary bytes, enable <strong>Hexadecimal Display</strong> and <strong>Send as Hexadecimal</strong></li>
+</ul>
+<p>Then click <strong>Open</strong>. If you cannot determine the correct serial port, open Windows Device Manager and identify the new COM port that appears after connecting the development board.</p>
+<h3 id="83-fpga-computer">8.3 FPGA → Computer</h3>
+<p>Set the slide switches according to the following table, then press <code>send_one</code> once:</p>
+<table>
+<thead>
+<tr>
+<th>Slide Switches <code>key[7:0]</code></th>
+<th>Hexadecimal</th>
+<th>Expected Result in the Serial Receive Window</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>0100_1000</code></td>
+<td><code>0x48</code></td>
+<td><code>48</code></td>
+</tr>
+<tr>
+<td><code>1111_0100</code></td>
+<td><code>0xF4</code></td>
+<td><code>F4</code></td>
+</tr>
+<tr>
+<td><code>0010_1010</code></td>
+<td><code>0x2A</code></td>
+<td>Hexadecimal mode displays <code>2A</code>; text mode displays <code>*</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="84-computer-fpga">8.4 Computer → FPGA</h3>
+<p>Enter hexadecimal data in the serial transmit window and click <strong>Send</strong>:</p>
+<table>
+<thead>
+<tr>
+<th>Transmitted Data</th>
+<th>Expected LED <code>led[7:0]</code> State</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>83</code></td>
+<td><code>1000_0011</code></td>
+</tr>
+<tr>
+<td><code>17</code></td>
+<td><code>0001_0111</code></td>
+</tr>
+</tbody>
+</table>
+<p>The LEDs continue to display the most recently received byte until another byte is received or the receiver is reset.</p>
+<h3 id="85-ascii-character-test">8.5 ASCII Character Test</h3>
+<p>The ASCII code for the character <code>*</code> is <code>8'h2A</code>, whose binary representation is <code>0010_1010</code>. Set the slide switches to this value and press the send button. With hexadecimal display disabled in the serial terminal, the character <code>*</code> should be displayed.</p>
+<p><img alt="ASCII Asterisk Transmission Result" src="../../images/uart-ascii-asterisk-result.png"></p>
+<hr>
+<h2 id="9-lab-tasks-for-this-week">9. Lab Tasks for This Week</h2>
+<h3 id="task-1-complete-the-uart-demo">Task 1: Complete the UART Demo</h3>
+<ol>
+<li>Create a Vivado project and add three Verilog files and one XDC file.</li>
+<li>Complete the UART loopback simulation and confirm that all three test values are received correctly.</li>
+<li>Generate the bitstream and program it onto the EGO1 board.</li>
+<li>Complete bidirectional communication from FPGA → computer and computer → FPGA.</li>
+</ol>
+<h3 id="task-2-transmit-the-ascii-character">Task 2: Transmit the ASCII Character <code>*</code></h3>
+<ol>
+<li>Look up or calculate the ASCII code of the character <code>*</code>.</li>
+<li>Use the slide switches to set the corresponding 8-bit value.</li>
+<li>Press the send button.</li>
+<li>Observe the character <code>*</code> in the text-display mode of the serial terminal.</li>
+</ol>
+<h3 id="task-3-simulation-debugging-record">Task 3: Simulation Debugging Record</h3>
+<p>Add at least the following signals to the Waveform window and capture a screenshot of one complete data frame:</p>
+<ul>
+<li><code>uart_line</code></li>
+<li><code>u_tx.tx_busy</code></li>
+<li><code>u_tx.bit_idx</code></li>
+<li><code>u_rx.rx_busy</code></li>
+<li><code>u_rx.bit_idx</code></li>
+<li><code>rx_done</code></li>
+<li><code>rx_data</code></li>
+</ul>
+<p>Identify the time intervals corresponding to the start bit, data bits, and stop bit in the waveform, and explain why <code>rx_done</code> remains high for only one system clock cycle.</p>
+<h3 id="on-board-acceptance-criteria">On-Board Acceptance Criteria</h3>
+<ol class="task-list">
+<li class="task-list-item"><input type="checkbox" disabled> After power-up and release from reset, the <code>uart_tx_work</code> and <code>uart_rx_work</code> indicator LEDs are on.</li>
+<li class="task-list-item"><input type="checkbox" disabled> Set the slide switches to <code>0100_1000</code>; after pressing the button, the computer receives <code>48</code>.</li>
+<li class="task-list-item"><input type="checkbox" disabled> Set the slide switches to <code>0010_1010</code>; after pressing the button, the computer displays <code>*</code> in the text window.</li>
+<li class="task-list-item"><input type="checkbox" disabled> Send <code>83</code> from the computer; the LEDs display <code>1000_0011</code>.</li>
+<li class="task-list-item"><input type="checkbox" disabled> Send <code>17</code> from the computer; the LEDs display <code>0001_0111</code>.</li>
+<li class="task-list-item"><input type="checkbox" disabled> In the loopback simulation, the transmitted value matches the received value.</li>
+<li class="task-list-item"><input type="checkbox" disabled> You can add internal signals in Vivado and explain one complete UART frame in the waveform.</li>
+</ol>
+<hr>
+<h2 id="appendix-common-problems">Appendix: Common Problems</h2>
+<table>
+<thead>
+<tr>
+<th>Symptom</th>
+<th>Possible Cause</th>
+<th>Troubleshooting Method</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Serial port cannot be opened</td>
+<td>Incorrect COM port selected or the port is occupied by another program</td>
+<td>Reconnect the development board and verify the port in Device Manager; close any software currently using the serial port</td>
+</tr>
+<tr>
+<td>The computer receives garbled data</td>
+<td>The baud rate or frame format differs between the two ends</td>
+<td>Configure both ends as <code>115200-8-N-1</code></td>
+</tr>
+<tr>
+<td>The computer receives no data from the FPGA</td>
+<td>The TX module is still in reset, the button does not generate a pulse, or the serial port is not open</td>
+<td>Check <code>uart_tx_work</code>, <code>send_flag</code>, and <code>tx_busy</code></td>
+</tr>
+<tr>
+<td>FPGA LEDs do not update</td>
+<td>The RX module is still in reset, the computer is using the wrong transmit mode, or the RX pin is incorrect</td>
+<td>Check <code>uart_rx_work</code>, <code>rx_done</code>, and the XDC constraints</td>
+</tr>
+<tr>
+<td>One button press causes multiple transmissions</td>
+<td>Mechanical button bounce</td>
+<td>Add <code>btn_debounce</code> before the edge detector</td>
+</tr>
+<tr>
+<td>Received data is occasionally incorrect</td>
+<td>Baud-rate error, connection problems, or unstable sampling</td>
+<td>Check the parameters and common ground; observe <code>rx_d2</code>, <code>baud_cnt</code>, and <code>bit_idx</code></td>
+</tr>
+<tr>
+<td><code>X</code> appears in the waveform</td>
+<td>Registers have not been reset or the testbench stimulus is incomplete</td>
+<td>Apply reset before starting transmission; verify that all inputs have known values</td>
+</tr>
+<tr>
+<td><code>Z</code> appears in the waveform</td>
+<td>The signal is undriven or a port is not connected</td>
+<td>Start from the top-level port and trace the module connections step by step to locate the missing driver</td>
+</tr>
+</tbody>
+</table>
+<h3 id="discussion-questions">Discussion Questions</h3>
+<ol>
+<li>Why should the UART receiver sample each bit near the middle of the bit period rather than at the bit boundary?</li>
+<li>If the system clock is changed to 50 MHz, how should <code>BAUD_DIV</code> change?</li>
+<li>Why can the current receiver module not report framing errors? What checks and output signals should be added?</li>
+<li>How could a FIFO be added so that the transmitter can accept multiple bytes continuously without waiting for each byte to finish transmitting?</li>
+</ol></div>
+
+
+
+
+
+
+
+
+  <aside class="md-source-file">
+    
+    
+    
+      
+  
+  <span class="md-source-file__fact">
+    <span class="md-icon" title="Contributors">
+      
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 4a4 4 0 0 1 4 4 4 4 0 0 1-4 4 4 4 0 0 1-4-4 4 4 0 0 1 4-4m0 10c4.42 0 8 1.79 8 4v2H4v-2c0-2.21 3.58-4 8-4"/></svg>
+      
+    </span>
+    <nav>
+      baiyhsz
+    </nav>
+  </span>
+
+    
+    
+  </aside>
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright &copy; 2025 Southern University of Science and Technology
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["search.suggest", "search.highlight", "content.tabs.link", "navigation.tabs", "navigation.top", "content.code.copy"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>

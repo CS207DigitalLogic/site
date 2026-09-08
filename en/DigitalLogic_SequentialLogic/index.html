@@ -1,0 +1,2195 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Digital Logic Laboratory Course Materials">
+      
+      
+      
+        <link rel="canonical" href="https://cs207digitallogic.github.io/site/en/DigitalLogic_SequentialLogic/">
+      
+      
+        <link rel="prev" href="../DigitalLogic_BehaviorModeling/">
+      
+      
+        <link rel="next" href="../DigitalLogic_DynamicDisplay/">
+      
+      
+        
+          <link rel="alternate" href="../../DigitalLogic_SequentialLogic/" hreflang="zh">
+        
+          <link rel="alternate" href="./" hreflang="en">
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>Lab 5: Sequential Logic—Counters and Clock Dividers - Digital Logic Course</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#digital-logic-introduction-to-sequential-logiccounters-and-clock-dividers" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../" title="Digital Logic Course" class="md-header__button md-logo" aria-label="Digital Logic Course" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Digital Logic Course
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Lab 5: Sequential Logic—Counters and Clock Dividers
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-hidden="true"  type="radio" name="__palette" id="__palette_0">
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+      <div class="md-header__option">
+  <div class="md-select">
+    
+    <button class="md-header__button md-icon" aria-label="Select language">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m12.87 15.07-2.54-2.51.03-.03A17.5 17.5 0 0 0 14.07 6H17V4h-7V2H8v2H1v2h11.17C11.5 7.92 10.44 9.75 9 11.35 8.07 10.32 7.3 9.19 6.69 8h-2c.73 1.63 1.73 3.17 2.98 4.56l-5.09 5.02L4 19l5-5 3.11 3.11zM18.5 10h-2L12 22h2l1.12-3h4.75L21 22h2zm-2.62 7 1.62-4.33L19.12 17z"/></svg>
+    </button>
+    <div class="md-select__inner">
+      <ul class="md-select__list">
+        
+          <li class="md-select__item">
+            <a href="../../DigitalLogic_SequentialLogic/" hreflang="zh" class="md-select__link">
+              中文
+            </a>
+          </li>
+        
+          <li class="md-select__item">
+            <a href="./" hreflang="en" class="md-select__link">
+              English
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</div>
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://cs207digitallogic.github.io" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub Repository
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../DigitalLogic_EnvironmentSetup/" class="md-tabs__link">
+          
+  
+  
+  Labs
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../projects/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Projects
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../links/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  OJ Platforms
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../resources/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Course Resources
+
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../" title="Digital Logic Course" class="md-nav__button md-logo" aria-label="Digital Logic Course" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Digital Logic Course
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://cs207digitallogic.github.io" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub Repository
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Labs
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Labs
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../DigitalLogic_EnvironmentSetup/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 1: Environment Setup
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../DigitalLogic_VerilogBasics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 2: Verilog Basics and Structural Modeling
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../DigitalLogic_Dataflow/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 3: Dataflow Modeling and FPGA Verification
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../DigitalLogic_BehaviorModeling/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 4: Behavioral Modeling and Seven-Segment Display
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 5: Sequential Logic—Counters and Clock Dividers
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 5: Sequential Logic—Counters and Clock Dividers
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#objectives" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Objectives
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1-understanding-clock-signals" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Understanding Clock Signals
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-new-syntax-always-posedge-clk-or-negedge-rst_n" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. New Syntax: always @(posedge clk or negedge rst_n)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. New Syntax: always @(posedge clk or negedge rst_n)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#21-basic-form" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.1 Basic Form
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#22-reset-convention" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.2 Reset Convention
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#23-assignment-rules" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.3 Assignment Rules
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#24-the-reg-type" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.4 The reg Type
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-counter-design" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Counter Design
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Counter Design">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#31-4-bit-binary-counter" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.1 4-Bit Binary Counter
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#32-modulo-n-counter" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.2 Modulo-N Counter
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#33-parameterized-modulo-n-counter-with-enable-and-carry" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.3 Parameterized Modulo-N Counter with Enable and Carry
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-clock-divider-design" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Clock Divider Design
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. Clock Divider Design">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#41-why-do-we-need-a-clock-divider" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.1 Why Do We Need a Clock Divider?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#42-clock-division-principle" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.2 Clock Division Principle
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#43-clock-divider-implementation-with-a-pulse-output" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.3 Clock Divider Implementation with a Pulse Output
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#44-parameterized-examples" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.4 Parameterized Examples
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-testbench-simulation-techniques" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Testbench Simulation Techniques
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5. Testbench Simulation Techniques">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#51-generating-a-clock" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.1 Generating a Clock
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#52-generating-an-active-low-reset" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.2 Generating an Active-Low Reset
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#53-accelerating-simulation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.3 Accelerating Simulation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#54-complete-testbench-example" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.4 Complete Testbench Example
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-laboratory-exercises" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Laboratory Exercises
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6. Laboratory Exercises">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#exercise-1-led-blinking-at-1-hz" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exercise 1: LED Blinking at 1 Hz
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Exercise 1: LED Blinking at 1 Hz">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#steps" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Steps
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exercise-2-optional-4-bit-binary-counter-with-led-output" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exercise 2 (Optional): 4-Bit Binary Counter with LED Output
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Exercise 2 (Optional): 4-Bit Binary Counter with LED Output">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#steps_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Steps
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#appendix-frequently-asked-questions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Appendix: Frequently Asked Questions
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../DigitalLogic_DynamicDisplay/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 6: Multiplexed Display—Chasing LEDs and Seven-Segment Displays
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../DigitalLogic_ButtonDebounce/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 7: Button Debouncing and Edge Detection
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../DigitalLogic_StateMachine/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 8: State Machines
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../DigitalLogic_ModuleIntegration/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 9: Module Integration
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../DigitalLogic_UART/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 10: UART
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../DigitalLogic_StopwatchCore/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 11 Demo: Stopwatch Core
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../DigitalLogic_StopwatchControl/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 12 Demo: Stopwatch Control
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../DigitalLogic_StopwatchIntegration/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 13 Demo: System Integration
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../DigitalLogic_Memory/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 14: Memory Design and IP Cores
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../projects/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Projects
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../links/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    OJ Platforms
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../resources/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Course Resources
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#objectives" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Objectives
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1-understanding-clock-signals" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Understanding Clock Signals
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-new-syntax-always-posedge-clk-or-negedge-rst_n" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. New Syntax: always @(posedge clk or negedge rst_n)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. New Syntax: always @(posedge clk or negedge rst_n)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#21-basic-form" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.1 Basic Form
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#22-reset-convention" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.2 Reset Convention
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#23-assignment-rules" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.3 Assignment Rules
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#24-the-reg-type" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.4 The reg Type
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-counter-design" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Counter Design
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Counter Design">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#31-4-bit-binary-counter" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.1 4-Bit Binary Counter
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#32-modulo-n-counter" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.2 Modulo-N Counter
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#33-parameterized-modulo-n-counter-with-enable-and-carry" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.3 Parameterized Modulo-N Counter with Enable and Carry
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-clock-divider-design" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Clock Divider Design
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. Clock Divider Design">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#41-why-do-we-need-a-clock-divider" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.1 Why Do We Need a Clock Divider?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#42-clock-division-principle" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.2 Clock Division Principle
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#43-clock-divider-implementation-with-a-pulse-output" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.3 Clock Divider Implementation with a Pulse Output
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#44-parameterized-examples" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.4 Parameterized Examples
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-testbench-simulation-techniques" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Testbench Simulation Techniques
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5. Testbench Simulation Techniques">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#51-generating-a-clock" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.1 Generating a Clock
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#52-generating-an-active-low-reset" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.2 Generating an Active-Low Reset
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#53-accelerating-simulation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.3 Accelerating Simulation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#54-complete-testbench-example" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.4 Complete Testbench Example
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-laboratory-exercises" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Laboratory Exercises
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6. Laboratory Exercises">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#exercise-1-led-blinking-at-1-hz" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exercise 1: LED Blinking at 1 Hz
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Exercise 1: LED Blinking at 1 Hz">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#steps" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Steps
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exercise-2-optional-4-bit-binary-counter-with-led-output" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exercise 2 (Optional): 4-Bit Binary Counter with LED Output
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Exercise 2 (Optional): 4-Bit Binary Counter with LED Output">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#steps_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Steps
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#appendix-frequently-asked-questions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Appendix: Frequently Asked Questions
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<div><div class="toc">
+<ul>
+<li><a href="#digital-logic-introduction-to-sequential-logiccounters-and-clock-dividers">Digital Logic: Introduction to Sequential Logic—Counters and Clock Dividers</a><ul>
+<li><a href="#objectives">Objectives</a></li>
+<li><a href="#1-understanding-clock-signals">1. Understanding Clock Signals</a></li>
+<li><a href="#2-new-syntax-always-posedge-clk-or-negedge-rst_n">2. New Syntax: always @(posedge clk or negedge rst_n)</a><ul>
+<li><a href="#21-basic-form">2.1 Basic Form</a></li>
+<li><a href="#22-reset-convention">2.2 Reset Convention</a></li>
+<li><a href="#23-assignment-rules">2.3 Assignment Rules</a></li>
+<li><a href="#24-the-reg-type">2.4 The reg Type</a></li>
+</ul>
+</li>
+<li><a href="#3-counter-design">3. Counter Design</a><ul>
+<li><a href="#31-4-bit-binary-counter">3.1 4-Bit Binary Counter</a></li>
+<li><a href="#32-modulo-n-counter">3.2 Modulo-N Counter</a></li>
+<li><a href="#33-parameterized-modulo-n-counter-with-enable-and-carry">3.3 Parameterized Modulo-N Counter with Enable and Carry</a></li>
+</ul>
+</li>
+<li><a href="#4-clock-divider-design">4. Clock Divider Design</a><ul>
+<li><a href="#41-why-do-we-need-a-clock-divider">4.1 Why Do We Need a Clock Divider?</a></li>
+<li><a href="#42-clock-division-principle">4.2 Clock Division Principle</a></li>
+<li><a href="#43-clock-divider-implementation-with-a-pulse-output">4.3 Clock Divider Implementation with a Pulse Output</a></li>
+<li><a href="#44-parameterized-examples">4.4 Parameterized Examples</a></li>
+</ul>
+</li>
+<li><a href="#5-testbench-simulation-techniques">5. Testbench Simulation Techniques</a><ul>
+<li><a href="#51-generating-a-clock">5.1 Generating a Clock</a></li>
+<li><a href="#52-generating-an-active-low-reset">5.2 Generating an Active-Low Reset</a></li>
+<li><a href="#53-accelerating-simulation">5.3 Accelerating Simulation</a></li>
+<li><a href="#54-complete-testbench-example">5.4 Complete Testbench Example</a></li>
+</ul>
+</li>
+<li><a href="#6-laboratory-exercises">6. Laboratory Exercises</a><ul>
+<li><a href="#exercise-1-led-blinking-at-1-hz">Exercise 1: LED Blinking at 1 Hz</a><ul>
+<li><a href="#steps">Steps</a></li>
+</ul>
+</li>
+<li><a href="#exercise-2-optional-4-bit-binary-counter-with-led-output">Exercise 2 (Optional): 4-Bit Binary Counter with LED Output</a><ul>
+<li><a href="#steps_1">Steps</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#appendix-frequently-asked-questions">Appendix: Frequently Asked Questions</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<hr>
+<h1 id="digital-logic-introduction-to-sequential-logiccounters-and-clock-dividers">Digital Logic: Introduction to Sequential Logic—Counters and Clock Dividers</h1>
+<h2 id="objectives">Objectives</h2>
+<ul>
+<li>Master the use of <code>always @(posedge clk or negedge rst_n)</code>.</li>
+<li>Learn to design binary and modulo-N counters.</li>
+<li>Learn to design a clock divider that converts a 100 MHz clock into a required lower-frequency signal.</li>
+<li>Complete the 1 Hz LED blinking exercise and experience a circuit that changes by itself.</li>
+</ul>
+<hr>
+<h2 id="1-understanding-clock-signals">1. Understanding Clock Signals</h2>
+<p>The EGO1 development board has a <strong>100 MHz crystal oscillator</strong> connected to FPGA pin <strong>P17</strong>. It continuously produces a square wave:</p>
+<div class="highlight"><pre><span></span><code>        ┌──┐  ┌──┐  ┌──┐  ┌──┐  ┌──┐
+clk:    │  │  │  │  │  │  │  │  │  │
+    ────┘  └──┘  └──┘  └──┘  └──┘  └──
+        ↑     ↑     ↑     ↑     ↑
+      上升沿  上升沿  上升沿  上升沿  上升沿
+</code></pre></div>
+<ul>
+<li><strong>Frequency</strong>: 100 MHz, or 100 million cycles per second</li>
+<li><strong>Period</strong>: 10 ns (the waveform repeats every 10 ns)</li>
+<li><strong>Rising edge</strong>: The instant at which the signal changes from 0 to 1</li>
+</ul>
+<p>The clock acts as the circuit's “heartbeat.” Our design advances one step at a time on its rising edges.</p>
+<blockquote>
+<p><strong>Constraint-file syntax</strong>:
+</p><div class="highlight"><pre><span></span><code>set_property PACKAGE_PIN P17 [get_ports clk]
+set_property IOSTANDARD LVCMOS33 [get_ports clk]
+</code></pre></div>
+</blockquote>
+<hr>
+<h2 id="2-new-syntax-always-posedge-clk-or-negedge-rst_n">2. New Syntax: <code>always @(posedge clk or negedge rst_n)</code></h2>
+<h3 id="21-basic-form">2.1 Basic Form</h3>
+<p>In previous exercises, <code>always @(*)</code> described a circuit in which an output changed immediately when an input changed. The following construct allows a circuit to <strong>change automatically, one clock cycle at a time</strong>:</p>
+<div class="highlight"><pre><span></span><code><span class="k">always</span><span class="w"> </span><span class="p">@(</span><span class="k">posedge</span><span class="w"> </span><span class="n">clk</span><span class="w"> </span><span class="k">or</span><span class="w"> </span><span class="k">negedge</span><span class="w"> </span><span class="n">rst_n</span><span class="p">)</span><span class="w"> </span><span class="k">begin</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">rst_n</span><span class="p">)</span>
+<span class="w">        </span><span class="c1">// 复位：把寄存器设为初始值</span>
+<span class="w">    </span><span class="k">else</span>
+<span class="w">        </span><span class="c1">// 正常工作：在每个时钟上升沿执行一次</span>
+<span class="k">end</span>
+</code></pre></div>
+<p>Line by line:</p>
+<ul>
+<li><code>posedge clk</code>: Execute the operations between <code>begin...end</code> on every rising edge of the clock.</li>
+<li><code>negedge rst_n</code>: Execute the reset immediately when <code>rst_n</code> goes low (when the reset button is pressed).</li>
+<li><code>if (!rst_n)</code>: If the reset signal is low (<code>rst_n = 0</code>), clear all registers or assign their initial values.</li>
+<li><code>else</code>: Operate normally while reset is inactive.</li>
+</ul>
+<h3 id="22-reset-convention">2.2 Reset Convention</h3>
+<p>This course consistently uses an <strong>active-low reset</strong>, named <code>rst_n</code> (<code>n</code> indicates negative/active-low):</p>
+<table>
+<thead>
+<tr>
+<th>Operation</th>
+<th>Syntax or value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Port declaration</td>
+<td><code>input rst_n</code></td>
+</tr>
+<tr>
+<td>Sensitivity list</td>
+<td><code>always @(posedge clk or negedge rst_n)</code></td>
+</tr>
+<tr>
+<td>Reset condition</td>
+<td><code>if (!rst_n)</code></td>
+</tr>
+<tr>
+<td>Button pressed on the board</td>
+<td><code>rst_n = 0</code> (reset asserted)</td>
+</tr>
+<tr>
+<td>Button released</td>
+<td><code>rst_n = 1</code> (normal operation)</td>
+</tr>
+</tbody>
+</table>
+<p>The EGO1 development board has a dedicated active-low reset button connected to pin <strong>P15</strong>, as shown below.</p>
+<p><img alt="image-20260327135841471" src="../../images/image-20260327135841471.png"></p>
+<h3 id="23-assignment-rules">2.3 Assignment Rules</h3>
+<p>Inside an <code>always @(posedge clk or negedge rst_n)</code> block, use the <strong>non-blocking assignment operator <code>&lt;=</code></strong>:</p>
+<div class="highlight"><pre><span></span><code><span class="k">always</span><span class="w"> </span><span class="p">@(</span><span class="k">posedge</span><span class="w"> </span><span class="n">clk</span><span class="w"> </span><span class="k">or</span><span class="w"> </span><span class="k">negedge</span><span class="w"> </span><span class="n">rst_n</span><span class="p">)</span><span class="w"> </span><span class="k">begin</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">rst_n</span><span class="p">)</span>
+<span class="w">        </span><span class="n">count</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mh">4</span><span class="mi">'d0</span><span class="p">;</span><span class="w">       </span><span class="c1">// 用 &lt;=</span>
+<span class="w">    </span><span class="k">else</span>
+<span class="w">        </span><span class="n">count</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">count</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mh">1</span><span class="p">;</span><span class="w">  </span><span class="c1">// 用 &lt;=</span>
+<span class="k">end</span>
+</code></pre></div>
+<p>A simple rule to remember:</p>
+<ul>
+<li>Combinational <code>always @(*)</code> block → use <code>=</code></li>
+<li><strong>Sequential <code>always @(posedge clk ...)</code> block → use <code>&lt;=</code></strong></li>
+<li><strong>Do not mix the two.</strong></li>
+</ul>
+<h3 id="24-the-reg-type">2.4 The <code>reg</code> Type</h3>
+<p>A signal assigned in an <code>always @(posedge clk ...)</code> block is synthesized into an actual <strong>register</strong>. It remembers the value from the preceding clock cycle and updates on each clock edge. Therefore, an output assigned in this type of block must be declared as <code>reg</code>.</p>
+<hr>
+<h2 id="3-counter-design">3. Counter Design</h2>
+<h3 id="31-4-bit-binary-counter">3.1 4-Bit Binary Counter</h3>
+<p>The simplest counter increments on every rising edge of the clock:</p>
+<div class="highlight"><pre><span></span><code><span class="k">module</span><span class="w"> </span><span class="n">counter_4bit</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="k">input</span><span class="w">            </span><span class="n">clk</span><span class="p">,</span>
+<span class="w">    </span><span class="k">input</span><span class="w">            </span><span class="n">rst_n</span><span class="p">,</span>
+<span class="w">    </span><span class="k">output</span><span class="w"> </span><span class="kt">reg</span><span class="w"> </span><span class="p">[</span><span class="mh">3</span><span class="o">:</span><span class="mh">0</span><span class="p">]</span><span class="w"> </span><span class="n">count</span>
+<span class="p">);</span>
+<span class="w">    </span><span class="k">always</span><span class="w"> </span><span class="p">@(</span><span class="k">posedge</span><span class="w"> </span><span class="n">clk</span><span class="w"> </span><span class="k">or</span><span class="w"> </span><span class="k">negedge</span><span class="w"> </span><span class="n">rst_n</span><span class="p">)</span><span class="w"> </span><span class="k">begin</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">rst_n</span><span class="p">)</span>
+<span class="w">            </span><span class="n">count</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mh">4</span><span class="mi">'d0</span><span class="p">;</span>
+<span class="w">        </span><span class="k">else</span>
+<span class="w">            </span><span class="n">count</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">count</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mh">1</span><span class="mi">'d1</span><span class="p">;</span>
+<span class="w">    </span><span class="k">end</span>
+<span class="k">endmodule</span>
+</code></pre></div>
+<p>Behavior: After reset, <code>count = 0</code>. It then increments on every clock edge. After reaching 15, it overflows to 0 and repeats.</p>
+<h3 id="32-modulo-n-counter">3.2 Modulo-N Counter</h3>
+<p>To return to zero after a particular value—for example, to count from 0 through 9—add a condition:</p>
+<div class="highlight"><pre><span></span><code><span class="k">module</span><span class="w"> </span><span class="n">counter_mod10</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="k">input</span><span class="w">            </span><span class="n">clk</span><span class="p">,</span>
+<span class="w">    </span><span class="k">input</span><span class="w">            </span><span class="n">rst_n</span><span class="p">,</span>
+<span class="w">    </span><span class="k">output</span><span class="w"> </span><span class="kt">reg</span><span class="w"> </span><span class="p">[</span><span class="mh">3</span><span class="o">:</span><span class="mh">0</span><span class="p">]</span><span class="w"> </span><span class="n">count</span>
+<span class="p">);</span>
+<span class="w">    </span><span class="k">always</span><span class="w"> </span><span class="p">@(</span><span class="k">posedge</span><span class="w"> </span><span class="n">clk</span><span class="w"> </span><span class="k">or</span><span class="w"> </span><span class="k">negedge</span><span class="w"> </span><span class="n">rst_n</span><span class="p">)</span><span class="w"> </span><span class="k">begin</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">rst_n</span><span class="p">)</span>
+<span class="w">            </span><span class="n">count</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mh">4</span><span class="mi">'d0</span><span class="p">;</span>
+<span class="w">        </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">count</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mh">4</span><span class="mi">'d9</span><span class="p">)</span>
+<span class="w">            </span><span class="n">count</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mh">4</span><span class="mi">'d0</span><span class="p">;</span><span class="w">       </span><span class="c1">// 到9归零</span>
+<span class="w">        </span><span class="k">else</span>
+<span class="w">            </span><span class="n">count</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">count</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mh">1</span><span class="mi">'d1</span><span class="p">;</span>
+<span class="w">    </span><span class="k">end</span>
+<span class="k">endmodule</span>
+</code></pre></div>
+<h3 id="33-parameterized-modulo-n-counter-with-enable-and-carry">3.3 Parameterized Modulo-N Counter with Enable and Carry</h3>
+<p>In a practical project, a counter usually needs an <strong>enable signal (<code>en</code>)</strong> that controls whether it counts and a <strong>carry output (<code>carry</code>)</strong> for cascading several counters:</p>
+<div class="highlight"><pre><span></span><code><span class="k">module</span><span class="w"> </span><span class="n">counter_mod</span><span class="w"> </span><span class="p">#(</span><span class="k">parameter</span><span class="w"> </span><span class="n">MOD</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">10</span><span class="p">)</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="k">input</span><span class="w">            </span><span class="n">clk</span><span class="p">,</span>
+<span class="w">    </span><span class="k">input</span><span class="w">            </span><span class="n">rst_n</span><span class="p">,</span>
+<span class="w">    </span><span class="k">input</span><span class="w">            </span><span class="n">en</span><span class="p">,</span>
+<span class="w">    </span><span class="k">output</span><span class="w"> </span><span class="kt">reg</span><span class="w"> </span><span class="p">[</span><span class="mh">3</span><span class="o">:</span><span class="mh">0</span><span class="p">]</span><span class="w"> </span><span class="n">count</span><span class="p">,</span>
+<span class="w">    </span><span class="k">output</span><span class="w">           </span><span class="n">carry</span>
+<span class="p">);</span>
+<span class="w">    </span><span class="k">assign</span><span class="w"> </span><span class="n">carry</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">count</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">MOD</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mh">1</span><span class="p">)</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">en</span><span class="p">;</span>
+
+<span class="w">    </span><span class="k">always</span><span class="w"> </span><span class="p">@(</span><span class="k">posedge</span><span class="w"> </span><span class="n">clk</span><span class="w"> </span><span class="k">or</span><span class="w"> </span><span class="k">negedge</span><span class="w"> </span><span class="n">rst_n</span><span class="p">)</span><span class="w"> </span><span class="k">begin</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">rst_n</span><span class="p">)</span>
+<span class="w">            </span><span class="n">count</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mh">4</span><span class="mi">'d0</span><span class="p">;</span>
+<span class="w">        </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">en</span><span class="p">)</span><span class="w"> </span><span class="k">begin</span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">count</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">MOD</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mh">1</span><span class="p">)</span>
+<span class="w">                </span><span class="n">count</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mh">4</span><span class="mi">'d0</span><span class="p">;</span>
+<span class="w">            </span><span class="k">else</span>
+<span class="w">                </span><span class="n">count</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">count</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mh">1</span><span class="mi">'d1</span><span class="p">;</span>
+<span class="w">        </span><span class="k">end</span>
+<span class="w">    </span><span class="k">end</span>
+<span class="k">endmodule</span>
+</code></pre></div>
+<p>Example instantiation:</p>
+<div class="highlight"><pre><span></span><code><span class="n">counter_mod</span><span class="w"> </span><span class="p">#(.</span><span class="n">MOD</span><span class="p">(</span><span class="mh">10</span><span class="p">))</span><span class="w"> </span><span class="n">u_cnt10</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="p">.</span><span class="n">clk</span><span class="p">(</span><span class="n">clk</span><span class="p">),</span><span class="w"> </span><span class="p">.</span><span class="n">rst_n</span><span class="p">(</span><span class="n">rst_n</span><span class="p">),</span><span class="w"> </span><span class="p">.</span><span class="n">en</span><span class="p">(</span><span class="n">enable</span><span class="p">),</span>
+<span class="w">    </span><span class="p">.</span><span class="n">count</span><span class="p">(</span><span class="n">count_out</span><span class="p">),</span><span class="w"> </span><span class="p">.</span><span class="n">carry</span><span class="p">(</span><span class="n">carry_out</span><span class="p">)</span>
+<span class="p">);</span>
+</code></pre></div>
+<hr>
+<h2 id="4-clock-divider-design">4. Clock Divider Design</h2>
+<h3 id="41-why-do-we-need-a-clock-divider">4.1 Why Do We Need a Clock Divider?</h3>
+<p>The EGO1 clock operates at 100 MHz (100 million clock cycles per second), but practical applications require much lower rates:</p>
+<table>
+<thead>
+<tr>
+<th>Application</th>
+<th>Target frequency</th>
+<th>Required count</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>LED blinking</td>
+<td>1 Hz</td>
+<td>100,000,000</td>
+</tr>
+<tr>
+<td>Seven-segment display scanning</td>
+<td>~1 kHz</td>
+<td>100,000</td>
+</tr>
+<tr>
+<td>Stopwatch time base</td>
+<td>100 Hz</td>
+<td>1,000,000</td>
+</tr>
+</tbody>
+</table>
+<p><strong>A clock divider is a counter</strong> that outputs a pulse when it reaches its terminal count.</p>
+<h3 id="42-clock-division-principle">4.2 Clock Division Principle</h3>
+<p>To divide 100 MHz down to 1 Hz:</p>
+<ul>
+<li>1 Hz means one output pulse per second.</li>
+<li>A 100 MHz clock has 100 million clock cycles per second.</li>
+<li>Therefore, output one pulse after counting 100,000,000 cycles.</li>
+</ul>
+<h3 id="43-clock-divider-implementation-with-a-pulse-output">4.3 Clock Divider Implementation with a Pulse Output</h3>
+<div class="highlight"><pre><span></span><code><span class="k">module</span><span class="w"> </span><span class="n">clk_div</span><span class="w"> </span><span class="p">#(</span><span class="k">parameter</span><span class="w"> </span><span class="n">MAX_COUNT</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">100</span><span class="n">_000_000</span><span class="p">)</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="k">input</span><span class="w">      </span><span class="n">clk</span><span class="p">,</span>
+<span class="w">    </span><span class="k">input</span><span class="w">      </span><span class="n">rst_n</span><span class="p">,</span>
+<span class="w">    </span><span class="k">output</span><span class="w"> </span><span class="kt">reg</span><span class="w"> </span><span class="n">tick</span><span class="w">      </span><span class="c1">// 分频后的单周期脉冲</span>
+<span class="p">);</span>
+<span class="w">    </span><span class="kt">reg</span><span class="w"> </span><span class="p">[</span><span class="mh">31</span><span class="o">:</span><span class="mh">0</span><span class="p">]</span><span class="w"> </span><span class="n">cnt</span><span class="p">;</span>
+
+<span class="w">    </span><span class="k">always</span><span class="w"> </span><span class="p">@(</span><span class="k">posedge</span><span class="w"> </span><span class="n">clk</span><span class="w"> </span><span class="k">or</span><span class="w"> </span><span class="k">negedge</span><span class="w"> </span><span class="n">rst_n</span><span class="p">)</span><span class="w"> </span><span class="k">begin</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">rst_n</span><span class="p">)</span><span class="w"> </span><span class="k">begin</span>
+<span class="w">            </span><span class="n">cnt</span><span class="w">  </span><span class="o">&lt;=</span><span class="w"> </span><span class="mh">32</span><span class="mi">'d0</span><span class="p">;</span>
+<span class="w">            </span><span class="n">tick</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mh">1</span><span class="mb">'b0</span><span class="p">;</span>
+<span class="w">        </span><span class="k">end</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">cnt</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">MAX_COUNT</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mh">1</span><span class="p">)</span><span class="w"> </span><span class="k">begin</span>
+<span class="w">            </span><span class="n">cnt</span><span class="w">  </span><span class="o">&lt;=</span><span class="w"> </span><span class="mh">32</span><span class="mi">'d0</span><span class="p">;</span>
+<span class="w">            </span><span class="n">tick</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mh">1</span><span class="mb">'b1</span><span class="p">;</span><span class="w">    </span><span class="c1">// 计满，产生一个脉冲</span>
+<span class="w">        </span><span class="k">end</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="k">begin</span>
+<span class="w">            </span><span class="n">cnt</span><span class="w">  </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">cnt</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mh">1</span><span class="mi">'d1</span><span class="p">;</span>
+<span class="w">            </span><span class="n">tick</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mh">1</span><span class="mb">'b0</span><span class="p">;</span><span class="w">    </span><span class="c1">// 其余时刻保持低</span>
+<span class="w">        </span><span class="k">end</span>
+<span class="w">    </span><span class="k">end</span>
+<span class="k">endmodule</span>
+</code></pre></div>
+<p><code>tick</code> is high for only <strong>one</strong> clock cycle when the terminal count is reached and remains low at all other times. This is a <strong>single-cycle enable pulse</strong>.</p>
+<p><code>parameter</code> defines a <strong>constant that can be changed when the module is instantiated</strong>. The same source code can therefore support different configurations without modification, greatly improving reuse.</p>
+<blockquote>
+<p><strong>Important</strong>: Do not use a divided signal as the clock for another module (for example, <code>always @(posedge slow_clk)</code>). All modules should share the system clock <code>clk</code>, with the <code>tick</code> pulse used as an enable.</p>
+</blockquote>
+<h3 id="44-parameterized-examples">4.4 Parameterized Examples</h3>
+<div class="highlight"><pre><span></span><code><span class="c1">// 1Hz —— LED闪烁</span>
+<span class="n">clk_div</span><span class="w"> </span><span class="p">#(.</span><span class="n">MAX_COUNT</span><span class="p">(</span><span class="mh">100</span><span class="n">_000_000</span><span class="p">))</span><span class="w"> </span><span class="n">u_1hz</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="p">.</span><span class="n">clk</span><span class="p">(</span><span class="n">clk</span><span class="p">),</span><span class="w"> </span><span class="p">.</span><span class="n">rst_n</span><span class="p">(</span><span class="n">rst_n</span><span class="p">),</span><span class="w"> </span><span class="p">.</span><span class="n">tick</span><span class="p">(</span><span class="n">tick_1hz</span><span class="p">)</span>
+<span class="p">);</span>
+
+<span class="c1">// 1kHz —— 数码管扫描</span>
+<span class="n">clk_div</span><span class="w"> </span><span class="p">#(.</span><span class="n">MAX_COUNT</span><span class="p">(</span><span class="mh">100</span><span class="n">_000</span><span class="p">))</span><span class="w"> </span><span class="n">u_1khz</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="p">.</span><span class="n">clk</span><span class="p">(</span><span class="n">clk</span><span class="p">),</span><span class="w"> </span><span class="p">.</span><span class="n">rst_n</span><span class="p">(</span><span class="n">rst_n</span><span class="p">),</span><span class="w"> </span><span class="p">.</span><span class="n">tick</span><span class="p">(</span><span class="n">tick_1khz</span><span class="p">)</span>
+<span class="p">);</span>
+
+<span class="c1">// 100Hz —— 秒表基准</span>
+<span class="n">clk_div</span><span class="w"> </span><span class="p">#(.</span><span class="n">MAX_COUNT</span><span class="p">(</span><span class="mh">1</span><span class="n">_000_000</span><span class="p">))</span><span class="w"> </span><span class="n">u_100hz</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="p">.</span><span class="n">clk</span><span class="p">(</span><span class="n">clk</span><span class="p">),</span><span class="w"> </span><span class="p">.</span><span class="n">rst_n</span><span class="p">(</span><span class="n">rst_n</span><span class="p">),</span><span class="w"> </span><span class="p">.</span><span class="n">tick</span><span class="p">(</span><span class="n">tick_100hz</span><span class="p">)</span>
+<span class="p">);</span>
+</code></pre></div>
+<hr>
+<h2 id="5-testbench-simulation-techniques">5. Testbench Simulation Techniques</h2>
+<h3 id="51-generating-a-clock">5.1 Generating a Clock</h3>
+<div class="highlight"><pre><span></span><code><span class="kt">reg</span><span class="w"> </span><span class="n">clk</span><span class="p">;</span>
+<span class="k">initial</span><span class="w"> </span><span class="n">clk</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0</span><span class="p">;</span>
+<span class="k">always</span><span class="w"> </span><span class="p">#</span><span class="mh">5</span><span class="w"> </span><span class="n">clk</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">~</span><span class="n">clk</span><span class="p">;</span><span class="w">   </span><span class="c1">// 周期10ns = 100MHz</span>
+</code></pre></div>
+<p><code>#5</code> introduces a 5 ns delay. Toggling the signal every 5 ns produces a clock with a 10 ns period.</p>
+<h3 id="52-generating-an-active-low-reset">5.2 Generating an Active-Low Reset</h3>
+<div class="highlight"><pre><span></span><code><span class="kt">reg</span><span class="w"> </span><span class="n">rst_n</span><span class="p">;</span>
+<span class="k">initial</span><span class="w"> </span><span class="k">begin</span>
+<span class="w">    </span><span class="n">rst_n</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0</span><span class="p">;</span><span class="w">      </span><span class="c1">// 一开始按下复位（低有效）</span>
+<span class="w">    </span><span class="p">#</span><span class="mh">25</span><span class="p">;</span>
+<span class="w">    </span><span class="n">rst_n</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">1</span><span class="p">;</span><span class="w">      </span><span class="c1">// 松开复位，开始正常工作</span>
+<span class="k">end</span>
+</code></pre></div>
+<h3 id="53-accelerating-simulation">5.3 Accelerating Simulation</h3>
+<p>Dividing 100 MHz down to 1 Hz requires simulation of 100 million clock cycles and is extremely slow. <strong>Use a much smaller divisor during simulation</strong>:</p>
+<div class="highlight"><pre><span></span><code><span class="c1">// 仿真时：MAX_COUNT = 10，10个周期就出一个tick</span>
+<span class="n">clk_div</span><span class="w"> </span><span class="p">#(.</span><span class="n">MAX_COUNT</span><span class="p">(</span><span class="mh">10</span><span class="p">))</span><span class="w"> </span><span class="n">u_div_sim</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="p">.</span><span class="n">clk</span><span class="p">(</span><span class="n">clk</span><span class="p">),</span><span class="w"> </span><span class="p">.</span><span class="n">rst_n</span><span class="p">(</span><span class="n">rst_n</span><span class="p">),</span><span class="w"> </span><span class="p">.</span><span class="n">tick</span><span class="p">(</span><span class="n">tick</span><span class="p">)</span>
+<span class="p">);</span>
+</code></pre></div>
+<h3 id="54-complete-testbench-example">5.4 Complete Testbench Example</h3>
+<div class="highlight"><pre><span></span><code><span class="no">`timescale</span><span class="w"> </span><span class="mh">1</span><span class="n">ns</span><span class="o">/</span><span class="mh">1</span><span class="n">ps</span>
+
+<span class="k">module</span><span class="w"> </span><span class="n">tb_counter_4bit</span><span class="p">();</span>
+<span class="w">    </span><span class="kt">reg</span><span class="w">        </span><span class="n">clk</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">reg</span><span class="w">        </span><span class="n">rst_n</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">wire</span><span class="w"> </span><span class="p">[</span><span class="mh">3</span><span class="o">:</span><span class="mh">0</span><span class="p">]</span><span class="w"> </span><span class="n">count</span><span class="p">;</span>
+
+<span class="w">    </span><span class="c1">// 实例化</span>
+<span class="w">    </span><span class="n">counter_4bit</span><span class="w"> </span><span class="n">uut</span><span class="w"> </span><span class="p">(</span>
+<span class="w">        </span><span class="p">.</span><span class="n">clk</span><span class="w">   </span><span class="p">(</span><span class="n">clk</span><span class="p">),</span>
+<span class="w">        </span><span class="p">.</span><span class="n">rst_n</span><span class="w"> </span><span class="p">(</span><span class="n">rst_n</span><span class="p">),</span>
+<span class="w">        </span><span class="p">.</span><span class="n">count</span><span class="w"> </span><span class="p">(</span><span class="n">count</span><span class="p">)</span>
+<span class="w">    </span><span class="p">);</span>
+
+<span class="w">    </span><span class="c1">// 100MHz 时钟</span>
+<span class="w">    </span><span class="k">initial</span><span class="w"> </span><span class="n">clk</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0</span><span class="p">;</span>
+<span class="w">    </span><span class="k">always</span><span class="w"> </span><span class="p">#</span><span class="mh">5</span><span class="w"> </span><span class="n">clk</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">~</span><span class="n">clk</span><span class="p">;</span>
+
+<span class="w">    </span><span class="c1">// 测试序列</span>
+<span class="w">    </span><span class="k">initial</span><span class="w"> </span><span class="k">begin</span>
+<span class="w">        </span><span class="nb">$monitor</span><span class="p">(</span><span class="s">"time=%4d: rst_n=%b count=%d"</span><span class="p">,</span><span class="w"> </span><span class="nb">$time</span><span class="p">,</span><span class="w"> </span><span class="n">rst_n</span><span class="p">,</span><span class="w"> </span><span class="n">count</span><span class="p">);</span>
+
+<span class="w">        </span><span class="n">rst_n</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0</span><span class="p">;</span><span class="w">          </span><span class="c1">// 复位</span>
+<span class="w">        </span><span class="p">#</span><span class="mh">25</span><span class="p">;</span>
+<span class="w">        </span><span class="n">rst_n</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">1</span><span class="p">;</span><span class="w">          </span><span class="c1">// 松开复位，开始计数</span>
+<span class="w">        </span><span class="p">#</span><span class="mh">200</span><span class="p">;</span><span class="w">               </span><span class="c1">// 观察计数</span>
+<span class="w">        </span><span class="n">rst_n</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0</span><span class="p">;</span><span class="w">          </span><span class="c1">// 再次复位</span>
+<span class="w">        </span><span class="p">#</span><span class="mh">20</span><span class="p">;</span>
+<span class="w">        </span><span class="n">rst_n</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">1</span><span class="p">;</span>
+<span class="w">        </span><span class="p">#</span><span class="mh">100</span><span class="p">;</span>
+<span class="w">        </span><span class="nb">$finish</span><span class="p">;</span>
+<span class="w">    </span><span class="k">end</span>
+<span class="k">endmodule</span>
+</code></pre></div>
+<hr>
+<h2 id="6-laboratory-exercises">6. Laboratory Exercises</h2>
+<h3 id="exercise-1-led-blinking-at-1-hz">Exercise 1: LED Blinking at 1 Hz</h3>
+<p><strong>Requirement</strong>: Make one LED on the EGO1 blink at 1 Hz (on for 0.5 seconds and off for 0.5 seconds).</p>
+<h4 id="steps">Steps</h4>
+<ol>
+<li><strong>Write the code</strong>: Create <code>clk_div.v</code> and <code>led_blink.v</code>.</li>
+<li><strong>Simulate and verify</strong>: Write a testbench, change the division factor to 10, and inspect the <code>tick</code> and <code>led</code> transition waveforms.</li>
+<li><strong>Assign pins and verify on the board</strong>:</li>
+<li><code>clk</code> → P17 (100 MHz crystal oscillator)</li>
+<li><code>rst_n</code> → P15 (reset button)</li>
+<li><code>led</code> → Assign to one LED</li>
+<li><strong>Synthesize, generate the bitstream, and program the board</strong>, then observe the LED blinking.</li>
+</ol>
+<h3 id="exercise-2-optional-4-bit-binary-counter-with-led-output">Exercise 2 (Optional): 4-Bit Binary Counter with LED Output</h3>
+<p><strong>Requirement</strong>: Use four LEDs to display a 4-bit binary counter that increments once per second.</p>
+<h4 id="steps_1">Steps</h4>
+<ol>
+<li><strong>Write the code</strong>: Use a clock divider to generate a 1 Hz pulse. Increment the 4-bit counter on each pulse and connect its value to four LEDs.</li>
+<li><strong>Simulate and verify</strong>: Verify the repeating sequence 0→1→2→...→15→0.</li>
+<li><strong>Verify on the board</strong>: Observe the LEDs displaying the count in binary, with one complete cycle taking approximately 16 seconds.</li>
+</ol>
+<blockquote>
+<p><strong>Question</strong>: What must be changed to make the counter count only from 0 through 9 (modulo 10)?</p>
+</blockquote>
+<hr>
+<h2 id="appendix-frequently-asked-questions">Appendix: Frequently Asked Questions</h2>
+<ul>
+<li>
+<p><strong>Q</strong>: What happens when the counter overflows?
+  <strong>A</strong>: A 4-bit counter (<code>[3:0]</code>) automatically returns to 0 when incremented after 15. To return to zero after a specific value, add an <code>if (count == target_value)</code> condition.</p>
+</li>
+<li>
+<p><strong>Q</strong>: Why does the clock divider produce no pulse in simulation?
+  <strong>A</strong>: Check whether the simulation runs long enough. During simulation, use a small division factor such as <code>MAX_COUNT = 10</code> instead of simulating 100 million cycles.</p>
+</li>
+<li>
+<p><strong>Q</strong>: Can the output of a clock divider be used directly as a clock?
+  <strong>A</strong>: This is <strong>strongly discouraged</strong>. An FPGA design should use a single global clock, <code>clk</code>, and use the divider's <code>tick</code> pulse as an enable. Multiple clocks introduce clock-domain-crossing problems and are a common source of errors.</p>
+</li>
+<li>
+<p><strong>Q</strong>: Why use <code>rst_n</code> (active-low) instead of <code>rst</code> (active-high)?
+  <strong>A</strong>: The reset button on the EGO1 development board outputs a low level while pressed and a high level when released. An active-low reset matches this hardware behavior: pressing the button resets the circuit, and releasing it resumes normal operation.</p>
+</li>
+</ul></div>
+
+
+
+
+
+
+
+
+  <aside class="md-source-file">
+    
+    
+    
+      
+  
+  <span class="md-source-file__fact">
+    <span class="md-icon" title="Contributors">
+      
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 4a4 4 0 0 1 4 4 4 4 0 0 1-4 4 4 4 0 0 1-4-4 4 4 0 0 1 4-4m0 10c4.42 0 8 1.79 8 4v2H4v-2c0-2.21 3.58-4 8-4"/></svg>
+      
+    </span>
+    <nav>
+      baiyhsz
+    </nav>
+  </span>
+
+    
+    
+  </aside>
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright &copy; 2025 Southern University of Science and Technology
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["search.suggest", "search.highlight", "content.tabs.link", "navigation.tabs", "navigation.top", "content.code.copy"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>

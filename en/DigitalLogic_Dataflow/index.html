@@ -1,0 +1,2570 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Digital Logic Laboratory Course Materials">
+      
+      
+      
+        <link rel="canonical" href="https://cs207digitallogic.github.io/site/en/DigitalLogic_Dataflow/">
+      
+      
+        <link rel="prev" href="../DigitalLogic_VerilogBasics/">
+      
+      
+        <link rel="next" href="../DigitalLogic_BehaviorModeling/">
+      
+      
+        
+          <link rel="alternate" href="../../DigitalLogic_Dataflow/" hreflang="zh">
+        
+          <link rel="alternate" href="./" hreflang="en">
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>Lab 3: Dataflow Modeling and FPGA Verification - Digital Logic Course</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#digital-logic-dataflow-modeling-and-fpga-verification" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../" title="Digital Logic Course" class="md-header__button md-logo" aria-label="Digital Logic Course" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Digital Logic Course
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Lab 3: Dataflow Modeling and FPGA Verification
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-hidden="true"  type="radio" name="__palette" id="__palette_0">
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+      <div class="md-header__option">
+  <div class="md-select">
+    
+    <button class="md-header__button md-icon" aria-label="Select language">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m12.87 15.07-2.54-2.51.03-.03A17.5 17.5 0 0 0 14.07 6H17V4h-7V2H8v2H1v2h11.17C11.5 7.92 10.44 9.75 9 11.35 8.07 10.32 7.3 9.19 6.69 8h-2c.73 1.63 1.73 3.17 2.98 4.56l-5.09 5.02L4 19l5-5 3.11 3.11zM18.5 10h-2L12 22h2l1.12-3h4.75L21 22h2zm-2.62 7 1.62-4.33L19.12 17z"/></svg>
+    </button>
+    <div class="md-select__inner">
+      <ul class="md-select__list">
+        
+          <li class="md-select__item">
+            <a href="../../DigitalLogic_Dataflow/" hreflang="zh" class="md-select__link">
+              中文
+            </a>
+          </li>
+        
+          <li class="md-select__item">
+            <a href="./" hreflang="en" class="md-select__link">
+              English
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</div>
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://cs207digitallogic.github.io" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub Repository
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../DigitalLogic_EnvironmentSetup/" class="md-tabs__link">
+          
+  
+  
+  Labs
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../projects/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Projects
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../links/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  OJ Platforms
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../resources/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Course Resources
+
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../" title="Digital Logic Course" class="md-nav__button md-logo" aria-label="Digital Logic Course" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Digital Logic Course
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://cs207digitallogic.github.io" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub Repository
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Labs
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Labs
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../DigitalLogic_EnvironmentSetup/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 1: Environment Setup
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../DigitalLogic_VerilogBasics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 2: Verilog Basics and Structural Modeling
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 3: Dataflow Modeling and FPGA Verification
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 3: Dataflow Modeling and FPGA Verification
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#objectives" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Objectives
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1-dataflow-modeling" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Dataflow Modeling
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. Dataflow Modeling">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#11-what-is-dataflow-modeling" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.1 What Is Dataflow Modeling?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#12-continuous-assignment-with-assign" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.2 Continuous Assignment with assign
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#13-common-operators" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.3 Common Operators
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1.3 Common Operators">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#operators-commonly-used-in-dataflow-modeling" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Operators Commonly Used in Dataflow Modeling
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bitwise-versus-logical-operators" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Bitwise Versus Logical Operators
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#14-dataflow-example-three-input-majority-voter" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.4 Dataflow Example: Three-Input Majority Voter
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-writing-a-testbench-for-simulation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Writing a Testbench for Simulation
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. Writing a Testbench for Simulation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#21-basic-testbench-structure" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.1 Basic Testbench Structure
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#22-testbench-template" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.2 Testbench Template
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#23-common-ways-to-generate-stimuli" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.3 Common Ways to Generate Stimuli
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#24-common-system-tasks-simulation-only" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.4 Common System Tasks (Simulation Only)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#25-complete-testbench-example-for-majority_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.5 Complete Testbench Example for majority_3
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-dataflow-modeling-versus-structural-modelingverilog" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Dataflow Modeling Versus Structural Modeling```verilog
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Dataflow Modeling Versus Structural Modeling```verilog">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#31-review-structural-modeling-with-primitive-gates" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.1 Review: Structural Modeling with Primitive Gates
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#32-comparing-coding-styles" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.2 Comparing Coding Styles
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#33-comparison" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.3 Comparison
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-synthesis" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Synthesis
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. Synthesis">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#41-what-is-synthesis" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.1 What Is Synthesis?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#42-how-do-i-view-the-synthesized-schematic" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.2 How Do I View the Synthesized Schematic?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#how-do-i-view-a-modules-truth-table-or-logic-expression" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How Do I View a Module's Truth Table or Logic Expression?
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-pin-assignment-and-on-board-implementation-in-vivado" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Pin Assignment and On-Board Implementation in Vivado
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5. Pin Assignment and On-Board Implementation in Vivado">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#41-writing-pin-constraints" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.1 Writing Pin Constraints
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4.1 Writing Pin Constraints">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#method-1-use-the-vivado-gui-io-planning" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Method 1: Use the Vivado GUI (I/O Planning)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#method-2-write-the-xdc-file-manually-review" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Method 2: Write the XDC File Manually (Review)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#42-implementation-and-bitstream-generation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.2 Implementation and Bitstream Generation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#43-programming-the-fpga-development-board" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.3 Programming the FPGA Development Board
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-exercises" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Exercises
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5. Exercises">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#exercise-implement-a-full-adder-with-dataflow-modeling-assign" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exercise: Implement a Full Adder with Dataflow Modeling (assign)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-1-write-the-design" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 1: Write the Design
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-2-write-and-verify-the-testbench" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 2: Write and Verify the Testbench
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-3-synthesize" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 3: Synthesize
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-4-assign-pins" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 4: Assign Pins
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-5-generate-the-bitstream-and-verify-on-the-board" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 5: Generate the Bitstream and Verify on the Board
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#appendix-frequently-asked-questions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Appendix: Frequently Asked Questions
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../DigitalLogic_BehaviorModeling/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 4: Behavioral Modeling and Seven-Segment Display
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../DigitalLogic_SequentialLogic/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 5: Sequential Logic—Counters and Clock Dividers
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../DigitalLogic_DynamicDisplay/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 6: Multiplexed Display—Chasing LEDs and Seven-Segment Displays
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../DigitalLogic_ButtonDebounce/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 7: Button Debouncing and Edge Detection
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../DigitalLogic_StateMachine/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 8: State Machines
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../DigitalLogic_ModuleIntegration/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 9: Module Integration
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../DigitalLogic_UART/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 10: UART
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../DigitalLogic_StopwatchCore/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 11 Demo: Stopwatch Core
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../DigitalLogic_StopwatchControl/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 12 Demo: Stopwatch Control
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../DigitalLogic_StopwatchIntegration/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 13 Demo: System Integration
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../DigitalLogic_Memory/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 14: Memory Design and IP Cores
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../projects/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Projects
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../links/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    OJ Platforms
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../resources/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Course Resources
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#objectives" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Objectives
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1-dataflow-modeling" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Dataflow Modeling
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. Dataflow Modeling">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#11-what-is-dataflow-modeling" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.1 What Is Dataflow Modeling?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#12-continuous-assignment-with-assign" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.2 Continuous Assignment with assign
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#13-common-operators" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.3 Common Operators
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1.3 Common Operators">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#operators-commonly-used-in-dataflow-modeling" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Operators Commonly Used in Dataflow Modeling
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bitwise-versus-logical-operators" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Bitwise Versus Logical Operators
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#14-dataflow-example-three-input-majority-voter" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.4 Dataflow Example: Three-Input Majority Voter
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-writing-a-testbench-for-simulation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Writing a Testbench for Simulation
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. Writing a Testbench for Simulation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#21-basic-testbench-structure" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.1 Basic Testbench Structure
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#22-testbench-template" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.2 Testbench Template
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#23-common-ways-to-generate-stimuli" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.3 Common Ways to Generate Stimuli
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#24-common-system-tasks-simulation-only" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.4 Common System Tasks (Simulation Only)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#25-complete-testbench-example-for-majority_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.5 Complete Testbench Example for majority_3
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-dataflow-modeling-versus-structural-modelingverilog" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Dataflow Modeling Versus Structural Modeling```verilog
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Dataflow Modeling Versus Structural Modeling```verilog">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#31-review-structural-modeling-with-primitive-gates" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.1 Review: Structural Modeling with Primitive Gates
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#32-comparing-coding-styles" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.2 Comparing Coding Styles
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#33-comparison" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.3 Comparison
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-synthesis" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Synthesis
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. Synthesis">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#41-what-is-synthesis" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.1 What Is Synthesis?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#42-how-do-i-view-the-synthesized-schematic" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.2 How Do I View the Synthesized Schematic?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#how-do-i-view-a-modules-truth-table-or-logic-expression" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How Do I View a Module's Truth Table or Logic Expression?
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-pin-assignment-and-on-board-implementation-in-vivado" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Pin Assignment and On-Board Implementation in Vivado
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5. Pin Assignment and On-Board Implementation in Vivado">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#41-writing-pin-constraints" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.1 Writing Pin Constraints
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4.1 Writing Pin Constraints">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#method-1-use-the-vivado-gui-io-planning" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Method 1: Use the Vivado GUI (I/O Planning)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#method-2-write-the-xdc-file-manually-review" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Method 2: Write the XDC File Manually (Review)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#42-implementation-and-bitstream-generation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.2 Implementation and Bitstream Generation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#43-programming-the-fpga-development-board" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.3 Programming the FPGA Development Board
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-exercises" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Exercises
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5. Exercises">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#exercise-implement-a-full-adder-with-dataflow-modeling-assign" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exercise: Implement a Full Adder with Dataflow Modeling (assign)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-1-write-the-design" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 1: Write the Design
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-2-write-and-verify-the-testbench" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 2: Write and Verify the Testbench
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-3-synthesize" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 3: Synthesize
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-4-assign-pins" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 4: Assign Pins
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-5-generate-the-bitstream-and-verify-on-the-board" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 5: Generate the Bitstream and Verify on the Board
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#appendix-frequently-asked-questions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Appendix: Frequently Asked Questions
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<div><div class="toc">
+<ul>
+<li><a href="#digital-logic-dataflow-modeling-and-fpga-verification">Digital Logic: Dataflow Modeling and FPGA Verification</a><ul>
+<li><a href="#objectives">Objectives</a></li>
+<li><a href="#1-dataflow-modeling">1. Dataflow Modeling</a><ul>
+<li><a href="#11-what-is-dataflow-modeling">1.1 What Is Dataflow Modeling?</a></li>
+<li><a href="#12-continuous-assignment-with-assign">1.2 Continuous Assignment with assign</a></li>
+<li><a href="#13-common-operators">1.3 Common Operators</a><ul>
+<li><a href="#operators-commonly-used-in-dataflow-modeling">Operators Commonly Used in Dataflow Modeling</a></li>
+<li><a href="#bitwise-versus-logical-operators">Bitwise Versus Logical Operators</a></li>
+</ul>
+</li>
+<li><a href="#14-dataflow-example-three-input-majority-voter">1.4 Dataflow Example: Three-Input Majority Voter</a></li>
+</ul>
+</li>
+<li><a href="#2-writing-a-testbench-for-simulation">2. Writing a Testbench for Simulation</a><ul>
+<li><a href="#21-basic-testbench-structure">2.1 Basic Testbench Structure</a></li>
+<li><a href="#22-testbench-template">2.2 Testbench Template</a></li>
+<li><a href="#23-common-ways-to-generate-stimuli">2.3 Common Ways to Generate Stimuli</a></li>
+<li><a href="#24-common-system-tasks-simulation-only">2.4 Common System Tasks (Simulation Only)</a></li>
+<li><a href="#25-complete-testbench-example-for-majority_3">2.5 Complete Testbench Example for majority_3</a></li>
+</ul>
+</li>
+<li><a href="#3-dataflow-modeling-versus-structural-modelingverilog">3. Dataflow Modeling Versus Structural Modeling```verilog</a><ul>
+<li><a href="#31-review-structural-modeling-with-primitive-gates">3.1 Review: Structural Modeling with Primitive Gates</a></li>
+<li><a href="#32-comparing-coding-styles">3.2 Comparing Coding Styles</a></li>
+<li><a href="#33-comparison">3.3 Comparison</a></li>
+</ul>
+</li>
+<li><a href="#4-synthesis">4. Synthesis</a><ul>
+<li><a href="#41-what-is-synthesis">4.1 What Is Synthesis?</a></li>
+<li><a href="#42-how-do-i-view-the-synthesized-schematic">4.2 How Do I View the Synthesized Schematic?</a></li>
+<li><a href="#how-do-i-view-a-modules-truth-table-or-logic-expression">How Do I View a Module's Truth Table or Logic Expression?</a></li>
+</ul>
+</li>
+<li><a href="#5-pin-assignment-and-on-board-implementation-in-vivado">5. Pin Assignment and On-Board Implementation in Vivado</a><ul>
+<li><a href="#41-writing-pin-constraints">4.1 Writing Pin Constraints</a><ul>
+<li><a href="#method-1-use-the-vivado-gui-io-planning">Method 1: Use the Vivado GUI (I/O Planning)</a></li>
+<li><a href="#method-2-write-the-xdc-file-manually-review">Method 2: Write the XDC File Manually (Review)</a></li>
+</ul>
+</li>
+<li><a href="#42-implementation-and-bitstream-generation">4.2 Implementation and Bitstream Generation</a></li>
+<li><a href="#43-programming-the-fpga-development-board">4.3 Programming the FPGA Development Board</a></li>
+</ul>
+</li>
+<li><a href="#5-exercises">5. Exercises</a><ul>
+<li><a href="#exercise-implement-a-full-adder-with-dataflow-modeling-assign">Exercise: Implement a Full Adder with Dataflow Modeling (assign)</a></li>
+<li><a href="#step-1-write-the-design">Step 1: Write the Design</a></li>
+<li><a href="#step-2-write-and-verify-the-testbench">Step 2: Write and Verify the Testbench</a></li>
+<li><a href="#step-3-synthesize">Step 3: Synthesize</a></li>
+<li><a href="#step-4-assign-pins">Step 4: Assign Pins</a></li>
+<li><a href="#step-5-generate-the-bitstream-and-verify-on-the-board">Step 5: Generate the Bitstream and Verify on the Board</a></li>
+</ul>
+</li>
+<li><a href="#appendix-frequently-asked-questions">Appendix: Frequently Asked Questions</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<h1 id="digital-logic-dataflow-modeling-and-fpga-verification">Digital Logic: Dataflow Modeling and FPGA Verification</h1>
+<h2 id="objectives">Objectives</h2>
+<ul>
+<li>Master Verilog dataflow modeling using the continuous assignment statement <code>assign</code>.</li>
+<li>Learn to write a simple testbench for simulation and verification.</li>
+<li>Understand the difference between dataflow modeling and structural modeling with gate-level primitives.</li>
+<li>Master FPGA pin assignment and the on-board verification flow.</li>
+</ul>
+<hr>
+<h2 id="1-dataflow-modeling">1. Dataflow Modeling</h2>
+<h3 id="11-what-is-dataflow-modeling">1.1 What Is Dataflow Modeling?</h3>
+<p>Dataflow modeling describes the <strong>logical relationship between a circuit's inputs and outputs</strong> using <strong>continuous assignment statements (<code>assign</code>)</strong>. It abstracts away the underlying gate-level structure and describes functionality directly with Boolean expressions or operators, making it suitable for combinational logic.</p>
+<h3 id="12-continuous-assignment-with-assign">1.2 Continuous Assignment with <code>assign</code></h3>
+<ul>
+<li>Syntax: <code>assign wire_signal = expression;</code></li>
+<li>Characteristics:</li>
+<li>The assignment target must be of type <code>wire</code>, not <code>reg</code>.</li>
+<li>Whenever any variable on the right-hand side changes, the left-hand side is updated immediately, modeling the continuous response of combinational logic.</li>
+<li>Multiple <code>assign</code> statements execute concurrently, regardless of their order in the source file.</li>
+</ul>
+<h3 id="13-common-operators">1.3 Common Operators</h3>
+<h4 id="operators-commonly-used-in-dataflow-modeling">Operators Commonly Used in Dataflow Modeling</h4>
+<table>
+<thead>
+<tr>
+<th>Operator category</th>
+<th>Symbols</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Bitwise logic</td>
+<td><code>~</code>, <code>&amp;</code>, <code>|</code>, <code>^</code></td>
+<td><code>y = a &amp; b;</code></td>
+</tr>
+<tr>
+<td>Logical</td>
+<td><code>!</code>, <code>&amp;&amp;</code>, <code>||</code></td>
+<td><code>y = a &amp;&amp; b;</code></td>
+</tr>
+<tr>
+<td>Arithmetic</td>
+<td><code>+</code>, <code>-</code>, <code>*</code>, <code>/</code></td>
+<td><code>sum = a + b;</code></td>
+</tr>
+<tr>
+<td>Relational</td>
+<td><code>&gt;</code>, <code>&lt;</code>, <code>&gt;=</code>, <code>&lt;=</code></td>
+<td><code>gt = a &gt; b;</code></td>
+</tr>
+<tr>
+<td>Equality</td>
+<td><code>==</code>, <code>!=</code></td>
+<td><code>eq = a == b;</code></td>
+</tr>
+<tr>
+<td>Conditional (ternary)</td>
+<td><code>? :</code></td>
+<td><code>y = sel ? a : b;</code></td>
+</tr>
+<tr>
+<td>Concatenation</td>
+<td><code>{}</code></td>
+<td><code>{cout, sum} = a + b;</code></td>
+</tr>
+</tbody>
+</table>
+<h4 id="bitwise-versus-logical-operators">Bitwise Versus Logical Operators</h4>
+<ul>
+<li><strong>Logical operators</strong> (<code>!</code>, <code>&amp;&amp;</code>, <code>||</code>) always produce an effective output width of <strong>one bit</strong> (<code>0</code> or <code>1</code>). They are commonly used in conditions such as <code>if</code> and <code>while</code>.</li>
+<li><strong>Bitwise operators</strong> (<code>~</code>, <code>&amp;</code>, <code>|</code>) operate independently on each bit. Their output width matches the operand width, so they are commonly used in combinational datapath logic.</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;"><strong>a</strong></th>
+<th style="text-align: left;"><strong>b</strong></th>
+<th style="text-align: left;"><strong>a | b</strong></th>
+<th style="text-align: left;"><strong>a || b</strong></th>
+<th style="text-align: left;"><strong>a &amp; b</strong></th>
+<th style="text-align: left;"><strong>a &amp;&amp; b</strong></th>
+<th style="text-align: left;"><strong>~a</strong></th>
+<th style="text-align: left;"><strong>!a</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">2'b01</td>
+<td style="text-align: left;">2'b10</td>
+<td style="text-align: left;">2'b11</td>
+<td style="text-align: left;">1'b1</td>
+<td style="text-align: left;">2'b00</td>
+<td style="text-align: left;">1'b1</td>
+<td style="text-align: left;">2'b10</td>
+<td style="text-align: left;">1'b0</td>
+</tr>
+<tr>
+<td style="text-align: left;">2'b01</td>
+<td style="text-align: left;">2'b11</td>
+<td style="text-align: left;">2'b11</td>
+<td style="text-align: left;">1'b1</td>
+<td style="text-align: left;">2'b01</td>
+<td style="text-align: left;">1'b1</td>
+<td style="text-align: left;">2'b10</td>
+<td style="text-align: left;">1'b0</td>
+</tr>
+<tr>
+<td style="text-align: left;">2'b00</td>
+<td style="text-align: left;">2'b01</td>
+<td style="text-align: left;">2'b01</td>
+<td style="text-align: left;">1'b1</td>
+<td style="text-align: left;">2'b00</td>
+<td style="text-align: left;">1'b0</td>
+<td style="text-align: left;">2'b11</td>
+<td style="text-align: left;">1'b1</td>
+</tr>
+</tbody>
+</table>
+<h3 id="14-dataflow-example-three-input-majority-voter">1.4 Dataflow Example: Three-Input Majority Voter</h3>
+<p>Design a three-input majority voter whose output is 1 when at least two of its three inputs are 1.</p>
+<p><img alt="Majority voter logic circuit designed using AND gates and an 3 input OR...  | Download Scientific Diagram" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRtOyeN9cafGHlEMPWqUfc67Mrtbwkb2k4SCg&amp;s"></p>
+<p><strong>The logic expression is F = ab + ac + bc. The design is:</strong></p>
+<div class="highlight"><pre><span></span><code><span class="c1">// 3-input majority voter (数据流描述)</span>
+<span class="k">module</span><span class="w"> </span><span class="n">majority_3</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="k">input</span><span class="w">  </span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="n">b</span><span class="p">,</span><span class="w"> </span><span class="n">c</span><span class="p">,</span>
+<span class="w">    </span><span class="k">output</span><span class="w"> </span><span class="n">out</span>
+<span class="p">);</span>
+<span class="w">    </span><span class="k">assign</span><span class="w"> </span><span class="n">out</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">a</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">b</span><span class="p">)</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="p">(</span><span class="n">a</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">c</span><span class="p">)</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="p">(</span><span class="n">b</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">c</span><span class="p">);</span>
+<span class="k">endmodule</span>
+</code></pre></div>
+<blockquote>
+<p>Note the operator-precedence order: <code>()</code> &gt; <code>~</code> &gt; <code>&amp;</code> &gt; <code>|</code>.</p>
+</blockquote>
+<p><strong>For example, the expression F = a(b‘+c) is written in Verilog as:</strong></p>
+<div class="highlight"><pre><span></span><code><span class="k">assign</span><span class="w"> </span><span class="n">F</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="p">(</span><span class="o">~</span><span class="n">b</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">c</span><span class="p">);</span>
+</code></pre></div>
+<hr>
+<h2 id="2-writing-a-testbench-for-simulation">2. Writing a Testbench for Simulation</h2>
+<h3 id="21-basic-testbench-structure">2.1 Basic Testbench Structure</h3>
+<p>A testbench is a simulation environment for testing a design module. It has no input or output ports, instantiates the design under test, and generates stimulus signals.</p>
+<ul>
+<li><strong>Module definition</strong>: A testbench is a top-level module with no input or output ports.</li>
+<li><strong>Signal declarations</strong>: Declare inputs to the design under test as type <code>reg</code> so that the testbench can generate stimuli. Declare outputs from the design under test as type <code>wire</code> so that the responses can be monitored.</li>
+<li><strong>Instantiate the design under test</strong>: Instantiate the module with a suitable instance name, such as <code>DUT</code>, and connect signals declared in the testbench to the corresponding DUT ports.</li>
+<li><strong>Generate stimuli</strong>: Generate test vectors in an <code>initial</code> or <code>always</code> block, often using loops and delays. This laboratory uses only <code>initial</code>.</li>
+<li><strong>Monitor results</strong>: Print output using system tasks such as <code>$display</code> and <code>$monitor</code>, or inspect the waveform.</li>
+</ul>
+<h3 id="22-testbench-template">2.2 Testbench Template</h3>
+<p>The following is a testbench template for the <code>majority_3</code> module:</p>
+<div class="highlight"><pre><span></span><code><span class="no">`timescale</span><span class="w"> </span><span class="mh">1</span><span class="n">ns</span><span class="o">/</span><span class="mh">1</span><span class="n">ps</span>
+
+<span class="k">module</span><span class="w"> </span><span class="n">tb_majority_3</span><span class="p">();</span>
+<span class="w">    </span><span class="c1">// 声明信号（与待测模块端口对应）</span>
+<span class="w">    </span><span class="kt">reg</span><span class="w"> </span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="n">b</span><span class="p">,</span><span class="w"> </span><span class="n">c</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">wire</span><span class="w"> </span><span class="n">out</span><span class="p">;</span>
+
+<span class="w">    </span><span class="c1">// 实例化被测模块</span>
+<span class="w">    </span><span class="n">majority_3</span><span class="w"> </span><span class="n">uut</span><span class="w"> </span><span class="p">(</span>
+<span class="w">        </span><span class="p">.</span><span class="n">a</span><span class="p">(</span><span class="n">a</span><span class="p">),</span>
+<span class="w">        </span><span class="p">.</span><span class="n">b</span><span class="p">(</span><span class="n">b</span><span class="p">),</span>
+<span class="w">        </span><span class="p">.</span><span class="n">c</span><span class="p">(</span><span class="n">c</span><span class="p">),</span>
+<span class="w">        </span><span class="p">.</span><span class="n">out</span><span class="p">(</span><span class="n">out</span><span class="p">)</span>
+<span class="w">    </span><span class="p">);</span>
+
+<span class="w">    </span><span class="c1">// 产生激励</span>
+<span class="w">    </span><span class="k">initial</span><span class="w"> </span><span class="k">begin</span>
+<span class="w">        </span><span class="c1">// 在这里给输入赋值</span>
+<span class="w">    </span><span class="k">end</span>
+
+<span class="w">    </span><span class="c1">// 监控输出（可选）</span>
+<span class="w">    </span><span class="k">initial</span><span class="w"> </span><span class="k">begin</span>
+<span class="w">        </span><span class="nb">$monitor</span><span class="p">(...);</span>
+<span class="w">    </span><span class="k">end</span>
+<span class="k">endmodule</span>
+</code></pre></div>
+<h3 id="23-common-ways-to-generate-stimuli">2.3 Common Ways to Generate Stimuli</h3>
+<ul>
+<li><strong>Direct assignment</strong>: Use <code>#</code> delays to change inputs sequentially.</li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="k">initial</span><span class="w"> </span><span class="k">begin</span>
+<span class="w">    </span><span class="n">a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0</span><span class="p">;</span><span class="w"> </span><span class="n">b</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0</span><span class="p">;</span><span class="w"> </span><span class="n">c</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0</span><span class="p">;</span><span class="w"> </span>
+<span class="w">    </span><span class="p">#</span><span class="mh">10</span><span class="p">;</span>
+<span class="w">    </span><span class="n">a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0</span><span class="p">;</span><span class="w"> </span><span class="n">b</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0</span><span class="p">;</span><span class="w"> </span><span class="n">c</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">1</span><span class="p">;</span><span class="w"> </span>
+<span class="w">    </span><span class="p">#</span><span class="mh">10</span><span class="p">;</span>
+<span class="w">    </span><span class="n">a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0</span><span class="p">;</span><span class="w"> </span><span class="n">b</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">1</span><span class="p">;</span><span class="w"> </span><span class="n">c</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0</span><span class="p">;</span><span class="w"> </span>
+<span class="w">    </span><span class="p">#</span><span class="mh">10</span><span class="p">;</span>
+<span class="w">  </span><span class="c1">// ... 覆盖所有组合</span>
+<span class="w">    </span><span class="nb">$finish</span><span class="p">;</span>
+<span class="k">end</span>
+</code></pre></div>
+<ul>
+<li><strong>Automatically enumerate values with a loop</strong> (appropriate for a small number of variables):
+  Verilog provides several loop statements. Three common forms are shown below.</li>
+</ul>
+<p><strong>1. <code>for</code> loop</strong> (most common)</p>
+<div class="highlight"><pre><span></span><code><span class="k">integer</span><span class="w"> </span><span class="n">i</span><span class="p">;</span>
+<span class="k">initial</span><span class="w"> </span><span class="k">begin</span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mh">8</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mh">1</span><span class="p">)</span><span class="w"> </span><span class="k">begin</span>
+<span class="w">        </span><span class="p">{</span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="n">b</span><span class="p">,</span><span class="w"> </span><span class="n">c</span><span class="p">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">i</span><span class="p">;</span><span class="w">  </span><span class="c1">// 拼接赋值，自动遍历 000~111</span>
+<span class="w">        </span><span class="p">#</span><span class="mh">10</span><span class="p">;</span>
+<span class="w">    </span><span class="k">end</span>
+<span class="w">    </span><span class="nb">$finish</span><span class="p">;</span>
+<span class="k">end</span>
+</code></pre></div>
+<p><strong>2. <code>while</code> loop</strong></p>
+<div class="highlight"><pre><span></span><code><span class="k">integer</span><span class="w"> </span><span class="n">i</span><span class="p">;</span>
+<span class="k">initial</span><span class="w"> </span><span class="k">begin</span>
+<span class="w">    </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0</span><span class="p">;</span>
+<span class="w">    </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mh">8</span><span class="p">)</span><span class="w"> </span><span class="k">begin</span>
+<span class="w">        </span><span class="p">{</span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="n">b</span><span class="p">,</span><span class="w"> </span><span class="n">c</span><span class="p">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">i</span><span class="p">;</span>
+<span class="w">        </span><span class="p">#</span><span class="mh">10</span><span class="p">;</span>
+<span class="w">        </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mh">1</span><span class="p">;</span>
+<span class="w">    </span><span class="k">end</span>
+<span class="w">    </span><span class="nb">$finish</span><span class="p">;</span>
+<span class="k">end</span>
+</code></pre></div>
+<p><strong>3. <code>repeat</code> loop</strong> (a fixed number of iterations)</p>
+<div class="highlight"><pre><span></span><code><span class="k">integer</span><span class="w"> </span><span class="n">i</span><span class="p">;</span>
+<span class="k">initial</span><span class="w"> </span><span class="k">begin</span>
+<span class="w">    </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0</span><span class="p">;</span>
+<span class="w">    </span><span class="k">repeat</span><span class="p">(</span><span class="mh">8</span><span class="p">)</span><span class="w"> </span><span class="k">begin</span>
+<span class="w">        </span><span class="p">{</span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="n">b</span><span class="p">,</span><span class="w"> </span><span class="n">c</span><span class="p">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">i</span><span class="p">;</span>
+<span class="w">        </span><span class="p">#</span><span class="mh">10</span><span class="p">;</span>
+<span class="w">        </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mh">1</span><span class="p">;</span>
+<span class="w">    </span><span class="k">end</span>
+<span class="w">    </span><span class="nb">$finish</span><span class="p">;</span>
+<span class="k">end</span>
+</code></pre></div>
+<blockquote>
+<p><strong>Note</strong>: <code>repeat</code> executes a fixed number of times and is usually used when no loop variable is needed. If counting is required, an additional variable is still necessary.</p>
+</blockquote>
+<h3 id="24-common-system-tasks-simulation-only">2.4 Common System Tasks (Simulation Only)</h3>
+<ul>
+<li><code>$display("format string", variable1, variable2, ...);</code><br>
+  Prints information during simulation, similarly to C's <code>printf</code>. It prints once each time it executes.</li>
+<li><code>$monitor("format string", variable1, variable2, ...);</code><br>
+  Continuously monitors variables and prints a line whenever any of them changes. It is usually placed in a separate <code>initial</code> block.</li>
+<li><code>$finish;</code><br>
+  Ends the simulation, preventing an excessively long default simulation from making the waveform difficult to inspect.</li>
+</ul>
+<p><strong>Example</strong>:</p>
+<div class="highlight"><pre><span></span><code><span class="k">initial</span><span class="w"> </span><span class="k">begin</span>
+<span class="w">    </span><span class="nb">$monitor</span><span class="p">(</span><span class="s">"time=%t a=%b b=%b c=%b out=%b"</span><span class="p">,</span><span class="w"> </span><span class="nb">$time</span><span class="p">,</span><span class="w"> </span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="n">b</span><span class="p">,</span><span class="w"> </span><span class="n">c</span><span class="p">,</span><span class="w"> </span><span class="n">out</span><span class="p">);</span>
+<span class="k">end</span>
+</code></pre></div>
+<h3 id="25-complete-testbench-example-for-majority_3">2.5 Complete Testbench Example for <code>majority_3</code></h3>
+<div class="highlight"><pre><span></span><code><span class="no">`timescale</span><span class="w"> </span><span class="mh">1</span><span class="n">ns</span><span class="o">/</span><span class="mh">1</span><span class="n">ps</span>
+
+<span class="k">module</span><span class="w"> </span><span class="n">tb_majority_3</span><span class="p">();</span>
+<span class="w">    </span><span class="kt">reg</span><span class="w"> </span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="n">b</span><span class="p">,</span><span class="w"> </span><span class="n">c</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">wire</span><span class="w"> </span><span class="n">out</span><span class="p">;</span>
+<span class="w">    </span><span class="k">integer</span><span class="w"> </span><span class="n">i</span><span class="p">;</span>
+
+<span class="w">    </span><span class="c1">// 实例化被测模块</span>
+<span class="w">    </span><span class="n">majority_3</span><span class="w"> </span><span class="n">uut</span><span class="w"> </span><span class="p">(</span>
+<span class="w">        </span><span class="p">.</span><span class="n">a</span><span class="p">(</span><span class="n">a</span><span class="p">),</span>
+<span class="w">        </span><span class="p">.</span><span class="n">b</span><span class="p">(</span><span class="n">b</span><span class="p">),</span>
+<span class="w">        </span><span class="p">.</span><span class="n">c</span><span class="p">(</span><span class="n">c</span><span class="p">),</span>
+<span class="w">        </span><span class="p">.</span><span class="n">out</span><span class="p">(</span><span class="n">out</span><span class="p">)</span>
+<span class="w">    </span><span class="p">);</span>
+
+<span class="w">    </span><span class="k">initial</span><span class="w"> </span><span class="k">begin</span>
+<span class="w">        </span><span class="nb">$monitor</span><span class="p">(</span><span class="s">"time=%3d: a=%b b=%b c=%b =&gt; out=%b"</span><span class="p">,</span><span class="w"> </span><span class="nb">$time</span><span class="p">,</span><span class="w"> </span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="n">b</span><span class="p">,</span><span class="w"> </span><span class="n">c</span><span class="p">,</span><span class="w"> </span><span class="n">out</span><span class="p">);</span>
+<span class="w">        </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mh">8</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mh">1</span><span class="p">)</span><span class="w"> </span><span class="k">begin</span>
+<span class="w">            </span><span class="p">{</span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="n">b</span><span class="p">,</span><span class="w"> </span><span class="n">c</span><span class="p">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">i</span><span class="p">;</span>
+<span class="w">            </span><span class="p">#</span><span class="mh">10</span><span class="p">;</span>
+<span class="w">        </span><span class="k">end</span>
+<span class="w">        </span><span class="nb">$finish</span><span class="p">;</span>
+<span class="w">    </span><span class="k">end</span>
+<span class="k">endmodule</span>
+</code></pre></div>
+<hr>
+<h2 id="3-dataflow-modeling-versus-structural-modelingverilog">3. Dataflow Modeling Versus Structural Modeling```verilog</h2>
+<h3 id="31-review-structural-modeling-with-primitive-gates">3.1 Review: Structural Modeling with Primitive Gates</h3>
+<p>Verilog provides built-in basic gate primitives such as <code>and</code>, <code>or</code>, and <code>xor</code>. Instantiating and connecting these gates is called <strong>structural modeling</strong>.</p>
+<p><strong>Example: Implementing the majority voter with gate primitives</strong></p>
+<div class="highlight"><pre><span></span><code><span class="k">module</span><span class="w"> </span><span class="n">majority_3_gate</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="k">input</span><span class="w"> </span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="n">b</span><span class="p">,</span><span class="w"> </span><span class="n">c</span><span class="p">,</span>
+<span class="w">    </span><span class="k">output</span><span class="w"> </span><span class="n">out</span>
+<span class="p">);</span>
+<span class="w">    </span><span class="kt">wire</span><span class="w"> </span><span class="n">w1</span><span class="p">,</span><span class="w"> </span><span class="n">w2</span><span class="p">,</span><span class="w"> </span><span class="n">w3</span><span class="p">;</span>
+<span class="w">    </span><span class="k">and</span><span class="w"> </span><span class="p">(</span><span class="n">w1</span><span class="p">,</span><span class="w"> </span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="n">b</span><span class="p">);</span>
+<span class="w">    </span><span class="k">and</span><span class="w"> </span><span class="p">(</span><span class="n">w2</span><span class="p">,</span><span class="w"> </span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="n">c</span><span class="p">);</span>
+<span class="w">    </span><span class="k">and</span><span class="w"> </span><span class="p">(</span><span class="n">w3</span><span class="p">,</span><span class="w"> </span><span class="n">b</span><span class="p">,</span><span class="w"> </span><span class="n">c</span><span class="p">);</span>
+<span class="w">    </span><span class="k">or</span><span class="w">  </span><span class="p">(</span><span class="n">out</span><span class="p">,</span><span class="w"> </span><span class="n">w1</span><span class="p">,</span><span class="w"> </span><span class="n">w2</span><span class="p">,</span><span class="w"> </span><span class="n">w3</span><span class="p">);</span>
+<span class="k">endmodule</span>
+</code></pre></div>
+<h3 id="32-comparing-coding-styles">3.2 Comparing Coding Styles</h3>
+<p>The following table compares the two styles using the majority voter as an example:</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;"><strong>Dataflow modeling</strong></th>
+<th style="text-align: left;"><strong>Structural modeling with primitives</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>Direct expression</strong></td>
+<td style="text-align: left;"><strong>Basic gate instantiation</strong></td>
+</tr>
+<tr>
+<td style="text-align: left;">verilog<br>assign out = (a &amp; b) | (a &amp; c) | (b &amp; c);<br></td>
+<td style="text-align: left;">verilog<br>wire w1, w2, w3;and (w1, a, b);<br>and (w2, a, c);<br>and (w3, b, c);<br>or (out, w1, w2, w3);<br></td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Intermediate signals in steps (same result)</strong></td>
+<td style="text-align: left;"><strong>Gate order may be changed (same result)</strong></td>
+</tr>
+<tr>
+<td style="text-align: left;">verilog<br>wire and_ab, and_ac, and_bc;<br>assign and_ab = a &amp; b;<br>assign and_ac = a &amp; c;<br>assign and_bc = b &amp; c;<br>assign out = and_ab | and_ac | and_bc;<br></td>
+<td style="text-align: left;">verilog<br>wire w1, w2, w3;<br>or (out, w1, w2, w3);<br>and (w1, a, b);<br>and (w2, a, c);<br>and (w3, b, c);<br></td>
+</tr>
+</tbody>
+</table>
+<h3 id="33-comparison">3.3 Comparison</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Characteristic</th>
+<th style="text-align: left;">Dataflow modeling (<code>assign</code>)</th>
+<th style="text-align: left;">Structural modeling (gate primitives)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>Abstraction level</strong></td>
+<td style="text-align: left;">Higher; close to a logic expression</td>
+<td style="text-align: left;">Lower; close to transistor/gate-level connections</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Conciseness</strong></td>
+<td style="text-align: left;">Concise; often a single expression</td>
+<td style="text-align: left;">Verbose; requires several gate instances</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Readability</strong></td>
+<td style="text-align: left;">Good; directly expresses the function</td>
+<td style="text-align: left;">Lower; requires interpreting gate-level connections</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Design efficiency</strong></td>
+<td style="text-align: left;">High; suitable for complex combinational logic</td>
+<td style="text-align: left;">Low; suitable only for simple or instructional examples</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Synthesis result</strong></td>
+<td style="text-align: left;">Optimized by the synthesis tool</td>
+<td style="text-align: left;">Closely follows specified gates; controllable but inefficient</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Typical use</strong></td>
+<td style="text-align: left;">Combinational logic in practical designs</td>
+<td style="text-align: left;">Instructional demonstrations and special custom gate structures</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Conclusion</strong>: Practical designs use dataflow or behavioral modeling almost exclusively; behavioral modeling is introduced later. Gate-level primitives are mainly used for instruction or specialized custom requirements.</p>
+<hr>
+<h2 id="4-synthesis">4. Synthesis</h2>
+<h3 id="41-what-is-synthesis">4.1 What Is Synthesis?</h3>
+<p>Synthesis converts hardware description language (HDL) code into a concrete logic circuit, such as a gate-level netlist. Vivado's synthesis tool analyzes Verilog code such as <code>assign</code> statements, infers the corresponding logic gates and connections, and produces a netlist mapped to FPGA resources such as lookup tables (LUTs) and flip-flops (FFs).</p>
+<p><strong>Purposes of synthesis</strong>:</p>
+<ul>
+<li>Verify that the code is accepted by the synthesis tool and can produce actual hardware.</li>
+<li>Inspect the synthesized schematic to understand the hardware corresponding to the code.</li>
+<li>Analyze resource utilization and estimated timing, which are beyond the scope of this course at present.</li>
+</ul>
+<h3 id="42-how-do-i-view-the-synthesized-schematic">4.2 How Do I View the Synthesized Schematic?</h3>
+<ol>
+<li>Click <strong>Run Synthesis</strong>.</li>
+<li>After synthesis completes successfully, click <strong>Open Synthesized Design</strong>.</li>
+<li>In the <strong>Schematic</strong> view, inspect the circuit made up of logic gates, LUTs, and flip-flops.</li>
+<li>Zoom in to inspect how input signals pass through logic elements to produce outputs.</li>
+<li>Combinational logic is usually implemented with <strong>LUTs (lookup tables)</strong>.</li>
+</ol>
+<p><img alt="image-20260308105212858" src="../../images/image-20260308105212858.png"></p>
+<h3 id="how-do-i-view-a-modules-truth-table-or-logic-expression">How Do I View a Module's Truth Table or Logic Expression?</h3>
+<ul>
+<li>Click a <strong>LUT</strong> cell in the schematic, usually labeled <code>LUT2</code>, <code>LUT3</code>, and so on. Its <strong>LUT equation</strong> appears in the properties window. The LUT equation is the logic expression inferred by Vivado during synthesis. It may differ from the original <code>assign</code> statement but will be functionally equivalent.</li>
+</ul>
+<p><img alt="image-20260308104706741" src="../../images/image-20260308104706741.png"></p>
+<p>By examining the schematic and LUT properties, you can verify that the synthesis result matches your expectations and develop a deeper understanding of how Verilog code maps onto FPGA hardware.</p>
+<p><img alt="image-20260308104441503" src="../../images/image-20260308104441503.png"></p>
+<blockquote>
+<p><strong>Note</strong>: The synthesized schematic represents logic mapping, not the final placement and routing. The circuit after placement and routing is more complex, but its logical function remains unchanged.</p>
+</blockquote>
+<h2 id="5-pin-assignment-and-on-board-implementation-in-vivado">5. Pin Assignment and On-Board Implementation in Vivado</h2>
+<blockquote>
+<p>Note: Run synthesis before assigning pins.</p>
+</blockquote>
+<h3 id="41-writing-pin-constraints">4.1 Writing Pin Constraints</h3>
+<h4 id="method-1-use-the-vivado-gui-io-planning">Method 1: Use the Vivado GUI (I/O Planning)</h4>
+<ol>
+<li>Click <strong>Run Synthesis</strong>.</li>
+<li>After synthesis completes, click <strong>Open Synthesized Design</strong>.</li>
+<li>Click <strong>I/O Planning</strong> in Vivado's top toolbar, or select <strong>Layout → I/O Planning</strong>.</li>
+<li>The <strong>I/O Ports</strong> window lists all top-level ports.</li>
+<li>In the <strong>Package Pin</strong> column, double-click the cell for a port and enter its physical pin identifier.</li>
+<li>In the <strong>I/O Std</strong> column, select <strong>LVCMOS33</strong>, according to the board voltage.</li>
+<li>Save the constraints with <strong>File → Save Constraints</strong>. Select or create an XDC file to store the current assignments.</li>
+<li>You can also generate the constraint file by clicking <strong>Write XDC</strong> in the toolbar.</li>
+</ol>
+<blockquote>
+<p><strong>Tip</strong>: Consult the development board schematic or official documentation for pin identifiers. Documentation for the EGO1 board is available under References on the course Blackboard site. If a pin identifier is unavailable after you enter it, confirm that the correct FPGA part was selected when the project was created.</p>
+</blockquote>
+<p><img alt="image-20260308103938122" src="../../images/image-20260308103938122.png"></p>
+<h4 id="method-2-write-the-xdc-file-manually-review">Method 2: Write the XDC File Manually (Review)</h4>
+<p>Add a new constraint file, <code>xxx.xdc</code>, to the project, then enter and edit the following content. The order of the constraints does not affect their behavior.</p>
+<p><strong>Example XDC file: Replace each question mark with the correct pin for the board.</strong></p>
+<div class="highlight"><pre><span></span><code><span class="c">## 输入引脚 (拨码开关) </span>
+<span class="nv">set_property</span><span class="w"> </span>PACKAGE_PIN<span class="w"> </span><span class="o">??</span><span class="w"> </span><span class="k">[</span><span class="nv">get_ports</span><span class="w"> </span><span class="k">{</span><span class="nv">a</span><span class="k">}]</span>
+<span class="nv">set_property</span><span class="w"> </span>IOSTANDARD<span class="w"> </span>LVCMOS33<span class="w"> </span><span class="k">[</span><span class="nv">get_ports</span><span class="w"> </span><span class="k">{</span><span class="nv">a</span><span class="k">}]</span>
+
+<span class="nv">set_property</span><span class="w"> </span>PACKAGE_PIN<span class="w"> </span><span class="o">??</span><span class="w"> </span><span class="k">[</span><span class="nv">get_ports</span><span class="w"> </span><span class="k">{</span><span class="nv">b</span><span class="k">}]</span>
+<span class="nv">set_property</span><span class="w"> </span>IOSTANDARD<span class="w"> </span>LVCMOS33<span class="w"> </span><span class="k">[</span><span class="nv">get_ports</span><span class="w"> </span><span class="k">{</span><span class="nv">b</span><span class="k">}]</span>
+
+<span class="nv">set_property</span><span class="w"> </span>PACKAGE_PIN<span class="w"> </span><span class="o">??</span><span class="w"> </span><span class="k">[</span><span class="nv">get_ports</span><span class="w"> </span><span class="k">{</span><span class="nv">c</span><span class="k">}]</span>
+<span class="nv">set_property</span><span class="w"> </span>IOSTANDARD<span class="w"> </span>LVCMOS33<span class="w"> </span><span class="k">[</span><span class="nv">get_ports</span><span class="w"> </span><span class="k">{</span><span class="nv">c</span><span class="k">}]</span>
+
+<span class="c">## 输出引脚 (LED)</span>
+<span class="nv">set_property</span><span class="w"> </span>PACKAGE_PIN<span class="w"> </span><span class="o">??</span><span class="w"> </span><span class="k">[</span><span class="nv">get_ports</span><span class="w"> </span><span class="k">{</span><span class="nv">out</span><span class="k">}]</span>
+<span class="nv">set_property</span><span class="w"> </span>IOSTANDARD<span class="w"> </span>LVCMOS33<span class="w"> </span><span class="k">[</span><span class="nv">get_ports</span><span class="w"> </span><span class="k">{</span><span class="nv">out</span><span class="k">}]</span>
+</code></pre></div>
+<blockquote>
+<p><strong>Reference</strong>: Consult the EGO1 board manual or the pin labels printed next to the peripherals. If a pin identifier is not listed in the graphical interface, confirm that the project uses the correct FPGA part.</p>
+</blockquote>
+<p><img alt="image-20260609120819104" src="../../images/image-20260609120819104.png"></p>
+<p><img alt="image-20260609120748493" src="../../images/image-20260609120748493.png"></p>
+<h3 id="42-implementation-and-bitstream-generation">4.2 Implementation and Bitstream Generation</h3>
+<ul>
+<li>Click <strong>Run Implementation</strong> to perform placement and routing. After implementation completes, you can inspect the timing report.</li>
+<li>Click <strong>Generate Bitstream</strong> to generate the <code>.bit</code> file. Vivado displays a completion dialog when generation succeeds.</li>
+<li>You may also click <strong>Generate Bitstream</strong> directly. Vivado then runs Synthesis, Implementation, and Generate Bitstream automatically without requiring intervention between stages.</li>
+</ul>
+<h3 id="43-programming-the-fpga-development-board">4.3 Programming the FPGA Development Board</h3>
+<ol>
+<li>Connect and power on the board, ensuring that the programming cable, such as USB-JTAG, is connected.</li>
+<li>Click <strong>Open Hardware Manager</strong> → <strong>Auto Connect</strong>. Vivado automatically detects the board.</li>
+<li>Select <strong>Program Device</strong> in the Hardware window.</li>
+<li>Confirm that the bitstream path in the dialog is correct, then click <strong>Program</strong>.</li>
+<li>After programming completes, toggle the switches and verify that the LED follows the majority-voter logic.</li>
+</ol>
+<hr>
+<h2 id="5-exercises">5. Exercises</h2>
+<h3 id="exercise-implement-a-full-adder-with-dataflow-modeling-assign">Exercise: Implement a Full Adder with Dataflow Modeling (<code>assign</code>)</h3>
+<ul>
+<li>
+<p>Module name: <code>FullAdder</code></p>
+</li>
+<li>
+<p>Inputs: <code>a</code>, <code>b</code>, <code>cin</code></p>
+</li>
+<li>
+<p>Outputs: <code>s</code>, <code>cout</code></p>
+</li>
+<li>
+<p>Function: As shown in the circuit diagram.</p>
+</li>
+<li>
+<p>Requirement: Use <code>assign</code> statements and operators.</p>
+</li>
+</ul>
+<p><img alt="Full Adder Circuit – How it Works" src="https://www.build-electronic-circuits.com/wp-content/uploads/2022/10/fullAdder-1-1024x473.png"></p>
+<h3 id="step-1-write-the-design">Step 1: Write the Design</h3>
+<ul>
+<li>Derive the expressions for <code>cout</code> and <code>s</code>.</li>
+<li>Implement the design with <code>assign</code> statements.</li>
+</ul>
+<h3 id="step-2-write-and-verify-the-testbench">Step 2: Write and Verify the Testbench</h3>
+<ul>
+<li>Draw the circuit's truth table on paper.</li>
+<li>Compare it with the simulation result. You may either compare the log produced by <code>$monitor</code> or inspect the waveform directly.</li>
+</ul>
+<h3 id="step-3-synthesize">Step 3: Synthesize</h3>
+<ul>
+<li>Click <strong>Run Synthesis</strong> in Vivado and wait for synthesis to complete. If an error occurs, correct the code according to the diagnostic message.</li>
+</ul>
+<h3 id="step-4-assign-pins">Step 4: Assign Pins</h3>
+<ul>
+<li>Add pin constraints to the Exercise 1 design. For example, connect <code>a</code>/<code>b</code>/<code>cin</code> to three slide switches and <code>s</code>/<code>cout</code> to LEDs.</li>
+<li>Create the constraints either by editing an XDC file or by using the I/O Planning graphical interface.</li>
+</ul>
+<h3 id="step-5-generate-the-bitstream-and-verify-on-the-board">Step 5: Generate the Bitstream and Verify on the Board</h3>
+<ul>
+<li>Click Generate Bitstream, program the development board with the resulting bitstream, and verify the design's function.</li>
+</ul>
+<hr>
+<h2 id="appendix-frequently-asked-questions">Appendix: Frequently Asked Questions</h2>
+<ul>
+<li><strong>Q</strong>: Can the left-hand side of an <code>assign</code> statement be type <code>reg</code>?<br>
+<strong>A</strong>: No. It must be <code>wire</code> or a related net type such as <code>tri</code>.</li>
+<li><strong>Q</strong>: Why is the simulation waveform a straight line?<br>
+<strong>A</strong>: Check whether the testbench contains <code>$finish</code> or whether the simulation interval is too long. Use Zoom Fit and Zoom In to display a suitable portion of the waveform.</li>
+<li><strong>Q</strong>: Why is the LED off or unresponsive after the board is programmed?<br>
+<strong>A</strong>: Check the pin constraints, confirm that programming succeeded, and verify that the development board is powered on.</li>
+<li><strong>Q</strong>: Why can I not find the ports in I/O Planning?<br>
+<strong>A</strong>: You must run Synthesis and open the synthesized design before the list of I/O ports is available.</li>
+</ul>
+<hr></div>
+
+
+
+
+
+
+
+
+  <aside class="md-source-file">
+    
+    
+    
+      
+  
+  <span class="md-source-file__fact">
+    <span class="md-icon" title="Contributors">
+      
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 4a4 4 0 0 1 4 4 4 4 0 0 1-4 4 4 4 0 0 1-4-4 4 4 0 0 1 4-4m0 10c4.42 0 8 1.79 8 4v2H4v-2c0-2.21 3.58-4 8-4"/></svg>
+      
+    </span>
+    <nav>
+      baiyhsz
+    </nav>
+  </span>
+
+    
+    
+  </aside>
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright &copy; 2025 Southern University of Science and Technology
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["search.suggest", "search.highlight", "content.tabs.link", "navigation.tabs", "navigation.top", "content.code.copy"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>

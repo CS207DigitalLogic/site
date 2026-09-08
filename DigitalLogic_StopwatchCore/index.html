@@ -1,0 +1,1810 @@
+
+<!doctype html>
+<html lang="zh" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="数字逻辑实验课程资料">
+      
+      
+      
+        <link rel="canonical" href="https://cs207digitallogic.github.io/site/DigitalLogic_StopwatchCore/">
+      
+      
+        <link rel="prev" href="../DigitalLogic_UART/">
+      
+      
+        <link rel="next" href="../DigitalLogic_StopwatchControl/">
+      
+      
+        
+          <link rel="alternate" href="./" hreflang="zh">
+        
+          <link rel="alternate" href="../en/DigitalLogic_StopwatchCore/" hreflang="en">
+        
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>Lab 11 Demo——秒表核心 - 数字逻辑课程</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#_1" class="md-skip">
+          跳转至
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="页眉">
+    <a href=".." title="数字逻辑课程" class="md-header__button md-logo" aria-label="数字逻辑课程" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            数字逻辑课程
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Lab 11 Demo——秒表核心
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-hidden="true"  type="radio" name="__palette" id="__palette_0">
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+      <div class="md-header__option">
+  <div class="md-select">
+    
+    <button class="md-header__button md-icon" aria-label="选择当前语言">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m12.87 15.07-2.54-2.51.03-.03A17.5 17.5 0 0 0 14.07 6H17V4h-7V2H8v2H1v2h11.17C11.5 7.92 10.44 9.75 9 11.35 8.07 10.32 7.3 9.19 6.69 8h-2c.73 1.63 1.73 3.17 2.98 4.56l-5.09 5.02L4 19l5-5 3.11 3.11zM18.5 10h-2L12 22h2l1.12-3h4.75L21 22h2zm-2.62 7 1.62-4.33L19.12 17z"/></svg>
+    </button>
+    <div class="md-select__inner">
+      <ul class="md-select__list">
+        
+          <li class="md-select__item">
+            <a href="./" hreflang="zh" class="md-select__link">
+              中文
+            </a>
+          </li>
+        
+          <li class="md-select__item">
+            <a href="../en/DigitalLogic_StopwatchCore/" hreflang="en" class="md-select__link">
+              English
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</div>
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="搜索" placeholder="搜索" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="查找">
+        
+        <button type="reset" class="md-search__icon md-icon" title="清空当前内容" aria-label="清空当前内容" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            正在初始化搜索引擎
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://cs207digitallogic.github.io" title="前往仓库" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub Repository
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="标签" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href=".." class="md-tabs__link">
+        
+  
+  
+    
+  
+  首页
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../DigitalLogic_EnvironmentSetup/" class="md-tabs__link">
+          
+  
+  
+  实验
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../projects/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  课程项目
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../links/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  在线OJ
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../resources/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  课程资源
+
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="导航栏" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="数字逻辑课程" class="md-nav__button md-logo" aria-label="数字逻辑课程" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    数字逻辑课程
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://cs207digitallogic.github.io" title="前往仓库" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub Repository
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    首页
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    实验
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    实验
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../DigitalLogic_EnvironmentSetup/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 1 环境搭建
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../DigitalLogic_VerilogBasics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 2 Verilog 基础与结构化建模
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../DigitalLogic_Dataflow/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 3 数据流建模与 FPGA 验证
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../DigitalLogic_BehaviorModeling/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 4 行为建模与数码管显示
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../DigitalLogic_SequentialLogic/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 5 时序逻辑——计数器与分频器
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../DigitalLogic_DynamicDisplay/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 6 动态显示——跑马灯与数码管
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../DigitalLogic_ButtonDebounce/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 7 按键消抖与边沿检测
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../DigitalLogic_StateMachine/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 8 状态机
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../DigitalLogic_ModuleIntegration/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 9 模块集成
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../DigitalLogic_UART/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab10 串口
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 11 Demo——秒表核心
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 11 Demo——秒表核心
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        实验目标
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. 秒表项目概述
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. 秒表项目概述">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#11" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.1 项目目标
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#12" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.2 秒表功能
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#13" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.3 模块架构
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-bcd" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. BCD 计数器
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. BCD 计数器">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#21-bcd" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.1 为什么用BCD而不是二进制？
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#22-bcd" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.2 BCD 计数器代码
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#23-4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.3 4级计数器级联
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#24" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.4 进位时序分析
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. 分频器参数
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. 本周实验任务
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. 本周实验任务">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-bcd_counter" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        步骤1：编写 bcd_counter 模块
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-clk_div" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        步骤2：编写 clk_div 模块
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        步骤3：编写计时核心测试顶层
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        步骤4：仿真验证
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        步骤5：上板验证
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../DigitalLogic_StopwatchControl/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 12 Demo——秒表控制
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../DigitalLogic_StopwatchIntegration/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 13 Demo——系统集成
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../DigitalLogic_Memory/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 14 存储器设计与 IP 核
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../projects/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    课程项目
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../links/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    在线OJ
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../resources/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    课程资源
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        实验目标
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. 秒表项目概述
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. 秒表项目概述">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#11" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.1 项目目标
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#12" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.2 秒表功能
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#13" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.3 模块架构
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-bcd" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. BCD 计数器
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. BCD 计数器">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#21-bcd" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.1 为什么用BCD而不是二进制？
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#22-bcd" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.2 BCD 计数器代码
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#23-4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.3 4级计数器级联
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#24" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.4 进位时序分析
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. 分频器参数
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. 本周实验任务
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. 本周实验任务">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-bcd_counter" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        步骤1：编写 bcd_counter 模块
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-clk_div" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        步骤2：编写 clk_div 模块
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        步骤3：编写计时核心测试顶层
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        步骤4：仿真验证
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        步骤5：上板验证
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<div><div class="toc">
+<ul>
+<li><a href="#_1">数字逻辑：综合项目（一）——秒表计时核心</a><ul>
+<li><a href="#_2">实验目标</a></li>
+<li><a href="#1">1. 秒表项目概述</a><ul>
+<li><a href="#11">1.1 项目目标</a></li>
+<li><a href="#12">1.2 秒表功能</a></li>
+<li><a href="#13">1.3 模块架构</a></li>
+</ul>
+</li>
+<li><a href="#2-bcd">2. BCD 计数器</a><ul>
+<li><a href="#21-bcd">2.1 为什么用BCD而不是二进制？</a></li>
+<li><a href="#22-bcd">2.2 BCD 计数器代码</a></li>
+<li><a href="#23-4">2.3 4级计数器级联</a></li>
+<li><a href="#24">2.4 进位时序分析</a></li>
+</ul>
+</li>
+<li><a href="#3">3. 分频器参数</a></li>
+<li><a href="#4">4. 本周实验任务</a><ul>
+<li><a href="#1-bcd_counter">步骤1：编写 bcd_counter 模块</a></li>
+<li><a href="#2-clk_div">步骤2：编写 clk_div 模块</a></li>
+<li><a href="#3_1">步骤3：编写计时核心测试顶层</a></li>
+<li><a href="#4_1">步骤4：仿真验证</a></li>
+<li><a href="#5">步骤5：上板验证</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+<hr>
+<h1 id="_1">数字逻辑：综合项目（一）——秒表计时核心</h1>
+<h2 id="_2">实验目标</h2>
+<ul>
+<li>了解秒表项目的整体架构与模块划分</li>
+<li>实现 BCD 计数器（模10计数器，适配数码管显示）</li>
+<li>实现 4 级 BCD 计数器级联，组成 00.00 - 99.99 的计数链</li>
+<li>使用分频器产生 100Hz 基准时钟脉冲</li>
+<li>通过仿真和 LED 验证计时核心的正确性</li>
+</ul>
+<hr>
+<h2 id="1">1. 秒表项目概述</h2>
+<h3 id="11">1.1 项目目标</h3>
+<p>用 3 周时间完成一个完整的秒表（Stopwatch）系统，体验<strong>模块化开发流程</strong>：</p>
+<div class="highlight"><pre><span></span><code>计时核心 → 显示与控制 → 系统集成
+</code></pre></div>
+<h3 id="12">1.2 秒表功能</h3>
+<ul>
+<li>4 位数码管显示 <code>SS.cc</code>（秒.百分秒），范围 00.00 - 99.99</li>
+<li>两个按键：</li>
+<li><strong>Start/Stop</strong>：启动 / 暂停计时</li>
+<li><strong>Reset</strong>：暂停状态下清零</li>
+<li>精度：10ms（百分秒）</li>
+</ul>
+<h3 id="13">1.3 模块架构</h3>
+<p><img alt="image-20260513115957176" src="../images/image-20260513115957176.png"></p>
+<p><strong>本周任务</strong>：实现虚线框内上半部分——<code>clk_div</code> + BCD 计数器链。</p>
+<hr>
+<h2 id="2-bcd">2. BCD 计数器</h2>
+<h3 id="21-bcd">2.1 为什么用BCD而不是二进制？</h3>
+<p>秒表需要在数码管上显示十进制数字。如果用一个二进制计数器计到 9999，还需要做二进制到 BCD 的转换（比较复杂）。</p>
+<p>更简单的方案：直接用 4 个<strong>模10计数器（BCD计数器）</strong>级联，每个计数器输出一位十进制数（0-9），直接送入七段译码器。</p>
+<h3 id="22-bcd">2.2 BCD 计数器代码</h3>
+<p>这是 <code>counter_mod</code>，参数设为 10：</p>
+<div class="highlight"><pre><span></span><code><span class="k">module</span><span class="w"> </span><span class="n">bcd_counter</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="k">input</span><span class="w">        </span><span class="n">clk</span><span class="p">,</span>
+<span class="w">    </span><span class="k">input</span><span class="w">        </span><span class="n">rst_n</span><span class="p">,</span>
+<span class="w">    </span><span class="k">input</span><span class="w">        </span><span class="n">en</span><span class="p">,</span>
+<span class="w">    </span><span class="k">output</span><span class="w"> </span><span class="kt">reg</span><span class="w"> </span><span class="p">[</span><span class="mh">3</span><span class="o">:</span><span class="mh">0</span><span class="p">]</span><span class="w"> </span><span class="n">cnt</span><span class="p">,</span>
+<span class="w">    </span><span class="k">output</span><span class="w">       </span><span class="n">carry</span>
+<span class="p">);</span>
+<span class="w">    </span><span class="k">assign</span><span class="w"> </span><span class="n">carry</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">cnt</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mh">4</span><span class="mi">'d9</span><span class="p">)</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">en</span><span class="p">;</span>
+
+<span class="w">    </span><span class="k">always</span><span class="w"> </span><span class="p">@(</span><span class="k">posedge</span><span class="w"> </span><span class="n">clk</span><span class="w"> </span><span class="k">or</span><span class="w"> </span><span class="k">negedge</span><span class="w"> </span><span class="n">rst_n</span><span class="p">)</span><span class="w"> </span><span class="k">begin</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">rst_n</span><span class="p">)</span>
+<span class="w">            </span><span class="n">cnt</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mh">4</span><span class="mi">'d0</span><span class="p">;</span>
+<span class="w">        </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">en</span><span class="p">)</span><span class="w"> </span><span class="k">begin</span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">cnt</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mh">4</span><span class="mi">'d9</span><span class="p">)</span>
+<span class="w">                </span><span class="n">cnt</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mh">4</span><span class="mi">'d0</span><span class="p">;</span>
+<span class="w">            </span><span class="k">else</span>
+<span class="w">                </span><span class="n">cnt</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">cnt</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mh">1</span><span class="mi">'d1</span><span class="p">;</span>
+<span class="w">        </span><span class="k">end</span>
+<span class="w">    </span><span class="k">end</span>
+<span class="k">endmodule</span>
+</code></pre></div>
+<h3 id="23-4">2.3 4级计数器级联</h3>
+<div class="highlight"><pre><span></span><code>tick_100hz → [百分秒个位] ─carry→ [百分秒十位] ─carry→ [秒个位] ─carry→ [秒十位]
+               cnt0 (0-9)          cnt1 (0-9)         cnt2 (0-9)      cnt3 (0-9)
+</code></pre></div>
+<p>显示格式：<code>[cnt3][cnt2].[cnt1][cnt0]</code> = SS.cc</p>
+<p><strong>级联逻辑</strong>：
+</p><div class="highlight"><pre><span></span><code><span class="kt">wire</span><span class="w"> </span><span class="n">tick_100hz</span><span class="p">;</span>
+<span class="kt">wire</span><span class="w"> </span><span class="n">carry0</span><span class="p">,</span><span class="w"> </span><span class="n">carry1</span><span class="p">,</span><span class="w"> </span><span class="n">carry2</span><span class="p">;</span>
+<span class="kt">wire</span><span class="w"> </span><span class="p">[</span><span class="mh">3</span><span class="o">:</span><span class="mh">0</span><span class="p">]</span><span class="w"> </span><span class="n">cnt0</span><span class="p">,</span><span class="w"> </span><span class="n">cnt1</span><span class="p">,</span><span class="w"> </span><span class="n">cnt2</span><span class="p">,</span><span class="w"> </span><span class="n">cnt3</span><span class="p">;</span>
+
+<span class="c1">// 100Hz 基准脉冲（10ms 一次）</span>
+<span class="n">clk_div</span><span class="w"> </span><span class="p">#(.</span><span class="n">MAX_COUNT</span><span class="p">(</span><span class="mh">1</span><span class="n">_000_000</span><span class="p">))</span><span class="w"> </span><span class="n">u_100hz</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="p">.</span><span class="n">clk</span><span class="p">(</span><span class="n">clk</span><span class="p">),</span><span class="w"> </span><span class="p">.</span><span class="n">rst_n</span><span class="p">(</span><span class="n">rst_n</span><span class="p">),</span><span class="w"> </span><span class="p">.</span><span class="n">tick</span><span class="p">(</span><span class="n">tick_100hz</span><span class="p">)</span>
+<span class="p">);</span>
+
+<span class="c1">// 百分秒个位 (0-9)</span>
+<span class="n">bcd_counter</span><span class="w"> </span><span class="n">u_cs0</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="p">.</span><span class="n">clk</span><span class="p">(</span><span class="n">clk</span><span class="p">),</span><span class="w"> </span><span class="p">.</span><span class="n">rst_n</span><span class="p">(</span><span class="n">rst_n</span><span class="p">),</span><span class="w"> </span><span class="p">.</span><span class="n">en</span><span class="p">(</span><span class="n">tick_100hz</span><span class="p">),</span>
+<span class="w">    </span><span class="p">.</span><span class="n">cnt</span><span class="p">(</span><span class="n">cnt0</span><span class="p">),</span><span class="w"> </span><span class="p">.</span><span class="n">carry</span><span class="p">(</span><span class="n">carry0</span><span class="p">)</span>
+<span class="p">);</span>
+
+<span class="c1">// 百分秒十位 (0-9)</span>
+<span class="n">bcd_counter</span><span class="w"> </span><span class="n">u_cs1</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="p">.</span><span class="n">clk</span><span class="p">(</span><span class="n">clk</span><span class="p">),</span><span class="w"> </span><span class="p">.</span><span class="n">rst_n</span><span class="p">(</span><span class="n">rst_n</span><span class="p">),</span><span class="w"> </span><span class="p">.</span><span class="n">en</span><span class="p">(</span><span class="n">carry0</span><span class="p">),</span>
+<span class="w">    </span><span class="p">.</span><span class="n">cnt</span><span class="p">(</span><span class="n">cnt1</span><span class="p">),</span><span class="w"> </span><span class="p">.</span><span class="n">carry</span><span class="p">(</span><span class="n">carry1</span><span class="p">)</span>
+<span class="p">);</span>
+
+<span class="c1">// 秒个位 (0-9)</span>
+<span class="n">bcd_counter</span><span class="w"> </span><span class="n">u_s0</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="p">.</span><span class="n">clk</span><span class="p">(</span><span class="n">clk</span><span class="p">),</span><span class="w"> </span><span class="p">.</span><span class="n">rst_n</span><span class="p">(</span><span class="n">rst_n</span><span class="p">),</span><span class="w"> </span><span class="p">.</span><span class="n">en</span><span class="p">(</span><span class="n">carry1</span><span class="p">),</span>
+<span class="w">    </span><span class="p">.</span><span class="n">cnt</span><span class="p">(</span><span class="n">cnt2</span><span class="p">),</span><span class="w"> </span><span class="p">.</span><span class="n">carry</span><span class="p">(</span><span class="n">carry2</span><span class="p">)</span>
+<span class="p">);</span>
+
+<span class="c1">// 秒十位 (0-9)</span>
+<span class="n">bcd_counter</span><span class="w"> </span><span class="n">u_s1</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="p">.</span><span class="n">clk</span><span class="p">(</span><span class="n">clk</span><span class="p">),</span><span class="w"> </span><span class="p">.</span><span class="n">rst_n</span><span class="p">(</span><span class="n">rst_n</span><span class="p">),</span><span class="w"> </span><span class="p">.</span><span class="n">en</span><span class="p">(</span><span class="n">carry2</span><span class="p">),</span>
+<span class="w">    </span><span class="p">.</span><span class="n">cnt</span><span class="p">(</span><span class="n">cnt3</span><span class="p">),</span><span class="w"> </span><span class="p">.</span><span class="n">carry</span><span class="p">()</span><span class="w">      </span><span class="c1">// 最高位进位不使用</span>
+<span class="p">);</span>
+</code></pre></div>
+<h3 id="24">2.4 进位时序分析</h3>
+<p>以 09.99 → 10.00 为例（一个 tick_100hz 到来时）：</p>
+<table>
+<thead>
+<tr>
+<th>信号</th>
+<th>当前值</th>
+<th>en</th>
+<th>操作</th>
+<th>新值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>cnt0</td>
+<td>9</td>
+<td>tick_100hz=1</td>
+<td>9→0, carry0=1</td>
+<td>0</td>
+</tr>
+<tr>
+<td>cnt1</td>
+<td>9</td>
+<td>carry0=1</td>
+<td>9→0, carry1=1</td>
+<td>0</td>
+</tr>
+<tr>
+<td>cnt2</td>
+<td>9</td>
+<td>carry1=1</td>
+<td>9→0, carry2=1</td>
+<td>0</td>
+</tr>
+<tr>
+<td>cnt3</td>
+<td>0</td>
+<td>carry2=1</td>
+<td>0→1</td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+<p>结果：10.00 ✓（所有更新在同一个时钟边沿完成）</p>
+<hr>
+<h2 id="3">3. 分频器参数</h2>
+<table>
+<thead>
+<tr>
+<th>用途</th>
+<th>目标频率</th>
+<th>MAX_COUNT</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>百分秒基准</td>
+<td>100Hz</td>
+<td>1,000,000</td>
+<td>100MHz / 1,000,000 = 100Hz</td>
+</tr>
+<tr>
+<td>仿真加速</td>
+<td>—</td>
+<td>10</td>
+<td>仿真时使用</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="4">4. 本周实验任务</h2>
+<h3 id="1-bcd_counter">步骤1：编写 <code>bcd_counter</code> 模块</h3>
+<p>参考 2.2 节代码，创建 <code>bcd_counter.v</code>。</p>
+<h3 id="2-clk_div">步骤2：编写 <code>clk_div</code> 模块</h3>
+<p>复用分频器代码，创建 <code>clk_div.v</code>。</p>
+<h3 id="3_1">步骤3：编写计时核心测试顶层</h3>
+<p>创建一个临时的顶层模块，只包含分频器 + 计数器链 + LED输出，用于验证计时功能：</p>
+<div class="highlight"><pre><span></span><code><span class="k">module</span><span class="w"> </span><span class="n">stopwatch_core_test</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="k">input</span><span class="w">        </span><span class="n">clk</span><span class="p">,</span>
+<span class="w">    </span><span class="k">input</span><span class="w">        </span><span class="n">rst_n</span><span class="p">,</span>
+<span class="w">    </span><span class="k">output</span><span class="w"> </span><span class="p">[</span><span class="mh">3</span><span class="o">:</span><span class="mh">0</span><span class="p">]</span><span class="w"> </span><span class="n">led_bg</span><span class="p">,</span><span class="w">     </span><span class="c1">// 显示百分秒个位（cnt0）</span>
+<span class="w">    </span><span class="k">output</span><span class="w"> </span><span class="p">[</span><span class="mh">3</span><span class="o">:</span><span class="mh">0</span><span class="p">]</span><span class="w"> </span><span class="n">led_bs</span><span class="p">,</span><span class="w">     </span><span class="c1">// 显示百分秒个位（cnt1）</span>
+<span class="w">    </span><span class="k">output</span><span class="w"> </span><span class="p">[</span><span class="mh">3</span><span class="o">:</span><span class="mh">0</span><span class="p">]</span><span class="w"> </span><span class="n">led_sg</span><span class="p">,</span><span class="w">     </span><span class="c1">// 显示秒个位（cnt2）    </span>
+<span class="w">    </span><span class="k">output</span><span class="w"> </span><span class="p">[</span><span class="mh">3</span><span class="o">:</span><span class="mh">0</span><span class="p">]</span><span class="w"> </span><span class="n">led_ss</span><span class="w">     </span><span class="c1">// 显示秒十位（cnt3）        </span>
+<span class="p">);</span>
+<span class="w">    </span><span class="kt">wire</span><span class="w"> </span><span class="n">tick_100hz</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">wire</span><span class="w"> </span><span class="n">carry0</span><span class="p">,</span><span class="w"> </span><span class="n">carry1</span><span class="p">,</span><span class="w"> </span><span class="n">carry2</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">wire</span><span class="w"> </span><span class="p">[</span><span class="mh">3</span><span class="o">:</span><span class="mh">0</span><span class="p">]</span><span class="w"> </span><span class="n">cnt0</span><span class="p">,</span><span class="w"> </span><span class="n">cnt1</span><span class="p">,</span><span class="w"> </span><span class="n">cnt2</span><span class="p">,</span><span class="w"> </span><span class="n">cnt3</span><span class="p">;</span>
+
+<span class="w">    </span><span class="n">clk_div</span><span class="w"> </span><span class="p">#(.</span><span class="n">MAX_COUNT</span><span class="p">(</span><span class="mh">1</span><span class="n">_000_000</span><span class="p">))</span><span class="w"> </span><span class="n">u_100hz</span><span class="w"> </span><span class="p">(</span>
+<span class="w">        </span><span class="p">.</span><span class="n">clk</span><span class="p">(</span><span class="n">clk</span><span class="p">),</span><span class="w"> </span><span class="p">.</span><span class="n">rst_n</span><span class="p">(</span><span class="n">rst_n</span><span class="p">),</span><span class="w"> </span><span class="p">.</span><span class="n">tick</span><span class="p">(</span><span class="n">tick_100hz</span><span class="p">)</span>
+<span class="w">    </span><span class="p">);</span>
+
+<span class="w">    </span><span class="n">bcd_counter</span><span class="w"> </span><span class="n">u_cs0</span><span class="w"> </span><span class="p">(.</span><span class="n">clk</span><span class="p">(</span><span class="n">clk</span><span class="p">),</span><span class="w"> </span><span class="p">.</span><span class="n">rst_n</span><span class="p">(</span><span class="n">rst_n</span><span class="p">),</span><span class="w"> </span><span class="p">.</span><span class="n">en</span><span class="p">(</span><span class="n">tick_100hz</span><span class="p">),</span>
+<span class="w">                        </span><span class="p">.</span><span class="n">cnt</span><span class="p">(</span><span class="n">cnt0</span><span class="p">),</span><span class="w"> </span><span class="p">.</span><span class="n">carry</span><span class="p">(</span><span class="n">carry0</span><span class="p">));</span>
+<span class="w">    </span><span class="n">bcd_counter</span><span class="w"> </span><span class="n">u_cs1</span><span class="w"> </span><span class="p">(.</span><span class="n">clk</span><span class="p">(</span><span class="n">clk</span><span class="p">),</span><span class="w"> </span><span class="p">.</span><span class="n">rst_n</span><span class="p">(</span><span class="n">rst_n</span><span class="p">),</span><span class="w"> </span><span class="p">.</span><span class="n">en</span><span class="p">(</span><span class="n">carry0</span><span class="p">),</span>
+<span class="w">                        </span><span class="p">.</span><span class="n">cnt</span><span class="p">(</span><span class="n">cnt1</span><span class="p">),</span><span class="w"> </span><span class="p">.</span><span class="n">carry</span><span class="p">(</span><span class="n">carry1</span><span class="p">));</span>
+<span class="w">    </span><span class="n">bcd_counter</span><span class="w"> </span><span class="n">u_s0</span><span class="w">  </span><span class="p">(.</span><span class="n">clk</span><span class="p">(</span><span class="n">clk</span><span class="p">),</span><span class="w"> </span><span class="p">.</span><span class="n">rst_n</span><span class="p">(</span><span class="n">rst_n</span><span class="p">),</span><span class="w"> </span><span class="p">.</span><span class="n">en</span><span class="p">(</span><span class="n">carry1</span><span class="p">),</span>
+<span class="w">                        </span><span class="p">.</span><span class="n">cnt</span><span class="p">(</span><span class="n">cnt2</span><span class="p">),</span><span class="w"> </span><span class="p">.</span><span class="n">carry</span><span class="p">(</span><span class="n">carry2</span><span class="p">));</span>
+<span class="w">    </span><span class="n">bcd_counter</span><span class="w"> </span><span class="n">u_s1</span><span class="w">  </span><span class="p">(.</span><span class="n">clk</span><span class="p">(</span><span class="n">clk</span><span class="p">),</span><span class="w"> </span><span class="p">.</span><span class="n">rst_n</span><span class="p">(</span><span class="n">rst_n</span><span class="p">),</span><span class="w"> </span><span class="p">.</span><span class="n">en</span><span class="p">(</span><span class="n">carry2</span><span class="p">),</span>
+<span class="w">                        </span><span class="p">.</span><span class="n">cnt</span><span class="p">(</span><span class="n">cnt3</span><span class="p">),</span><span class="w"> </span><span class="p">.</span><span class="n">carry</span><span class="p">());</span>
+
+<span class="w">    </span><span class="k">assign</span><span class="w"> </span><span class="n">led_bg</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cnt0</span><span class="p">;</span>
+<span class="w">    </span><span class="k">assign</span><span class="w"> </span><span class="n">led_bs</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cnt1</span><span class="p">;</span><span class="w"> </span>
+<span class="w">    </span><span class="k">assign</span><span class="w"> </span><span class="n">led_sg</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cnt2</span><span class="p">;</span>
+<span class="w">    </span><span class="k">assign</span><span class="w"> </span><span class="n">led_ss</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cnt3</span><span class="p">;</span><span class="w">     </span>
+<span class="k">endmodule</span>
+</code></pre></div>
+<h3 id="4_1">步骤4：仿真验证</h3>
+<div class="highlight"><pre><span></span><code><span class="no">`timescale</span><span class="w"> </span><span class="mh">1</span><span class="n">ns</span><span class="o">/</span><span class="mh">1</span><span class="n">ps</span>
+
+<span class="k">module</span><span class="w"> </span><span class="n">tb_stopwatch_core</span><span class="p">();</span>
+<span class="w">    </span><span class="kt">reg</span><span class="w"> </span><span class="n">clk</span><span class="p">,</span><span class="w"> </span><span class="n">rst_n</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">wire</span><span class="w"> </span><span class="p">[</span><span class="mh">3</span><span class="o">:</span><span class="mh">0</span><span class="p">]</span><span class="w"> </span><span class="n">cnt0</span><span class="p">,</span><span class="w"> </span><span class="n">cnt1</span><span class="p">,</span><span class="w"> </span><span class="n">cnt2</span><span class="p">,</span><span class="w"> </span><span class="n">cnt3</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">wire</span><span class="w"> </span><span class="n">carry0</span><span class="p">,</span><span class="w"> </span><span class="n">carry1</span><span class="p">,</span><span class="w"> </span><span class="n">carry2</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">wire</span><span class="w"> </span><span class="n">tick</span><span class="p">;</span>
+
+<span class="w">    </span><span class="n">clk_div</span><span class="w"> </span><span class="p">#(.</span><span class="n">MAX_COUNT</span><span class="p">(</span><span class="mh">10</span><span class="p">))</span><span class="w"> </span><span class="n">u_tick</span><span class="w"> </span><span class="p">(</span>
+<span class="w">        </span><span class="p">.</span><span class="n">clk</span><span class="p">(</span><span class="n">clk</span><span class="p">),</span><span class="w"> </span><span class="p">.</span><span class="n">rst_n</span><span class="p">(</span><span class="n">rst_n</span><span class="p">),</span><span class="w"> </span><span class="p">.</span><span class="n">tick</span><span class="p">(</span><span class="n">tick</span><span class="p">)</span>
+<span class="w">    </span><span class="p">);</span>
+
+<span class="w">    </span><span class="n">bcd_counter</span><span class="w"> </span><span class="n">u0</span><span class="w"> </span><span class="p">(.</span><span class="n">clk</span><span class="p">(</span><span class="n">clk</span><span class="p">),</span><span class="w"> </span><span class="p">.</span><span class="n">rst_n</span><span class="p">(</span><span class="n">rst_n</span><span class="p">),</span><span class="w"> </span><span class="p">.</span><span class="n">en</span><span class="p">(</span><span class="n">tick</span><span class="p">),</span>
+<span class="w">                     </span><span class="p">.</span><span class="n">cnt</span><span class="p">(</span><span class="n">cnt0</span><span class="p">),</span><span class="w"> </span><span class="p">.</span><span class="n">carry</span><span class="p">(</span><span class="n">carry0</span><span class="p">));</span>
+<span class="w">    </span><span class="n">bcd_counter</span><span class="w"> </span><span class="n">u1</span><span class="w"> </span><span class="p">(.</span><span class="n">clk</span><span class="p">(</span><span class="n">clk</span><span class="p">),</span><span class="w"> </span><span class="p">.</span><span class="n">rst_n</span><span class="p">(</span><span class="n">rst_n</span><span class="p">),</span><span class="w"> </span><span class="p">.</span><span class="n">en</span><span class="p">(</span><span class="n">carry0</span><span class="p">),</span>
+<span class="w">                     </span><span class="p">.</span><span class="n">cnt</span><span class="p">(</span><span class="n">cnt1</span><span class="p">),</span><span class="w"> </span><span class="p">.</span><span class="n">carry</span><span class="p">(</span><span class="n">carry1</span><span class="p">));</span>
+<span class="w">    </span><span class="n">bcd_counter</span><span class="w"> </span><span class="n">u2</span><span class="w"> </span><span class="p">(.</span><span class="n">clk</span><span class="p">(</span><span class="n">clk</span><span class="p">),</span><span class="w"> </span><span class="p">.</span><span class="n">rst_n</span><span class="p">(</span><span class="n">rst_n</span><span class="p">),</span><span class="w"> </span><span class="p">.</span><span class="n">en</span><span class="p">(</span><span class="n">carry1</span><span class="p">),</span>
+<span class="w">                     </span><span class="p">.</span><span class="n">cnt</span><span class="p">(</span><span class="n">cnt2</span><span class="p">),</span><span class="w"> </span><span class="p">.</span><span class="n">carry</span><span class="p">(</span><span class="n">carry2</span><span class="p">));</span>
+<span class="w">    </span><span class="n">bcd_counter</span><span class="w"> </span><span class="n">u3</span><span class="w"> </span><span class="p">(.</span><span class="n">clk</span><span class="p">(</span><span class="n">clk</span><span class="p">),</span><span class="w"> </span><span class="p">.</span><span class="n">rst_n</span><span class="p">(</span><span class="n">rst_n</span><span class="p">),</span><span class="w"> </span><span class="p">.</span><span class="n">en</span><span class="p">(</span><span class="n">carry2</span><span class="p">),</span>
+<span class="w">                     </span><span class="p">.</span><span class="n">cnt</span><span class="p">(</span><span class="n">cnt3</span><span class="p">),</span><span class="w"> </span><span class="p">.</span><span class="n">carry</span><span class="p">());</span>
+
+<span class="w">    </span><span class="k">initial</span><span class="w"> </span><span class="n">clk</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0</span><span class="p">;</span>
+<span class="w">    </span><span class="k">always</span><span class="w"> </span><span class="p">#</span><span class="mh">5</span><span class="w"> </span><span class="n">clk</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">~</span><span class="n">clk</span><span class="p">;</span>
+
+<span class="w">    </span><span class="k">initial</span><span class="w"> </span><span class="k">begin</span>
+<span class="w">        </span><span class="nb">$monitor</span><span class="p">(</span><span class="s">"time=%6d: %d%d.%d%d"</span><span class="p">,</span>
+<span class="w">                 </span><span class="nb">$time</span><span class="p">,</span><span class="w"> </span><span class="n">cnt3</span><span class="p">,</span><span class="w"> </span><span class="n">cnt2</span><span class="p">,</span><span class="w"> </span><span class="n">cnt1</span><span class="p">,</span><span class="w"> </span><span class="n">cnt0</span><span class="p">);</span>
+<span class="w">        </span><span class="n">rst_n</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0</span><span class="p">;</span><span class="w"> </span><span class="p">#</span><span class="mh">30</span><span class="p">;</span><span class="w"> </span><span class="n">rst_n</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">1</span><span class="p">;</span>
+<span class="w">        </span><span class="c1">// 等待计到 01.00 (100个tick = 100*10*10ns = 10000ns)</span>
+<span class="w">        </span><span class="p">#</span><span class="mh">120000</span><span class="p">;</span>
+<span class="w">        </span><span class="nb">$finish</span><span class="p">;</span>
+<span class="w">    </span><span class="k">end</span>
+<span class="k">endmodule</span>
+</code></pre></div>
+<p><strong>仿真观察要点</strong>：
+- 计数序列：00.00 → 00.01 → ... → 00.09 → 00.10 → ... → 00.99 → 01.00
+- 进位是否正确：百分秒满100后秒加1</p>
+<h3 id="5">步骤5：上板验证</h3>
+<ul>
+<li>将 <code>stopwatch_core_test</code> 的 LED 输出接到开发板 LED</li>
+<li><code>rst</code> 接按键</li>
+<li>观察毫秒、秒的二进制计数
+<div class="video-container"><iframe src="../videos/stopwatch-led.mp4" style="position:relative;width:100%;height:22.172vw" frameborder="0" allowfullscreen alt="type:video"></iframe></div></li>
+</ul></div>
+
+
+
+
+
+
+
+
+  <aside class="md-source-file">
+    
+    
+    
+      
+  
+  <span class="md-source-file__fact">
+    <span class="md-icon" title="贡献者">
+      
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 4a4 4 0 0 1 4 4 4 4 0 0 1-4 4 4 4 0 0 1-4-4 4 4 0 0 1 4-4m0 10c4.42 0 8 1.79 8 4v2H4v-2c0-2.21 3.58-4 8-4"/></svg>
+      
+    </span>
+    <nav>
+      baiyhsz
+    </nav>
+  </span>
+
+    
+    
+  </aside>
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  回到页面顶部
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright &copy; 2025 南方科技大学
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["search.suggest", "search.highlight", "content.tabs.link", "navigation.tabs", "navigation.top", "content.code.copy"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "\u5df2\u590d\u5236", "clipboard.copy": "\u590d\u5236", "search.result.more.one": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.more.other": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 # \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.none": "\u6ca1\u6709\u627e\u5230\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.one": "\u627e\u5230 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.other": "# \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.placeholder": "\u952e\u5165\u4ee5\u5f00\u59cb\u641c\u7d22", "search.result.term.missing": "\u7f3a\u5c11", "select.version": "\u9009\u62e9\u5f53\u524d\u7248\u672c"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>

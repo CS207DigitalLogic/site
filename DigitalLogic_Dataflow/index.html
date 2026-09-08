@@ -1,0 +1,2571 @@
+
+<!doctype html>
+<html lang="zh" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="数字逻辑实验课程资料">
+      
+      
+      
+        <link rel="canonical" href="https://cs207digitallogic.github.io/site/DigitalLogic_Dataflow/">
+      
+      
+        <link rel="prev" href="../DigitalLogic_VerilogBasics/">
+      
+      
+        <link rel="next" href="../DigitalLogic_BehaviorModeling/">
+      
+      
+        
+          <link rel="alternate" href="./" hreflang="zh">
+        
+          <link rel="alternate" href="../en/DigitalLogic_Dataflow/" hreflang="en">
+        
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>Lab 3 数据流建模与 FPGA 验证 - 数字逻辑课程</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#fpga" class="md-skip">
+          跳转至
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="页眉">
+    <a href=".." title="数字逻辑课程" class="md-header__button md-logo" aria-label="数字逻辑课程" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            数字逻辑课程
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Lab 3 数据流建模与 FPGA 验证
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-hidden="true"  type="radio" name="__palette" id="__palette_0">
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+      <div class="md-header__option">
+  <div class="md-select">
+    
+    <button class="md-header__button md-icon" aria-label="选择当前语言">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m12.87 15.07-2.54-2.51.03-.03A17.5 17.5 0 0 0 14.07 6H17V4h-7V2H8v2H1v2h11.17C11.5 7.92 10.44 9.75 9 11.35 8.07 10.32 7.3 9.19 6.69 8h-2c.73 1.63 1.73 3.17 2.98 4.56l-5.09 5.02L4 19l5-5 3.11 3.11zM18.5 10h-2L12 22h2l1.12-3h4.75L21 22h2zm-2.62 7 1.62-4.33L19.12 17z"/></svg>
+    </button>
+    <div class="md-select__inner">
+      <ul class="md-select__list">
+        
+          <li class="md-select__item">
+            <a href="./" hreflang="zh" class="md-select__link">
+              中文
+            </a>
+          </li>
+        
+          <li class="md-select__item">
+            <a href="../en/DigitalLogic_Dataflow/" hreflang="en" class="md-select__link">
+              English
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</div>
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="搜索" placeholder="搜索" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="查找">
+        
+        <button type="reset" class="md-search__icon md-icon" title="清空当前内容" aria-label="清空当前内容" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            正在初始化搜索引擎
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://cs207digitallogic.github.io" title="前往仓库" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub Repository
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="标签" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href=".." class="md-tabs__link">
+        
+  
+  
+    
+  
+  首页
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../DigitalLogic_EnvironmentSetup/" class="md-tabs__link">
+          
+  
+  
+  实验
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../projects/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  课程项目
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../links/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  在线OJ
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../resources/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  课程资源
+
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="导航栏" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="数字逻辑课程" class="md-nav__button md-logo" aria-label="数字逻辑课程" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    数字逻辑课程
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://cs207digitallogic.github.io" title="前往仓库" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub Repository
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    首页
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    实验
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    实验
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../DigitalLogic_EnvironmentSetup/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 1 环境搭建
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../DigitalLogic_VerilogBasics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 2 Verilog 基础与结构化建模
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 3 数据流建模与 FPGA 验证
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 3 数据流建模与 FPGA 验证
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        实验目标
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1-dataflow-modeling" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. 数据流建模 (Dataflow Modeling)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. 数据流建模 (Dataflow Modeling)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#11" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.1 什么是数据流建模？
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#12-assign" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.2 连续赋值 assign
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#13" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.3 常用运算符
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1.3 常用运算符">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        数据流建模中常用的运算符：
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        位运算与逻辑运算区别
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#14-3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.4 数据流建模示例：3 输入多数表决器
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-testbench" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. 编写 Testbench 进行仿真
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. 编写 Testbench 进行仿真">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#21-testbench" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.1 Testbench 基本结构
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#22-testbench" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.2 testbench 样例
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#23" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.3 产生激励的常用方法
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#24" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.4 常用系统任务（仅用于仿真）
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#25-testbench-majority_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.5 完整 testbench 示例（针对 majority_3）
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-vs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. 数据流建模 vs 结构建模（门级原语）
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. 数据流建模 vs 结构建模（门级原语）">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#31-primitive-gate" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.1 复习：结构建模（使用 primitive gate）
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#32" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.2 代码风格对比
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#33" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.3 对比
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. 综合
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. 综合">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#41" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.1 什么是综合
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#42" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.2 如何查看综合后的电路图？
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        如何查看模块的真值表或逻辑表达式？
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-vivado" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. 引脚设置与上板流程（以 Vivado 为例）
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5. 引脚设置与上板流程（以 Vivado 为例）">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#41_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.1 编写引脚约束
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4.1 编写引脚约束">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#vivado-io-planning" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        方法一：使用 Vivado 图形界面（I/O Planning）
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#xdc" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        方法二：手动编写 XDC 文件 （回顾）
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#42_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.2 实现与生成比特流
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#43-fpga" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.3 下载到 FPGA 开发板
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. 练习题
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5. 练习题">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#dataflow-assign" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        练习：使用 Dataflow 设计方法（assign 语句）实现一个全加器。
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1design" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        步骤1：编写design
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-testbench_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        步骤2：编写 testbench 验证
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        步骤3：综合
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        步骤4：引脚设置
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        步骤5：生成比特流和上板验证
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        附录：常见问题
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../DigitalLogic_BehaviorModeling/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 4 行为建模与数码管显示
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../DigitalLogic_SequentialLogic/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 5 时序逻辑——计数器与分频器
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../DigitalLogic_DynamicDisplay/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 6 动态显示——跑马灯与数码管
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../DigitalLogic_ButtonDebounce/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 7 按键消抖与边沿检测
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../DigitalLogic_StateMachine/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 8 状态机
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../DigitalLogic_ModuleIntegration/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 9 模块集成
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../DigitalLogic_UART/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab10 串口
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../DigitalLogic_StopwatchCore/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 11 Demo——秒表核心
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../DigitalLogic_StopwatchControl/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 12 Demo——秒表控制
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../DigitalLogic_StopwatchIntegration/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 13 Demo——系统集成
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../DigitalLogic_Memory/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 14 存储器设计与 IP 核
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../projects/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    课程项目
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../links/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    在线OJ
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../resources/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    课程资源
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        实验目标
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1-dataflow-modeling" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. 数据流建模 (Dataflow Modeling)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. 数据流建模 (Dataflow Modeling)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#11" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.1 什么是数据流建模？
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#12-assign" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.2 连续赋值 assign
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#13" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.3 常用运算符
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1.3 常用运算符">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        数据流建模中常用的运算符：
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        位运算与逻辑运算区别
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#14-3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.4 数据流建模示例：3 输入多数表决器
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-testbench" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. 编写 Testbench 进行仿真
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. 编写 Testbench 进行仿真">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#21-testbench" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.1 Testbench 基本结构
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#22-testbench" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.2 testbench 样例
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#23" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.3 产生激励的常用方法
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#24" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.4 常用系统任务（仅用于仿真）
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#25-testbench-majority_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.5 完整 testbench 示例（针对 majority_3）
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-vs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. 数据流建模 vs 结构建模（门级原语）
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. 数据流建模 vs 结构建模（门级原语）">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#31-primitive-gate" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.1 复习：结构建模（使用 primitive gate）
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#32" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.2 代码风格对比
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#33" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.3 对比
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. 综合
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. 综合">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#41" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.1 什么是综合
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#42" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.2 如何查看综合后的电路图？
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        如何查看模块的真值表或逻辑表达式？
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-vivado" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. 引脚设置与上板流程（以 Vivado 为例）
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5. 引脚设置与上板流程（以 Vivado 为例）">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#41_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.1 编写引脚约束
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4.1 编写引脚约束">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#vivado-io-planning" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        方法一：使用 Vivado 图形界面（I/O Planning）
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#xdc" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        方法二：手动编写 XDC 文件 （回顾）
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#42_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.2 实现与生成比特流
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#43-fpga" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.3 下载到 FPGA 开发板
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. 练习题
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5. 练习题">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#dataflow-assign" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        练习：使用 Dataflow 设计方法（assign 语句）实现一个全加器。
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1design" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        步骤1：编写design
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-testbench_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        步骤2：编写 testbench 验证
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        步骤3：综合
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        步骤4：引脚设置
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        步骤5：生成比特流和上板验证
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        附录：常见问题
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<div><div class="toc">
+<ul>
+<li><a href="#fpga">数字逻辑：数据流建模与FPGA验证</a><ul>
+<li><a href="#_1">实验目标</a></li>
+<li><a href="#1-dataflow-modeling">1. 数据流建模 (Dataflow Modeling)</a><ul>
+<li><a href="#11">1.1 什么是数据流建模？</a></li>
+<li><a href="#12-assign">1.2 连续赋值 assign</a></li>
+<li><a href="#13">1.3 常用运算符</a><ul>
+<li><a href="#_2">数据流建模中常用的运算符：</a></li>
+<li><a href="#_3">位运算与逻辑运算区别</a></li>
+</ul>
+</li>
+<li><a href="#14-3">1.4 数据流建模示例：3 输入多数表决器</a></li>
+</ul>
+</li>
+<li><a href="#2-testbench">2. 编写 Testbench 进行仿真</a><ul>
+<li><a href="#21-testbench">2.1 Testbench 基本结构</a></li>
+<li><a href="#22-testbench">2.2 testbench 样例</a></li>
+<li><a href="#23">2.3 产生激励的常用方法</a></li>
+<li><a href="#24">2.4 常用系统任务（仅用于仿真）</a></li>
+<li><a href="#25-testbench-majority_3">2.5 完整 testbench 示例（针对 majority_3）</a></li>
+</ul>
+</li>
+<li><a href="#3-vs">3. 数据流建模 vs 结构建模（门级原语）</a><ul>
+<li><a href="#31-primitive-gate">3.1 复习：结构建模（使用 primitive gate）</a></li>
+<li><a href="#32">3.2 代码风格对比</a></li>
+<li><a href="#33">3.3 对比</a></li>
+</ul>
+</li>
+<li><a href="#4">4. 综合</a><ul>
+<li><a href="#41">4.1 什么是综合</a></li>
+<li><a href="#42">4.2 如何查看综合后的电路图？</a></li>
+<li><a href="#_4">如何查看模块的真值表或逻辑表达式？</a></li>
+</ul>
+</li>
+<li><a href="#5-vivado">5. 引脚设置与上板流程（以 Vivado 为例）</a><ul>
+<li><a href="#41_1">4.1 编写引脚约束</a><ul>
+<li><a href="#vivado-io-planning">方法一：使用 Vivado 图形界面（I/O Planning）</a></li>
+<li><a href="#xdc">方法二：手动编写 XDC 文件 （回顾）</a></li>
+</ul>
+</li>
+<li><a href="#42_1">4.2 实现与生成比特流</a></li>
+<li><a href="#43-fpga">4.3 下载到 FPGA 开发板</a></li>
+</ul>
+</li>
+<li><a href="#5">5. 练习题</a><ul>
+<li><a href="#dataflow-assign">练习：使用 Dataflow 设计方法（assign 语句）实现一个全加器。</a></li>
+<li><a href="#1design">步骤1：编写design</a></li>
+<li><a href="#2-testbench_1">步骤2：编写 testbench 验证</a></li>
+<li><a href="#3">步骤3：综合</a></li>
+<li><a href="#4_1">步骤4：引脚设置</a></li>
+<li><a href="#5_1">步骤5：生成比特流和上板验证</a></li>
+</ul>
+</li>
+<li><a href="#_5">附录：常见问题</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<h1 id="fpga">数字逻辑：数据流建模与FPGA验证</h1>
+<h2 id="_1">实验目标</h2>
+<ul>
+<li>掌握 Verilog 数据流建模方式（连续赋值 <code>assign</code>）</li>
+<li>掌握编写简单的 testbench 进行仿真验证</li>
+<li>了解数据流建模与结构建模（门级原语）的区别</li>
+<li>掌握 FPGA 引脚设置及上板验证流程</li>
+</ul>
+<hr>
+<h2 id="1-dataflow-modeling">1. 数据流建模 (Dataflow Modeling)</h2>
+<h3 id="11">1.1 什么是数据流建模？</h3>
+<p>数据流建模是一种描述电路<strong>输入与输出之间逻辑关系</strong>的方式，使用<strong>连续赋值语句（<code>assign</code>）</strong>。<br>
+它抽象了底层门级结构，直接使用布尔表达式或运算符来描述功能，适合描述组合逻辑电路。</p>
+<h3 id="12-assign">1.2 连续赋值 <code>assign</code></h3>
+<ul>
+<li>语法：<code>assign  wire_类型信号 = 表达式;</code></li>
+<li>特点：</li>
+<li>赋值目标必须是 <code>wire</code> 类型（不能是 <code>reg</code>）</li>
+<li>只要等号右边任何变量发生变化，左边立即被更新（模拟了组合逻辑的实时性）</li>
+<li>多个 <code>assign</code> 语句并行执行，与书写顺序无关</li>
+</ul>
+<h3 id="13">1.3 常用运算符</h3>
+<h4 id="_2">数据流建模中常用的运算符：</h4>
+<table>
+<thead>
+<tr>
+<th>运算符类型</th>
+<th>符号</th>
+<th>示例</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>按位逻辑</td>
+<td><code>~</code>、<code>&amp;</code>、<code>|</code>、<code>^</code></td>
+<td><code>y = a &amp; b;</code></td>
+</tr>
+<tr>
+<td>逻辑运算</td>
+<td><code>!</code>、<code>&amp;&amp;</code>、<code>||</code></td>
+<td><code>y = a &amp;&amp; b;</code></td>
+</tr>
+<tr>
+<td>算术运算</td>
+<td><code>+</code>、<code>-</code>、<code>*</code>、<code>/</code></td>
+<td><code>sum = a + b;</code></td>
+</tr>
+<tr>
+<td>关系运算</td>
+<td><code>&gt;</code>、<code>&lt;</code>、<code>&gt;=</code>、<code>&lt;=</code></td>
+<td><code>gt = a &gt; b;</code></td>
+</tr>
+<tr>
+<td>等式运算</td>
+<td><code>==</code>、<code>!=</code></td>
+<td><code>eq = a == b;</code></td>
+</tr>
+<tr>
+<td>条件运算（三目）</td>
+<td><code>? :</code></td>
+<td><code>y = sel ? a : b;</code></td>
+</tr>
+<tr>
+<td>拼接运算符</td>
+<td><code>{}</code></td>
+<td><code>{cout, sum} = a + b;</code></td>
+</tr>
+</tbody>
+</table>
+<h4 id="_3">位运算与逻辑运算区别</h4>
+<ul>
+<li><strong>逻辑运算符</strong> (<code>!</code>, <code>&amp;&amp;</code>, <code>||</code>) 的有效输出永远是 <strong>1 位</strong>（<code>0</code> 或 <code>1</code>），常用于条件判断（如 <code>if</code>、<code>while</code>）。</li>
+<li><strong>位运算符</strong> (<code>~</code>, <code>&amp;</code>, <code>|</code>) 对操作数的每一位独立运算，输出位宽与操作数相同，常用于数据组合逻辑。</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;"><strong>a</strong></th>
+<th style="text-align: left;"><strong>b</strong></th>
+<th style="text-align: left;"><strong>a | b</strong></th>
+<th style="text-align: left;"><strong>a || b</strong></th>
+<th style="text-align: left;"><strong>a &amp; b</strong></th>
+<th style="text-align: left;"><strong>a &amp;&amp; b</strong></th>
+<th style="text-align: left;"><strong>~a</strong></th>
+<th style="text-align: left;"><strong>!a</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">2'b01</td>
+<td style="text-align: left;">2'b10</td>
+<td style="text-align: left;">2'b11</td>
+<td style="text-align: left;">1'b1</td>
+<td style="text-align: left;">2'b00</td>
+<td style="text-align: left;">1'b1</td>
+<td style="text-align: left;">2'b10</td>
+<td style="text-align: left;">1'b0</td>
+</tr>
+<tr>
+<td style="text-align: left;">2'b01</td>
+<td style="text-align: left;">2'b11</td>
+<td style="text-align: left;">2'b11</td>
+<td style="text-align: left;">1'b1</td>
+<td style="text-align: left;">2'b01</td>
+<td style="text-align: left;">1'b1</td>
+<td style="text-align: left;">2'b10</td>
+<td style="text-align: left;">1'b0</td>
+</tr>
+<tr>
+<td style="text-align: left;">2'b00</td>
+<td style="text-align: left;">2'b01</td>
+<td style="text-align: left;">2'b01</td>
+<td style="text-align: left;">1'b1</td>
+<td style="text-align: left;">2'b00</td>
+<td style="text-align: left;">1'b0</td>
+<td style="text-align: left;">2'b11</td>
+<td style="text-align: left;">1'b1</td>
+</tr>
+</tbody>
+</table>
+<h3 id="14-3">1.4 数据流建模示例：3 输入多数表决器</h3>
+<p>设计一个 3 输入多数表决器：当三个输入中有两个或以上为 1 时，输出为 1。</p>
+<p><img alt="Majority voter logic circuit designed using AND gates and an 3 input OR...  | Download Scientific Diagram" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRtOyeN9cafGHlEMPWqUfc67Mrtbwkb2k4SCg&amp;s"></p>
+<p><strong>逻辑表达式：F = ab + ac + bc, 设计如下：</strong></p>
+<div class="highlight"><pre><span></span><code><span class="c1">// 3-input majority voter (数据流描述)</span>
+<span class="k">module</span><span class="w"> </span><span class="n">majority_3</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="k">input</span><span class="w">  </span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="n">b</span><span class="p">,</span><span class="w"> </span><span class="n">c</span><span class="p">,</span>
+<span class="w">    </span><span class="k">output</span><span class="w"> </span><span class="n">out</span>
+<span class="p">);</span>
+<span class="w">    </span><span class="k">assign</span><span class="w"> </span><span class="n">out</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">a</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">b</span><span class="p">)</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="p">(</span><span class="n">a</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">c</span><span class="p">)</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="p">(</span><span class="n">b</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">c</span><span class="p">);</span>
+<span class="k">endmodule</span>
+</code></pre></div>
+<blockquote>
+<p>注意：优先级顺序：<code>()</code>&gt; <code>~</code> &gt; <code>&amp;</code> &gt; <code>|</code> </p>
+</blockquote>
+<p><strong>举例：表达式 F= a(b‘+c)，对应verilog:</strong></p>
+<div class="highlight"><pre><span></span><code><span class="k">assign</span><span class="w"> </span><span class="n">F</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="p">(</span><span class="o">~</span><span class="n">b</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">c</span><span class="p">);</span>
+</code></pre></div>
+<hr>
+<h2 id="2-testbench">2. 编写 Testbench 进行仿真</h2>
+<h3 id="21-testbench">2.1 Testbench 基本结构</h3>
+<p>testbench 是用来测试设计模块的仿真环境，它没有输入输出端口，内部实例化被测模块，并产生激励信号。</p>
+<ul>
+<li><strong>模块定义</strong>：testbench 是一个没有输入输出端口的顶层模块。</li>
+<li><strong>信号声明</strong>：将待测模块的<strong>输入</strong>声明为 <code>reg</code> 类型（用于产生激励），<strong>输出</strong>声明为 <code>wire</code> 类型（用于监测响应）。</li>
+<li><strong>实例化待测模块</strong>：实例化待测模块，并取好示例名，例如DUT，并将 testbench 中声明的信号连接到 DUT 的对应端口。</li>
+<li><strong>产生激励</strong>：在 <code>initial</code> 或 <code>always</code> 块中生成测试向量，常用循环、延时等方式（本节课仅使用initial）。</li>
+<li><strong>结果监测</strong>：使用 <code>$display</code>、<code>$monitor</code> 等系统任务打印输出，或用波形观察。</li>
+</ul>
+<h3 id="22-testbench">2.2 testbench 样例</h3>
+<p>以下是对应 <code>majority_3</code> 模块的 testbench 模板：</p>
+<div class="highlight"><pre><span></span><code><span class="no">`timescale</span><span class="w"> </span><span class="mh">1</span><span class="n">ns</span><span class="o">/</span><span class="mh">1</span><span class="n">ps</span>
+
+<span class="k">module</span><span class="w"> </span><span class="n">tb_majority_3</span><span class="p">();</span>
+<span class="w">    </span><span class="c1">// 声明信号（与待测模块端口对应）</span>
+<span class="w">    </span><span class="kt">reg</span><span class="w"> </span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="n">b</span><span class="p">,</span><span class="w"> </span><span class="n">c</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">wire</span><span class="w"> </span><span class="n">out</span><span class="p">;</span>
+
+<span class="w">    </span><span class="c1">// 实例化被测模块</span>
+<span class="w">    </span><span class="n">majority_3</span><span class="w"> </span><span class="n">uut</span><span class="w"> </span><span class="p">(</span>
+<span class="w">        </span><span class="p">.</span><span class="n">a</span><span class="p">(</span><span class="n">a</span><span class="p">),</span>
+<span class="w">        </span><span class="p">.</span><span class="n">b</span><span class="p">(</span><span class="n">b</span><span class="p">),</span>
+<span class="w">        </span><span class="p">.</span><span class="n">c</span><span class="p">(</span><span class="n">c</span><span class="p">),</span>
+<span class="w">        </span><span class="p">.</span><span class="n">out</span><span class="p">(</span><span class="n">out</span><span class="p">)</span>
+<span class="w">    </span><span class="p">);</span>
+
+<span class="w">    </span><span class="c1">// 产生激励</span>
+<span class="w">    </span><span class="k">initial</span><span class="w"> </span><span class="k">begin</span>
+<span class="w">        </span><span class="c1">// 在这里给输入赋值</span>
+<span class="w">    </span><span class="k">end</span>
+
+<span class="w">    </span><span class="c1">// 监控输出（可选）</span>
+<span class="w">    </span><span class="k">initial</span><span class="w"> </span><span class="k">begin</span>
+<span class="w">        </span><span class="nb">$monitor</span><span class="p">(...);</span>
+<span class="w">    </span><span class="k">end</span>
+<span class="k">endmodule</span>
+</code></pre></div>
+<h3 id="23">2.3 产生激励的常用方法</h3>
+<ul>
+<li><strong>直接赋值</strong>：用 <code>#</code> 延时依次改变输入</li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="k">initial</span><span class="w"> </span><span class="k">begin</span>
+<span class="w">    </span><span class="n">a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0</span><span class="p">;</span><span class="w"> </span><span class="n">b</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0</span><span class="p">;</span><span class="w"> </span><span class="n">c</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0</span><span class="p">;</span><span class="w"> </span>
+<span class="w">    </span><span class="p">#</span><span class="mh">10</span><span class="p">;</span>
+<span class="w">    </span><span class="n">a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0</span><span class="p">;</span><span class="w"> </span><span class="n">b</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0</span><span class="p">;</span><span class="w"> </span><span class="n">c</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">1</span><span class="p">;</span><span class="w"> </span>
+<span class="w">    </span><span class="p">#</span><span class="mh">10</span><span class="p">;</span>
+<span class="w">    </span><span class="n">a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0</span><span class="p">;</span><span class="w"> </span><span class="n">b</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">1</span><span class="p">;</span><span class="w"> </span><span class="n">c</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0</span><span class="p">;</span><span class="w"> </span>
+<span class="w">    </span><span class="p">#</span><span class="mh">10</span><span class="p">;</span>
+<span class="w">  </span><span class="c1">// ... 覆盖所有组合</span>
+<span class="w">    </span><span class="nb">$finish</span><span class="p">;</span>
+<span class="k">end</span>
+</code></pre></div>
+<ul>
+<li><strong>循环自动遍历</strong>（适合少量变量）：
+  Verilog 提供多种循环语句，下面给出三种常用写法。</li>
+</ul>
+<p><strong>1. for 循环</strong>（最常用）
+  </p><div class="highlight"><pre><span></span><code><span class="k">integer</span><span class="w"> </span><span class="n">i</span><span class="p">;</span>
+<span class="k">initial</span><span class="w"> </span><span class="k">begin</span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mh">8</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mh">1</span><span class="p">)</span><span class="w"> </span><span class="k">begin</span>
+<span class="w">        </span><span class="p">{</span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="n">b</span><span class="p">,</span><span class="w"> </span><span class="n">c</span><span class="p">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">i</span><span class="p">;</span><span class="w">  </span><span class="c1">// 拼接赋值，自动遍历 000~111</span>
+<span class="w">        </span><span class="p">#</span><span class="mh">10</span><span class="p">;</span>
+<span class="w">    </span><span class="k">end</span>
+<span class="w">    </span><span class="nb">$finish</span><span class="p">;</span>
+<span class="k">end</span>
+</code></pre></div>
+<p><strong>2. while 循环</strong>
+  </p><div class="highlight"><pre><span></span><code><span class="k">integer</span><span class="w"> </span><span class="n">i</span><span class="p">;</span>
+<span class="k">initial</span><span class="w"> </span><span class="k">begin</span>
+<span class="w">    </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0</span><span class="p">;</span>
+<span class="w">    </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mh">8</span><span class="p">)</span><span class="w"> </span><span class="k">begin</span>
+<span class="w">        </span><span class="p">{</span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="n">b</span><span class="p">,</span><span class="w"> </span><span class="n">c</span><span class="p">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">i</span><span class="p">;</span>
+<span class="w">        </span><span class="p">#</span><span class="mh">10</span><span class="p">;</span>
+<span class="w">        </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mh">1</span><span class="p">;</span>
+<span class="w">    </span><span class="k">end</span>
+<span class="w">    </span><span class="nb">$finish</span><span class="p">;</span>
+<span class="k">end</span>
+</code></pre></div>
+<p><strong>3. repeat 循环</strong>（固定次数）</p>
+<div class="highlight"><pre><span></span><code><span class="k">integer</span><span class="w"> </span><span class="n">i</span><span class="p">;</span>
+<span class="k">initial</span><span class="w"> </span><span class="k">begin</span>
+<span class="w">    </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0</span><span class="p">;</span>
+<span class="w">    </span><span class="k">repeat</span><span class="p">(</span><span class="mh">8</span><span class="p">)</span><span class="w"> </span><span class="k">begin</span>
+<span class="w">        </span><span class="p">{</span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="n">b</span><span class="p">,</span><span class="w"> </span><span class="n">c</span><span class="p">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">i</span><span class="p">;</span>
+<span class="w">        </span><span class="p">#</span><span class="mh">10</span><span class="p">;</span>
+<span class="w">        </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mh">1</span><span class="p">;</span>
+<span class="w">    </span><span class="k">end</span>
+<span class="w">    </span><span class="nb">$finish</span><span class="p">;</span>
+<span class="k">end</span>
+</code></pre></div>
+<blockquote>
+<p>注意**：<code>repeat</code> 只执行固定次数，通常用于不需要循环变量的场景；若需计数，仍需配合额外变量。</p>
+</blockquote>
+<h3 id="24">2.4 常用系统任务（仅用于仿真）</h3>
+<ul>
+<li><code>$display("格式字符串", 变量1, 变量2, ...);</code><br>
+  在仿真时打印信息，类似于 C 的 <code>printf</code>，每次执行都会打印。</li>
+<li><code>$monitor("格式字符串", 变量1, 变量2, ...);</code><br>
+  持续监控变量，当其中任何一个发生变化时自动打印一次。通常放在单独的 <code>initial</code> 块中。</li>
+<li><code>$finish;</code><br>
+  结束仿真，避免默认仿真时间过长，难以观察波形。</li>
+</ul>
+<p><strong>示例</strong>：</p>
+<div class="highlight"><pre><span></span><code><span class="k">initial</span><span class="w"> </span><span class="k">begin</span>
+<span class="w">    </span><span class="nb">$monitor</span><span class="p">(</span><span class="s">"time=%t a=%b b=%b c=%b out=%b"</span><span class="p">,</span><span class="w"> </span><span class="nb">$time</span><span class="p">,</span><span class="w"> </span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="n">b</span><span class="p">,</span><span class="w"> </span><span class="n">c</span><span class="p">,</span><span class="w"> </span><span class="n">out</span><span class="p">);</span>
+<span class="k">end</span>
+</code></pre></div>
+<h3 id="25-testbench-majority_3">2.5 完整 testbench 示例（针对 majority_3）</h3>
+<div class="highlight"><pre><span></span><code><span class="no">`timescale</span><span class="w"> </span><span class="mh">1</span><span class="n">ns</span><span class="o">/</span><span class="mh">1</span><span class="n">ps</span>
+
+<span class="k">module</span><span class="w"> </span><span class="n">tb_majority_3</span><span class="p">();</span>
+<span class="w">    </span><span class="kt">reg</span><span class="w"> </span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="n">b</span><span class="p">,</span><span class="w"> </span><span class="n">c</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">wire</span><span class="w"> </span><span class="n">out</span><span class="p">;</span>
+<span class="w">    </span><span class="k">integer</span><span class="w"> </span><span class="n">i</span><span class="p">;</span>
+
+<span class="w">    </span><span class="c1">// 实例化被测模块</span>
+<span class="w">    </span><span class="n">majority_3</span><span class="w"> </span><span class="n">uut</span><span class="w"> </span><span class="p">(</span>
+<span class="w">        </span><span class="p">.</span><span class="n">a</span><span class="p">(</span><span class="n">a</span><span class="p">),</span>
+<span class="w">        </span><span class="p">.</span><span class="n">b</span><span class="p">(</span><span class="n">b</span><span class="p">),</span>
+<span class="w">        </span><span class="p">.</span><span class="n">c</span><span class="p">(</span><span class="n">c</span><span class="p">),</span>
+<span class="w">        </span><span class="p">.</span><span class="n">out</span><span class="p">(</span><span class="n">out</span><span class="p">)</span>
+<span class="w">    </span><span class="p">);</span>
+
+<span class="w">    </span><span class="k">initial</span><span class="w"> </span><span class="k">begin</span>
+<span class="w">        </span><span class="nb">$monitor</span><span class="p">(</span><span class="s">"time=%3d: a=%b b=%b c=%b =&gt; out=%b"</span><span class="p">,</span><span class="w"> </span><span class="nb">$time</span><span class="p">,</span><span class="w"> </span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="n">b</span><span class="p">,</span><span class="w"> </span><span class="n">c</span><span class="p">,</span><span class="w"> </span><span class="n">out</span><span class="p">);</span>
+<span class="w">        </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mh">8</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mh">1</span><span class="p">)</span><span class="w"> </span><span class="k">begin</span>
+<span class="w">            </span><span class="p">{</span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="n">b</span><span class="p">,</span><span class="w"> </span><span class="n">c</span><span class="p">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">i</span><span class="p">;</span>
+<span class="w">            </span><span class="p">#</span><span class="mh">10</span><span class="p">;</span>
+<span class="w">        </span><span class="k">end</span>
+<span class="w">        </span><span class="nb">$finish</span><span class="p">;</span>
+<span class="w">    </span><span class="k">end</span>
+<span class="k">endmodule</span>
+</code></pre></div>
+<hr>
+<h2 id="3-vs">3. 数据流建模 vs 结构建模（门级原语）</h2>
+<h3 id="31-primitive-gate">3.1 复习：结构建模（使用 primitive gate）</h3>
+<p>Verilog 提供了内置的基本门原语（如 <code>and</code>、<code>or</code>、<code>xor</code> 等），通过实例化这些门来连接电路，称为<strong>结构建模</strong>。</p>
+<p><strong>示例</strong>：用门原语实现多数表决器</p>
+<div class="highlight"><pre><span></span><code><span class="k">module</span><span class="w"> </span><span class="n">majority_3_gate</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="k">input</span><span class="w"> </span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="n">b</span><span class="p">,</span><span class="w"> </span><span class="n">c</span><span class="p">,</span>
+<span class="w">    </span><span class="k">output</span><span class="w"> </span><span class="n">out</span>
+<span class="p">);</span>
+<span class="w">    </span><span class="kt">wire</span><span class="w"> </span><span class="n">w1</span><span class="p">,</span><span class="w"> </span><span class="n">w2</span><span class="p">,</span><span class="w"> </span><span class="n">w3</span><span class="p">;</span>
+<span class="w">    </span><span class="k">and</span><span class="w"> </span><span class="p">(</span><span class="n">w1</span><span class="p">,</span><span class="w"> </span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="n">b</span><span class="p">);</span>
+<span class="w">    </span><span class="k">and</span><span class="w"> </span><span class="p">(</span><span class="n">w2</span><span class="p">,</span><span class="w"> </span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="n">c</span><span class="p">);</span>
+<span class="w">    </span><span class="k">and</span><span class="w"> </span><span class="p">(</span><span class="n">w3</span><span class="p">,</span><span class="w"> </span><span class="n">b</span><span class="p">,</span><span class="w"> </span><span class="n">c</span><span class="p">);</span>
+<span class="w">    </span><span class="k">or</span><span class="w">  </span><span class="p">(</span><span class="n">out</span><span class="p">,</span><span class="w"> </span><span class="n">w1</span><span class="p">,</span><span class="w"> </span><span class="n">w2</span><span class="p">,</span><span class="w"> </span><span class="n">w3</span><span class="p">);</span>
+<span class="k">endmodule</span>
+</code></pre></div>
+<h3 id="32">3.2 代码风格对比</h3>
+<p>下表展示了两种建模方式的不同代码风格（以多数表决器为例）：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;"><strong>数据流建模</strong></th>
+<th style="text-align: left;"><strong>结构建模（with primitive）</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>直接表达式</strong></td>
+<td style="text-align: left;"><strong>基本门实例化</strong></td>
+</tr>
+<tr>
+<td style="text-align: left;">verilog<br>assign out = (a &amp; b) | (a &amp; c) | (b &amp; c);<br></td>
+<td style="text-align: left;">verilog<br>wire w1, w2, w3;and (w1, a, b);<br>and (w2, a, c);<br>and (w3, b, c);<br>or (out, w1, w2, w3);<br></td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>分步中间信号（效果相同）</strong></td>
+<td style="text-align: left;"><strong>门顺序可调（效果相同）</strong></td>
+</tr>
+<tr>
+<td style="text-align: left;">verilog<br>wire and_ab, and_ac, and_bc;<br>assign and_ab = a &amp; b;<br>assign and_ac = a &amp; c;<br>assign and_bc = b &amp; c;<br>assign out = and_ab | and_ac | and_bc;<br></td>
+<td style="text-align: left;">verilog<br>wire w1, w2, w3;<br>or (out, w1, w2, w3);<br>and (w1, a, b);<br>and (w2, a, c);<br>and (w3, b, c);<br></td>
+</tr>
+</tbody>
+</table>
+<h3 id="33">3.3 对比</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">特性</th>
+<th style="text-align: left;">数据流建模 (assign)</th>
+<th style="text-align: left;">结构建模 (门原语)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>抽象级别</strong></td>
+<td style="text-align: left;">较高，接近逻辑表达式</td>
+<td style="text-align: left;">较低，接近晶体管/门级连接</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>代码简洁性</strong></td>
+<td style="text-align: left;">简洁，一行表达式即可</td>
+<td style="text-align: left;">繁琐，需实例化多个门</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>可读性</strong></td>
+<td style="text-align: left;">好，直接体现功能</td>
+<td style="text-align: left;">差，需要理解门级连接</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>设计效率</strong></td>
+<td style="text-align: left;">高，适合复杂组合逻辑</td>
+<td style="text-align: left;">低，仅适合简单或教学示例</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>综合结果</strong></td>
+<td style="text-align: left;">综合工具优化</td>
+<td style="text-align: left;">基本对应指定门，可控但效率低</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>典型应用</strong></td>
+<td style="text-align: left;">实际工程中的组合逻辑</td>
+<td style="text-align: left;">教学演示、定制特殊门结构</td>
+</tr>
+</tbody>
+</table>
+<p><strong>结论</strong>：实际工程中几乎全部使用数据流或行为级建模(后面会学)，门级原语主要用于教学或特殊定制需求。</p>
+<hr>
+<h2 id="4">4. 综合</h2>
+<h3 id="41">4.1 什么是综合</h3>
+<p>综合（Synthesis）是将硬件描述语言（HDL）代码转化为具体逻辑电路（如门级网表）的过程。Vivado 的综合工具会分析你写的 Verilog 代码（如 <code>assign</code> 语句），推断出相应的逻辑门和连接关系，并生成一个与 FPGA 内部资源（查找表 LUT、触发器 FF 等）匹配的网表文件。</p>
+<p><strong>综合的用途</strong>：</p>
+<ul>
+<li>验证代码能否被综合工具接受，并生成实际的硬件结构。</li>
+<li>查看综合后的电路图（Schematic），帮助你直观理解代码对应的硬件实现。</li>
+<li>分析资源利用率、时序预估等（本课程暂不深入）。</li>
+</ul>
+<h3 id="42">4.2 如何查看综合后的电路图？</h3>
+<ol>
+<li>点击 <strong>Run Synthesis</strong> 进行综合。</li>
+<li>综合成功后，点击 <strong>Open Synthesized Design</strong> 打开综合后的设计。</li>
+<li>在打开的 <strong>Schematic</strong> 窗口中，可以看到由逻辑门、LUT、触发器组成的电路结构。</li>
+<li>你可以放大查看细节，观察输入信号如何经过逻辑单元产生输出。</li>
+<li>对于组合逻辑，通常会以 <strong>LUT（查找表）</strong> 的形式实现。</li>
+</ol>
+<p><img alt="image-20260308105212858" src="../images/image-20260308105212858.png"></p>
+<h3 id="_4">如何查看模块的真值表或逻辑表达式？</h3>
+<ul>
+<li>在原理图中，点击某个 <strong>LUT</strong> 单元（通常标有 <code>LUT2</code>、<code>LUT3</code> 等），会在属性窗口中显示其 <strong>LUT equation</strong>。<strong>LUT equation</strong> 是 Vivado 综合后推断出的逻辑表达式（可能与你的 <code>assign</code> 语句略有不同，但功能等价）。</li>
+</ul>
+<p><img alt="image-20260308104706741" src="../images/image-20260308104706741.png"></p>
+<p>通过观察原理图和 LUT 属性，你可以验证综合结果是否与预期一致，并深入理解 Verilog 代码是如何映射到 FPGA 硬件上的。</p>
+<p><img alt="image-20260308104441503" src="../images/image-20260308104441503.png"></p>
+<blockquote>
+<p><strong>注意</strong>：综合后的原理图只是逻辑映射的结果，并非最终的布局布线。布局布线后的电路会更复杂，但逻辑功能不变。</p>
+</blockquote>
+<h2 id="5-vivado">5. 引脚设置与上板流程（以 Vivado 为例）</h2>
+<blockquote>
+<p>注意：设置引脚之前需要先进行综合</p>
+</blockquote>
+<h3 id="41_1">4.1 编写引脚约束</h3>
+<h4 id="vivado-io-planning">方法一：使用 Vivado 图形界面（I/O Planning）</h4>
+<ol>
+<li>点击<strong>Run Synthesis</strong>进行综合</li>
+<li>在完成综合（Synthesis）后，点击 <strong>Open Synthesized Design</strong>。</li>
+<li>接着点击vivado顶部工具栏的 <strong>I/O Planning</strong> 标签（或选择 <strong>Layout → I/O Planning</strong>）。</li>
+<li>此时会打开 <strong>I/O Ports</strong> 窗口，列出所有顶层端口。</li>
+<li>在 <strong>Package Pin</strong> 列，双击对应端口的单元格，输入物理引脚编号。</li>
+<li>在 <strong>I/O Std</strong> 列，选择 <strong>LVCMOS33</strong>（根据板卡电压选择）。</li>
+<li>设置完成后，保存约束：<strong>File → Save Constraints</strong>，选择或新建一个 XDC 文件，将当前分配写入。</li>
+<li>也可以直接点击工具栏的 <strong>Write XDC</strong> 按钮生成约束文件。</li>
+</ol>
+<blockquote>
+<p><strong>提示</strong>：引脚编号需查阅开发板的原理图或官方文档。例如 Ego1开发板文档详见课程blackboard站点Reference。如果输入后发现找不到引脚编号，请确认创建项目时FPGA型号是否选择正确</p>
+</blockquote>
+<p><img alt="image-20260308103938122" src="../images/image-20260308103938122.png"></p>
+<h4 id="xdc">方法二：手动编写 XDC 文件 （回顾）</h4>
+<p>在工程中添加一个新的约束文件（<code>xxx.xdc</code>），输入并修改以下内容，约束的顺序不影响效果。</p>
+<p><strong>xdc文件示例：问号处需根据实际板卡修改引脚号</strong></p>
+<div class="highlight"><pre><span></span><code><span class="c">## 输入引脚 (拨码开关) </span>
+<span class="nv">set_property</span><span class="w"> </span>PACKAGE_PIN<span class="w"> </span><span class="o">??</span><span class="w"> </span><span class="k">[</span><span class="nv">get_ports</span><span class="w"> </span><span class="k">{</span><span class="nv">a</span><span class="k">}]</span>
+<span class="nv">set_property</span><span class="w"> </span>IOSTANDARD<span class="w"> </span>LVCMOS33<span class="w"> </span><span class="k">[</span><span class="nv">get_ports</span><span class="w"> </span><span class="k">{</span><span class="nv">a</span><span class="k">}]</span>
+
+<span class="nv">set_property</span><span class="w"> </span>PACKAGE_PIN<span class="w"> </span><span class="o">??</span><span class="w"> </span><span class="k">[</span><span class="nv">get_ports</span><span class="w"> </span><span class="k">{</span><span class="nv">b</span><span class="k">}]</span>
+<span class="nv">set_property</span><span class="w"> </span>IOSTANDARD<span class="w"> </span>LVCMOS33<span class="w"> </span><span class="k">[</span><span class="nv">get_ports</span><span class="w"> </span><span class="k">{</span><span class="nv">b</span><span class="k">}]</span>
+
+<span class="nv">set_property</span><span class="w"> </span>PACKAGE_PIN<span class="w"> </span><span class="o">??</span><span class="w"> </span><span class="k">[</span><span class="nv">get_ports</span><span class="w"> </span><span class="k">{</span><span class="nv">c</span><span class="k">}]</span>
+<span class="nv">set_property</span><span class="w"> </span>IOSTANDARD<span class="w"> </span>LVCMOS33<span class="w"> </span><span class="k">[</span><span class="nv">get_ports</span><span class="w"> </span><span class="k">{</span><span class="nv">c</span><span class="k">}]</span>
+
+<span class="c">## 输出引脚 (LED)</span>
+<span class="nv">set_property</span><span class="w"> </span>PACKAGE_PIN<span class="w"> </span><span class="o">??</span><span class="w"> </span><span class="k">[</span><span class="nv">get_ports</span><span class="w"> </span><span class="k">{</span><span class="nv">out</span><span class="k">}]</span>
+<span class="nv">set_property</span><span class="w"> </span>IOSTANDARD<span class="w"> </span>LVCMOS33<span class="w"> </span><span class="k">[</span><span class="nv">get_ports</span><span class="w"> </span><span class="k">{</span><span class="nv">out</span><span class="k">}]</span>
+</code></pre></div>
+<blockquote>
+<p><strong>参考</strong>：EGO1 开发板引脚请参考开发板技术手册，或直接查看开发板外设附近的引脚标签。如果在图形化界面设置中输入引脚编号发现该编号未出现在下拉菜单中，请确认创建项目时FPGA芯片型号是否选择正确</p>
+</blockquote>
+<p><img alt="image-20260609120819104" src="../images/image-20260609120819104.png"></p>
+<p><img alt="image-20260609120748493" src="../images/image-20260609120748493.png"></p>
+<h3 id="42_1">4.2 实现与生成比特流</h3>
+<ul>
+<li>点击 <strong>Run Implementation</strong> 进行布局布线。实现完n成后可查看时序报告。</li>
+<li>最后点击 <strong>Generate Bitstream</strong> 生成比特流文件（<code>.bit</code>）。生成成功后，会弹出完成对话框。</li>
+<li>也可以直接点击<strong>Generate Bitstream</strong>，会自动进行Synthesis，Implementation和Generate Bistream全流程，中间无需人工干预。</li>
+</ul>
+<h3 id="43-fpga">4.3 下载到 FPGA 开发板</h3>
+<ol>
+<li>连接开发板并上电，确保下载线（如 USB-JTAG）已连接。</li>
+<li>点击 <strong>Open Hardware Manager</strong> → <strong>Auto Connect</strong>，Vivado 会自动识别开发板。</li>
+<li>在 Hardware 窗口中，选择 <strong>Program Device</strong>。</li>
+<li>在弹出的对话框中，确认比特流文件路径正确，点击 <strong>Program</strong>。</li>
+<li>下载完成后，拨动开关，观察 LED 是否按多数表决逻辑亮灭。</li>
+</ol>
+<hr>
+<h2 id="5">5. 练习题</h2>
+<h3 id="dataflow-assign">练习：使用 Dataflow 设计方法（assign 语句）实现一个全加器。</h3>
+<ul>
+<li>
+<p>模块名：<code>FullAdder</code></p>
+</li>
+<li>
+<p>输入：<code>a</code>, <code>b</code>, <code>cin</code></p>
+</li>
+<li>
+<p>输出：<code>s</code>,<code>cout</code></p>
+</li>
+<li>
+<p>功能：如电路图所示。</p>
+</li>
+<li>
+<p>要求：使用 <code>assign</code> 和运算符实现。</p>
+</li>
+</ul>
+<p><img alt="Full Adder Circuit – How it Works" src="https://www.build-electronic-circuits.com/wp-content/uploads/2022/10/fullAdder-1-1024x473.png"></p>
+<h3 id="1design">步骤1：编写design</h3>
+<ul>
+<li>写出cout和s的表达式</li>
+<li>使用assin语句进行设计</li>
+</ul>
+<h3 id="2-testbench_1">步骤2：编写 testbench 验证</h3>
+<ul>
+<li>在纸上画出电路真值表</li>
+<li>与仿真结果进行对比，仿真方式可选择monitor仿真log或直接波形图对比方式</li>
+</ul>
+<h3 id="3">步骤3：综合</h3>
+<ul>
+<li>在Vivado中点击 <strong>Run Synthesis</strong>，等待综合完成。如果出现错误，根据错误提示修改代码。</li>
+</ul>
+<h3 id="4_1">步骤4：引脚设置</h3>
+<ul>
+<li>将练习1的设计添加引脚约束（例如 <code>a</code>/<code>b</code>/<code>cin</code> 用3个拨码开关，<code>s</code>/<code>cout</code> 用 LED）。</li>
+<li>通过 XDC 文件编辑或 I/O Planning 图形界面完成约束（选择一种方式）</li>
+</ul>
+<h3 id="5_1">步骤5：生成比特流和上板验证</h3>
+<ul>
+<li>点击Generate Bistream，生成比特流并下载到开发板，验证功能。</li>
+</ul>
+<hr>
+<h2 id="_5">附录：常见问题</h2>
+<ul>
+<li><strong>问</strong>：<code>assign</code> 左边可以是 <code>reg</code> 类型吗？<br>
+<strong>答</strong>：不可以，必须是 <code>wire</code> 或 <code>wire</code> 相关类型（如 <code>tri</code>）。</li>
+<li><strong>问</strong>：仿真时波形为直线？<br>
+<strong>答</strong>：检查 testbench 中是否加了 <code>$finish</code>，或仿真时间是否过长，可点击zoom fit以及zoom in将波形展示调整到合适位置。</li>
+<li><strong>问</strong>：上板后 LED 不亮或不受控？<br>
+<strong>答</strong>：检查引脚约束是否正确，下载是否成功，开发板电源是否打开。</li>
+<li><strong>问</strong>：在 I/O Planning 中找不到端口？<br>
+<strong>答</strong>：必须先运行综合（Synthesis），打开综合后的设计才能看到 I/O 端口列表。</li>
+</ul>
+<hr></div>
+
+
+
+
+
+
+
+
+  <aside class="md-source-file">
+    
+    
+    
+      
+  
+  <span class="md-source-file__fact">
+    <span class="md-icon" title="贡献者">
+      
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 4a4 4 0 0 1 4 4 4 4 0 0 1-4 4 4 4 0 0 1-4-4 4 4 0 0 1 4-4m0 10c4.42 0 8 1.79 8 4v2H4v-2c0-2.21 3.58-4 8-4"/></svg>
+      
+    </span>
+    <nav>
+      baiyhsz
+    </nav>
+  </span>
+
+    
+    
+  </aside>
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  回到页面顶部
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright &copy; 2025 南方科技大学
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["search.suggest", "search.highlight", "content.tabs.link", "navigation.tabs", "navigation.top", "content.code.copy"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "\u5df2\u590d\u5236", "clipboard.copy": "\u590d\u5236", "search.result.more.one": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.more.other": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 # \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.none": "\u6ca1\u6709\u627e\u5230\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.one": "\u627e\u5230 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.other": "# \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.placeholder": "\u952e\u5165\u4ee5\u5f00\u59cb\u641c\u7d22", "search.result.term.missing": "\u7f3a\u5c11", "select.version": "\u9009\u62e9\u5f53\u524d\u7248\u672c"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>

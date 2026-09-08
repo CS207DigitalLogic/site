@@ -1,0 +1,1812 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Digital Logic Laboratory Course Materials">
+      
+      
+      
+        <link rel="canonical" href="https://cs207digitallogic.github.io/site/en/DigitalLogic_StopwatchCore/">
+      
+      
+        <link rel="prev" href="../DigitalLogic_UART/">
+      
+      
+        <link rel="next" href="../DigitalLogic_StopwatchControl/">
+      
+      
+        
+          <link rel="alternate" href="../../DigitalLogic_StopwatchCore/" hreflang="zh">
+        
+          <link rel="alternate" href="./" hreflang="en">
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>Lab 11 Demo: Stopwatch Core - Digital Logic Course</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#digital-logic-integrated-project-istopwatch-timing-core" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../" title="Digital Logic Course" class="md-header__button md-logo" aria-label="Digital Logic Course" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Digital Logic Course
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Lab 11 Demo: Stopwatch Core
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-hidden="true"  type="radio" name="__palette" id="__palette_0">
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+      <div class="md-header__option">
+  <div class="md-select">
+    
+    <button class="md-header__button md-icon" aria-label="Select language">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m12.87 15.07-2.54-2.51.03-.03A17.5 17.5 0 0 0 14.07 6H17V4h-7V2H8v2H1v2h11.17C11.5 7.92 10.44 9.75 9 11.35 8.07 10.32 7.3 9.19 6.69 8h-2c.73 1.63 1.73 3.17 2.98 4.56l-5.09 5.02L4 19l5-5 3.11 3.11zM18.5 10h-2L12 22h2l1.12-3h4.75L21 22h2zm-2.62 7 1.62-4.33L19.12 17z"/></svg>
+    </button>
+    <div class="md-select__inner">
+      <ul class="md-select__list">
+        
+          <li class="md-select__item">
+            <a href="../../DigitalLogic_StopwatchCore/" hreflang="zh" class="md-select__link">
+              中文
+            </a>
+          </li>
+        
+          <li class="md-select__item">
+            <a href="./" hreflang="en" class="md-select__link">
+              English
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</div>
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://cs207digitallogic.github.io" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub Repository
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../DigitalLogic_EnvironmentSetup/" class="md-tabs__link">
+          
+  
+  
+  Labs
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../projects/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Projects
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../links/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  OJ Platforms
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../resources/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Course Resources
+
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../" title="Digital Logic Course" class="md-nav__button md-logo" aria-label="Digital Logic Course" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Digital Logic Course
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://cs207digitallogic.github.io" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub Repository
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Labs
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Labs
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../DigitalLogic_EnvironmentSetup/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 1: Environment Setup
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../DigitalLogic_VerilogBasics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 2: Verilog Basics and Structural Modeling
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../DigitalLogic_Dataflow/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 3: Dataflow Modeling and FPGA Verification
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../DigitalLogic_BehaviorModeling/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 4: Behavioral Modeling and Seven-Segment Display
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../DigitalLogic_SequentialLogic/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 5: Sequential Logic—Counters and Clock Dividers
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../DigitalLogic_DynamicDisplay/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 6: Multiplexed Display—Chasing LEDs and Seven-Segment Displays
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../DigitalLogic_ButtonDebounce/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 7: Button Debouncing and Edge Detection
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../DigitalLogic_StateMachine/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 8: State Machines
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../DigitalLogic_ModuleIntegration/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 9: Module Integration
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../DigitalLogic_UART/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 10: UART
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 11 Demo: Stopwatch Core
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 11 Demo: Stopwatch Core
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#objectives" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Objectives
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1-stopwatch-project-overview" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Stopwatch Project Overview
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. Stopwatch Project Overview">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#11-project-goal" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.1 Project Goal
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#12-stopwatch-functions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.2 Stopwatch Functions
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#13-module-architecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.3 Module Architecture
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-bcd-counter" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. BCD Counter
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. BCD Counter">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#21-why-use-bcd-instead-of-binary" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.1 Why Use BCD Instead of Binary?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#22-bcd-counter-code" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.2 BCD Counter Code
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#23-cascading-four-counters" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.3 Cascading Four Counters
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#24-carry-timing-analysis" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.4 Carry Timing Analysis
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-clock-divider-parameters" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Clock-Divider Parameters
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-laboratory-tasks-for-this-week" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Laboratory Tasks for This Week
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. Laboratory Tasks for This Week">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#step-1-write-the-bcd_counter-module" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 1: Write the bcd_counter Module
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-2-write-the-clk_div-module" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 2: Write the clk_div Module
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-3-write-a-test-top-level-for-the-timing-core" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 3: Write a Test Top-Level for the Timing Core
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-4-simulate-and-verify" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 4: Simulate and Verify
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-5-verify-on-the-board" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 5: Verify on the Board
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../DigitalLogic_StopwatchControl/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 12 Demo: Stopwatch Control
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../DigitalLogic_StopwatchIntegration/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 13 Demo: System Integration
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../DigitalLogic_Memory/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 14: Memory Design and IP Cores
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../projects/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Projects
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../links/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    OJ Platforms
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../resources/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Course Resources
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#objectives" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Objectives
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1-stopwatch-project-overview" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Stopwatch Project Overview
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. Stopwatch Project Overview">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#11-project-goal" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.1 Project Goal
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#12-stopwatch-functions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.2 Stopwatch Functions
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#13-module-architecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.3 Module Architecture
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-bcd-counter" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. BCD Counter
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. BCD Counter">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#21-why-use-bcd-instead-of-binary" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.1 Why Use BCD Instead of Binary?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#22-bcd-counter-code" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.2 BCD Counter Code
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#23-cascading-four-counters" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.3 Cascading Four Counters
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#24-carry-timing-analysis" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.4 Carry Timing Analysis
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-clock-divider-parameters" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Clock-Divider Parameters
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-laboratory-tasks-for-this-week" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Laboratory Tasks for This Week
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. Laboratory Tasks for This Week">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#step-1-write-the-bcd_counter-module" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 1: Write the bcd_counter Module
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-2-write-the-clk_div-module" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 2: Write the clk_div Module
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-3-write-a-test-top-level-for-the-timing-core" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 3: Write a Test Top-Level for the Timing Core
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-4-simulate-and-verify" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 4: Simulate and Verify
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-5-verify-on-the-board" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 5: Verify on the Board
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<div><div class="toc">
+<ul>
+<li><a href="#digital-logic-integrated-project-istopwatch-timing-core">Digital Logic: Integrated Project I—Stopwatch Timing Core</a><ul>
+<li><a href="#objectives">Objectives</a></li>
+<li><a href="#1-stopwatch-project-overview">1. Stopwatch Project Overview</a><ul>
+<li><a href="#11-project-goal">1.1 Project Goal</a></li>
+<li><a href="#12-stopwatch-functions">1.2 Stopwatch Functions</a></li>
+<li><a href="#13-module-architecture">1.3 Module Architecture</a></li>
+</ul>
+</li>
+<li><a href="#2-bcd-counter">2. BCD Counter</a><ul>
+<li><a href="#21-why-use-bcd-instead-of-binary">2.1 Why Use BCD Instead of Binary?</a></li>
+<li><a href="#22-bcd-counter-code">2.2 BCD Counter Code</a></li>
+<li><a href="#23-cascading-four-counters">2.3 Cascading Four Counters</a></li>
+<li><a href="#24-carry-timing-analysis">2.4 Carry Timing Analysis</a></li>
+</ul>
+</li>
+<li><a href="#3-clock-divider-parameters">3. Clock-Divider Parameters</a></li>
+<li><a href="#4-laboratory-tasks-for-this-week">4. Laboratory Tasks for This Week</a><ul>
+<li><a href="#step-1-write-the-bcd_counter-module">Step 1: Write the bcd_counter Module</a></li>
+<li><a href="#step-2-write-the-clk_div-module">Step 2: Write the clk_div Module</a></li>
+<li><a href="#step-3-write-a-test-top-level-for-the-timing-core">Step 3: Write a Test Top-Level for the Timing Core</a></li>
+<li><a href="#step-4-simulate-and-verify">Step 4: Simulate and Verify</a></li>
+<li><a href="#step-5-verify-on-the-board">Step 5: Verify on the Board</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+<hr>
+<h1 id="digital-logic-integrated-project-istopwatch-timing-core">Digital Logic: Integrated Project I—Stopwatch Timing Core</h1>
+<h2 id="objectives">Objectives</h2>
+<ul>
+<li>Understand the overall architecture and module decomposition of the stopwatch project.</li>
+<li>Implement a BCD counter—a modulo-10 counter suitable for seven-segment display output.</li>
+<li>Cascade four BCD counters into a counting chain covering 00.00–99.99.</li>
+<li>Use a clock divider to generate a 100 Hz reference pulse.</li>
+<li>Verify the timing core through simulation and LED outputs.</li>
+</ul>
+<hr>
+<h2 id="1-stopwatch-project-overview">1. Stopwatch Project Overview</h2>
+<h3 id="11-project-goal">1.1 Project Goal</h3>
+<p>Complete a full stopwatch system over three weeks and experience a <strong>modular development flow</strong>:</p>
+<div class="highlight"><pre><span></span><code>Lab10：计时核心（本周）→ Lab11：显示与控制 → Lab12：系统集成
+</code></pre></div>
+<h3 id="12-stopwatch-functions">1.2 Stopwatch Functions</h3>
+<ul>
+<li>Four-digit display in <code>SS.cc</code> format (seconds and hundredths), covering 00.00–99.99</li>
+<li>Two buttons:</li>
+<li><strong>Start/Stop</strong>: Start or pause timing</li>
+<li><strong>Reset</strong>: Clear the value while paused</li>
+<li>Resolution: 10 ms (one hundredth of a second)</li>
+</ul>
+<h3 id="13-module-architecture">1.3 Module Architecture</h3>
+<p><img alt="image-20260513115957176" src="../../images/image-20260513115957176.png"></p>
+<p><strong>This week's task</strong>: Implement the upper portion inside the dashed box—the <code>clk_div</code> module and BCD counter chain.</p>
+<hr>
+<h2 id="2-bcd-counter">2. BCD Counter</h2>
+<h3 id="21-why-use-bcd-instead-of-binary">2.1 Why Use BCD Instead of Binary?</h3>
+<p>The stopwatch must display decimal digits on seven-segment displays. A single binary counter that counts to 9999 would require a relatively complex binary-to-BCD conversion.</p>
+<p>A simpler solution is to cascade four <strong>modulo-10 counters (BCD counters)</strong>. Each counter directly produces one decimal digit from 0 through 9 for the seven-segment decoder.</p>
+<h3 id="22-bcd-counter-code">2.2 BCD Counter Code</h3>
+<p>This is the <code>counter_mod</code> with its modulus set to 10:</p>
+<div class="highlight"><pre><span></span><code><span class="k">module</span><span class="w"> </span><span class="n">bcd_counter</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="k">input</span><span class="w">        </span><span class="n">clk</span><span class="p">,</span>
+<span class="w">    </span><span class="k">input</span><span class="w">        </span><span class="n">rst_n</span><span class="p">,</span>
+<span class="w">    </span><span class="k">input</span><span class="w">        </span><span class="n">en</span><span class="p">,</span>
+<span class="w">    </span><span class="k">output</span><span class="w"> </span><span class="kt">reg</span><span class="w"> </span><span class="p">[</span><span class="mh">3</span><span class="o">:</span><span class="mh">0</span><span class="p">]</span><span class="w"> </span><span class="n">cnt</span><span class="p">,</span>
+<span class="w">    </span><span class="k">output</span><span class="w">       </span><span class="n">carry</span>
+<span class="p">);</span>
+<span class="w">    </span><span class="k">assign</span><span class="w"> </span><span class="n">carry</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">cnt</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mh">4</span><span class="mi">'d9</span><span class="p">)</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">en</span><span class="p">;</span>
+
+<span class="w">    </span><span class="k">always</span><span class="w"> </span><span class="p">@(</span><span class="k">posedge</span><span class="w"> </span><span class="n">clk</span><span class="w"> </span><span class="k">or</span><span class="w"> </span><span class="k">negedge</span><span class="w"> </span><span class="n">rst_n</span><span class="p">)</span><span class="w"> </span><span class="k">begin</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">rst_n</span><span class="p">)</span>
+<span class="w">            </span><span class="n">cnt</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mh">4</span><span class="mi">'d0</span><span class="p">;</span>
+<span class="w">        </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">en</span><span class="p">)</span><span class="w"> </span><span class="k">begin</span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">cnt</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mh">4</span><span class="mi">'d9</span><span class="p">)</span>
+<span class="w">                </span><span class="n">cnt</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mh">4</span><span class="mi">'d0</span><span class="p">;</span>
+<span class="w">            </span><span class="k">else</span>
+<span class="w">                </span><span class="n">cnt</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">cnt</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mh">1</span><span class="mi">'d1</span><span class="p">;</span>
+<span class="w">        </span><span class="k">end</span>
+<span class="w">    </span><span class="k">end</span>
+<span class="k">endmodule</span>
+</code></pre></div>
+<h3 id="23-cascading-four-counters">2.3 Cascading Four Counters</h3>
+<div class="highlight"><pre><span></span><code>tick_100hz → [百分秒个位] ─carry→ [百分秒十位] ─carry→ [秒个位] ─carry→ [秒十位]
+               cnt0 (0-9)          cnt1 (0-9)         cnt2 (0-9)      cnt3 (0-9)
+</code></pre></div>
+<p>Display format: <code>[cnt3][cnt2].[cnt1][cnt0]</code> = SS.cc</p>
+<p><strong>Cascade logic</strong>:</p>
+<div class="highlight"><pre><span></span><code><span class="kt">wire</span><span class="w"> </span><span class="n">tick_100hz</span><span class="p">;</span>
+<span class="kt">wire</span><span class="w"> </span><span class="n">carry0</span><span class="p">,</span><span class="w"> </span><span class="n">carry1</span><span class="p">,</span><span class="w"> </span><span class="n">carry2</span><span class="p">;</span>
+<span class="kt">wire</span><span class="w"> </span><span class="p">[</span><span class="mh">3</span><span class="o">:</span><span class="mh">0</span><span class="p">]</span><span class="w"> </span><span class="n">cnt0</span><span class="p">,</span><span class="w"> </span><span class="n">cnt1</span><span class="p">,</span><span class="w"> </span><span class="n">cnt2</span><span class="p">,</span><span class="w"> </span><span class="n">cnt3</span><span class="p">;</span>
+
+<span class="c1">// 100Hz 基准脉冲（10ms 一次）</span>
+<span class="n">clk_div</span><span class="w"> </span><span class="p">#(.</span><span class="n">MAX_COUNT</span><span class="p">(</span><span class="mh">1</span><span class="n">_000_000</span><span class="p">))</span><span class="w"> </span><span class="n">u_100hz</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="p">.</span><span class="n">clk</span><span class="p">(</span><span class="n">clk</span><span class="p">),</span><span class="w"> </span><span class="p">.</span><span class="n">rst_n</span><span class="p">(</span><span class="n">rst_n</span><span class="p">),</span><span class="w"> </span><span class="p">.</span><span class="n">tick</span><span class="p">(</span><span class="n">tick_100hz</span><span class="p">)</span>
+<span class="p">);</span>
+
+<span class="c1">// 百分秒个位 (0-9)</span>
+<span class="n">bcd_counter</span><span class="w"> </span><span class="n">u_cs0</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="p">.</span><span class="n">clk</span><span class="p">(</span><span class="n">clk</span><span class="p">),</span><span class="w"> </span><span class="p">.</span><span class="n">rst_n</span><span class="p">(</span><span class="n">rst_n</span><span class="p">),</span><span class="w"> </span><span class="p">.</span><span class="n">en</span><span class="p">(</span><span class="n">tick_100hz</span><span class="p">),</span>
+<span class="w">    </span><span class="p">.</span><span class="n">cnt</span><span class="p">(</span><span class="n">cnt0</span><span class="p">),</span><span class="w"> </span><span class="p">.</span><span class="n">carry</span><span class="p">(</span><span class="n">carry0</span><span class="p">)</span>
+<span class="p">);</span>
+
+<span class="c1">// 百分秒十位 (0-9)</span>
+<span class="n">bcd_counter</span><span class="w"> </span><span class="n">u_cs1</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="p">.</span><span class="n">clk</span><span class="p">(</span><span class="n">clk</span><span class="p">),</span><span class="w"> </span><span class="p">.</span><span class="n">rst_n</span><span class="p">(</span><span class="n">rst_n</span><span class="p">),</span><span class="w"> </span><span class="p">.</span><span class="n">en</span><span class="p">(</span><span class="n">carry0</span><span class="p">),</span>
+<span class="w">    </span><span class="p">.</span><span class="n">cnt</span><span class="p">(</span><span class="n">cnt1</span><span class="p">),</span><span class="w"> </span><span class="p">.</span><span class="n">carry</span><span class="p">(</span><span class="n">carry1</span><span class="p">)</span>
+<span class="p">);</span>
+
+<span class="c1">// 秒个位 (0-9)</span>
+<span class="n">bcd_counter</span><span class="w"> </span><span class="n">u_s0</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="p">.</span><span class="n">clk</span><span class="p">(</span><span class="n">clk</span><span class="p">),</span><span class="w"> </span><span class="p">.</span><span class="n">rst_n</span><span class="p">(</span><span class="n">rst_n</span><span class="p">),</span><span class="w"> </span><span class="p">.</span><span class="n">en</span><span class="p">(</span><span class="n">carry1</span><span class="p">),</span>
+<span class="w">    </span><span class="p">.</span><span class="n">cnt</span><span class="p">(</span><span class="n">cnt2</span><span class="p">),</span><span class="w"> </span><span class="p">.</span><span class="n">carry</span><span class="p">(</span><span class="n">carry2</span><span class="p">)</span>
+<span class="p">);</span>
+
+<span class="c1">// 秒十位 (0-9)</span>
+<span class="n">bcd_counter</span><span class="w"> </span><span class="n">u_s1</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="p">.</span><span class="n">clk</span><span class="p">(</span><span class="n">clk</span><span class="p">),</span><span class="w"> </span><span class="p">.</span><span class="n">rst_n</span><span class="p">(</span><span class="n">rst_n</span><span class="p">),</span><span class="w"> </span><span class="p">.</span><span class="n">en</span><span class="p">(</span><span class="n">carry2</span><span class="p">),</span>
+<span class="w">    </span><span class="p">.</span><span class="n">cnt</span><span class="p">(</span><span class="n">cnt3</span><span class="p">),</span><span class="w"> </span><span class="p">.</span><span class="n">carry</span><span class="p">()</span><span class="w">      </span><span class="c1">// 最高位进位不使用</span>
+<span class="p">);</span>
+</code></pre></div>
+<h3 id="24-carry-timing-analysis">2.4 Carry Timing Analysis</h3>
+<p>Consider the transition from 09.99 to 10.00 when one <code>tick_100hz</code> pulse arrives:</p>
+<table>
+<thead>
+<tr>
+<th>Signal</th>
+<th>Current value</th>
+<th><code>en</code></th>
+<th>Operation</th>
+<th>New value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>cnt0</td>
+<td>9</td>
+<td>tick_100hz=1</td>
+<td>9→0, carry0=1</td>
+<td>0</td>
+</tr>
+<tr>
+<td>cnt1</td>
+<td>9</td>
+<td>carry0=1</td>
+<td>9→0, carry1=1</td>
+<td>0</td>
+</tr>
+<tr>
+<td>cnt2</td>
+<td>9</td>
+<td>carry1=1</td>
+<td>9→0, carry2=1</td>
+<td>0</td>
+</tr>
+<tr>
+<td>cnt3</td>
+<td>0</td>
+<td>carry2=1</td>
+<td>0→1</td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+<p>Result: 10.00 ✓. All updates complete on the same clock edge.</p>
+<hr>
+<h2 id="3-clock-divider-parameters">3. Clock-Divider Parameters</h2>
+<table>
+<thead>
+<tr>
+<th>Purpose</th>
+<th>Target frequency</th>
+<th><code>MAX_COUNT</code></th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Hundredths reference</td>
+<td>100 Hz</td>
+<td>1,000,000</td>
+<td>100 MHz / 1,000,000 = 100 Hz</td>
+</tr>
+<tr>
+<td>Accelerated simulation</td>
+<td>—</td>
+<td>10</td>
+<td>Used during simulation</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="4-laboratory-tasks-for-this-week">4. Laboratory Tasks for This Week</h2>
+<h3 id="step-1-write-the-bcd_counter-module">Step 1: Write the <code>bcd_counter</code> Module</h3>
+<p>Following the code in Section 2.2, create <code>bcd_counter.v</code>.</p>
+<h3 id="step-2-write-the-clk_div-module">Step 2: Write the <code>clk_div</code> Module</h3>
+<p>Reuse the clock-divider code to create <code>clk_div.v</code>.</p>
+<h3 id="step-3-write-a-test-top-level-for-the-timing-core">Step 3: Write a Test Top-Level for the Timing Core</h3>
+<p>Create a temporary top-level module containing only the clock divider, counter chain, and LED outputs. Use it to verify the timing function:</p>
+<div class="highlight"><pre><span></span><code><span class="k">module</span><span class="w"> </span><span class="n">stopwatch_core_test</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="k">input</span><span class="w">        </span><span class="n">clk</span><span class="p">,</span>
+<span class="w">    </span><span class="k">input</span><span class="w">        </span><span class="n">rst_n</span><span class="p">,</span>
+<span class="w">    </span><span class="k">output</span><span class="w"> </span><span class="p">[</span><span class="mh">3</span><span class="o">:</span><span class="mh">0</span><span class="p">]</span><span class="w"> </span><span class="n">led_bg</span><span class="p">,</span><span class="w">     </span><span class="c1">// 显示百分秒个位（cnt0）</span>
+<span class="w">    </span><span class="k">output</span><span class="w"> </span><span class="p">[</span><span class="mh">3</span><span class="o">:</span><span class="mh">0</span><span class="p">]</span><span class="w"> </span><span class="n">led_bs</span><span class="p">,</span><span class="w">     </span><span class="c1">// 显示百分秒个位（cnt1）</span>
+<span class="w">    </span><span class="k">output</span><span class="w"> </span><span class="p">[</span><span class="mh">3</span><span class="o">:</span><span class="mh">0</span><span class="p">]</span><span class="w"> </span><span class="n">led_sg</span><span class="p">,</span><span class="w">     </span><span class="c1">// 显示秒个位（cnt2）    </span>
+<span class="w">    </span><span class="k">output</span><span class="w"> </span><span class="p">[</span><span class="mh">3</span><span class="o">:</span><span class="mh">0</span><span class="p">]</span><span class="w"> </span><span class="n">led_ss</span><span class="w">     </span><span class="c1">// 显示秒十位（cnt3）        </span>
+<span class="p">);</span>
+<span class="w">    </span><span class="kt">wire</span><span class="w"> </span><span class="n">tick_100hz</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">wire</span><span class="w"> </span><span class="n">carry0</span><span class="p">,</span><span class="w"> </span><span class="n">carry1</span><span class="p">,</span><span class="w"> </span><span class="n">carry2</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">wire</span><span class="w"> </span><span class="p">[</span><span class="mh">3</span><span class="o">:</span><span class="mh">0</span><span class="p">]</span><span class="w"> </span><span class="n">cnt0</span><span class="p">,</span><span class="w"> </span><span class="n">cnt1</span><span class="p">,</span><span class="w"> </span><span class="n">cnt2</span><span class="p">,</span><span class="w"> </span><span class="n">cnt3</span><span class="p">;</span>
+
+<span class="w">    </span><span class="n">clk_div</span><span class="w"> </span><span class="p">#(.</span><span class="n">MAX_COUNT</span><span class="p">(</span><span class="mh">1</span><span class="n">_000_000</span><span class="p">))</span><span class="w"> </span><span class="n">u_100hz</span><span class="w"> </span><span class="p">(</span>
+<span class="w">        </span><span class="p">.</span><span class="n">clk</span><span class="p">(</span><span class="n">clk</span><span class="p">),</span><span class="w"> </span><span class="p">.</span><span class="n">rst_n</span><span class="p">(</span><span class="n">rst_n</span><span class="p">),</span><span class="w"> </span><span class="p">.</span><span class="n">tick</span><span class="p">(</span><span class="n">tick_100hz</span><span class="p">)</span>
+<span class="w">    </span><span class="p">);</span>
+
+<span class="w">    </span><span class="n">bcd_counter</span><span class="w"> </span><span class="n">u_cs0</span><span class="w"> </span><span class="p">(.</span><span class="n">clk</span><span class="p">(</span><span class="n">clk</span><span class="p">),</span><span class="w"> </span><span class="p">.</span><span class="n">rst_n</span><span class="p">(</span><span class="n">rst_n</span><span class="p">),</span><span class="w"> </span><span class="p">.</span><span class="n">en</span><span class="p">(</span><span class="n">tick_100hz</span><span class="p">),</span>
+<span class="w">                        </span><span class="p">.</span><span class="n">cnt</span><span class="p">(</span><span class="n">cnt0</span><span class="p">),</span><span class="w"> </span><span class="p">.</span><span class="n">carry</span><span class="p">(</span><span class="n">carry0</span><span class="p">));</span>
+<span class="w">    </span><span class="n">bcd_counter</span><span class="w"> </span><span class="n">u_cs1</span><span class="w"> </span><span class="p">(.</span><span class="n">clk</span><span class="p">(</span><span class="n">clk</span><span class="p">),</span><span class="w"> </span><span class="p">.</span><span class="n">rst_n</span><span class="p">(</span><span class="n">rst_n</span><span class="p">),</span><span class="w"> </span><span class="p">.</span><span class="n">en</span><span class="p">(</span><span class="n">carry0</span><span class="p">),</span>
+<span class="w">                        </span><span class="p">.</span><span class="n">cnt</span><span class="p">(</span><span class="n">cnt1</span><span class="p">),</span><span class="w"> </span><span class="p">.</span><span class="n">carry</span><span class="p">(</span><span class="n">carry1</span><span class="p">));</span>
+<span class="w">    </span><span class="n">bcd_counter</span><span class="w"> </span><span class="n">u_s0</span><span class="w">  </span><span class="p">(.</span><span class="n">clk</span><span class="p">(</span><span class="n">clk</span><span class="p">),</span><span class="w"> </span><span class="p">.</span><span class="n">rst_n</span><span class="p">(</span><span class="n">rst_n</span><span class="p">),</span><span class="w"> </span><span class="p">.</span><span class="n">en</span><span class="p">(</span><span class="n">carry1</span><span class="p">),</span>
+<span class="w">                        </span><span class="p">.</span><span class="n">cnt</span><span class="p">(</span><span class="n">cnt2</span><span class="p">),</span><span class="w"> </span><span class="p">.</span><span class="n">carry</span><span class="p">(</span><span class="n">carry2</span><span class="p">));</span>
+<span class="w">    </span><span class="n">bcd_counter</span><span class="w"> </span><span class="n">u_s1</span><span class="w">  </span><span class="p">(.</span><span class="n">clk</span><span class="p">(</span><span class="n">clk</span><span class="p">),</span><span class="w"> </span><span class="p">.</span><span class="n">rst_n</span><span class="p">(</span><span class="n">rst_n</span><span class="p">),</span><span class="w"> </span><span class="p">.</span><span class="n">en</span><span class="p">(</span><span class="n">carry2</span><span class="p">),</span>
+<span class="w">                        </span><span class="p">.</span><span class="n">cnt</span><span class="p">(</span><span class="n">cnt3</span><span class="p">),</span><span class="w"> </span><span class="p">.</span><span class="n">carry</span><span class="p">());</span>
+
+<span class="w">    </span><span class="k">assign</span><span class="w"> </span><span class="n">led_bg</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cnt0</span><span class="p">;</span>
+<span class="w">    </span><span class="k">assign</span><span class="w"> </span><span class="n">led_bs</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cnt1</span><span class="p">;</span><span class="w"> </span>
+<span class="w">    </span><span class="k">assign</span><span class="w"> </span><span class="n">led_sg</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cnt2</span><span class="p">;</span>
+<span class="w">    </span><span class="k">assign</span><span class="w"> </span><span class="n">led_ss</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cnt3</span><span class="p">;</span><span class="w">     </span>
+<span class="k">endmodule</span>
+</code></pre></div>
+<h3 id="step-4-simulate-and-verify">Step 4: Simulate and Verify</h3>
+<div class="highlight"><pre><span></span><code><span class="no">`timescale</span><span class="w"> </span><span class="mh">1</span><span class="n">ns</span><span class="o">/</span><span class="mh">1</span><span class="n">ps</span>
+
+<span class="k">module</span><span class="w"> </span><span class="n">tb_stopwatch_core</span><span class="p">();</span>
+<span class="w">    </span><span class="kt">reg</span><span class="w"> </span><span class="n">clk</span><span class="p">,</span><span class="w"> </span><span class="n">rst_n</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">wire</span><span class="w"> </span><span class="p">[</span><span class="mh">3</span><span class="o">:</span><span class="mh">0</span><span class="p">]</span><span class="w"> </span><span class="n">cnt0</span><span class="p">,</span><span class="w"> </span><span class="n">cnt1</span><span class="p">,</span><span class="w"> </span><span class="n">cnt2</span><span class="p">,</span><span class="w"> </span><span class="n">cnt3</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">wire</span><span class="w"> </span><span class="n">carry0</span><span class="p">,</span><span class="w"> </span><span class="n">carry1</span><span class="p">,</span><span class="w"> </span><span class="n">carry2</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">wire</span><span class="w"> </span><span class="n">tick</span><span class="p">;</span>
+
+<span class="w">    </span><span class="n">clk_div</span><span class="w"> </span><span class="p">#(.</span><span class="n">MAX_COUNT</span><span class="p">(</span><span class="mh">10</span><span class="p">))</span><span class="w"> </span><span class="n">u_tick</span><span class="w"> </span><span class="p">(</span>
+<span class="w">        </span><span class="p">.</span><span class="n">clk</span><span class="p">(</span><span class="n">clk</span><span class="p">),</span><span class="w"> </span><span class="p">.</span><span class="n">rst_n</span><span class="p">(</span><span class="n">rst_n</span><span class="p">),</span><span class="w"> </span><span class="p">.</span><span class="n">tick</span><span class="p">(</span><span class="n">tick</span><span class="p">)</span>
+<span class="w">    </span><span class="p">);</span>
+
+<span class="w">    </span><span class="n">bcd_counter</span><span class="w"> </span><span class="n">u0</span><span class="w"> </span><span class="p">(.</span><span class="n">clk</span><span class="p">(</span><span class="n">clk</span><span class="p">),</span><span class="w"> </span><span class="p">.</span><span class="n">rst_n</span><span class="p">(</span><span class="n">rst_n</span><span class="p">),</span><span class="w"> </span><span class="p">.</span><span class="n">en</span><span class="p">(</span><span class="n">tick</span><span class="p">),</span>
+<span class="w">                     </span><span class="p">.</span><span class="n">cnt</span><span class="p">(</span><span class="n">cnt0</span><span class="p">),</span><span class="w"> </span><span class="p">.</span><span class="n">carry</span><span class="p">(</span><span class="n">carry0</span><span class="p">));</span>
+<span class="w">    </span><span class="n">bcd_counter</span><span class="w"> </span><span class="n">u1</span><span class="w"> </span><span class="p">(.</span><span class="n">clk</span><span class="p">(</span><span class="n">clk</span><span class="p">),</span><span class="w"> </span><span class="p">.</span><span class="n">rst_n</span><span class="p">(</span><span class="n">rst_n</span><span class="p">),</span><span class="w"> </span><span class="p">.</span><span class="n">en</span><span class="p">(</span><span class="n">carry0</span><span class="p">),</span>
+<span class="w">                     </span><span class="p">.</span><span class="n">cnt</span><span class="p">(</span><span class="n">cnt1</span><span class="p">),</span><span class="w"> </span><span class="p">.</span><span class="n">carry</span><span class="p">(</span><span class="n">carry1</span><span class="p">));</span>
+<span class="w">    </span><span class="n">bcd_counter</span><span class="w"> </span><span class="n">u2</span><span class="w"> </span><span class="p">(.</span><span class="n">clk</span><span class="p">(</span><span class="n">clk</span><span class="p">),</span><span class="w"> </span><span class="p">.</span><span class="n">rst_n</span><span class="p">(</span><span class="n">rst_n</span><span class="p">),</span><span class="w"> </span><span class="p">.</span><span class="n">en</span><span class="p">(</span><span class="n">carry1</span><span class="p">),</span>
+<span class="w">                     </span><span class="p">.</span><span class="n">cnt</span><span class="p">(</span><span class="n">cnt2</span><span class="p">),</span><span class="w"> </span><span class="p">.</span><span class="n">carry</span><span class="p">(</span><span class="n">carry2</span><span class="p">));</span>
+<span class="w">    </span><span class="n">bcd_counter</span><span class="w"> </span><span class="n">u3</span><span class="w"> </span><span class="p">(.</span><span class="n">clk</span><span class="p">(</span><span class="n">clk</span><span class="p">),</span><span class="w"> </span><span class="p">.</span><span class="n">rst_n</span><span class="p">(</span><span class="n">rst_n</span><span class="p">),</span><span class="w"> </span><span class="p">.</span><span class="n">en</span><span class="p">(</span><span class="n">carry2</span><span class="p">),</span>
+<span class="w">                     </span><span class="p">.</span><span class="n">cnt</span><span class="p">(</span><span class="n">cnt3</span><span class="p">),</span><span class="w"> </span><span class="p">.</span><span class="n">carry</span><span class="p">());</span>
+
+<span class="w">    </span><span class="k">initial</span><span class="w"> </span><span class="n">clk</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0</span><span class="p">;</span>
+<span class="w">    </span><span class="k">always</span><span class="w"> </span><span class="p">#</span><span class="mh">5</span><span class="w"> </span><span class="n">clk</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">~</span><span class="n">clk</span><span class="p">;</span>
+
+<span class="w">    </span><span class="k">initial</span><span class="w"> </span><span class="k">begin</span>
+<span class="w">        </span><span class="nb">$monitor</span><span class="p">(</span><span class="s">"time=%6d: %d%d.%d%d"</span><span class="p">,</span>
+<span class="w">                 </span><span class="nb">$time</span><span class="p">,</span><span class="w"> </span><span class="n">cnt3</span><span class="p">,</span><span class="w"> </span><span class="n">cnt2</span><span class="p">,</span><span class="w"> </span><span class="n">cnt1</span><span class="p">,</span><span class="w"> </span><span class="n">cnt0</span><span class="p">);</span>
+<span class="w">        </span><span class="n">rst_n</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0</span><span class="p">;</span><span class="w"> </span><span class="p">#</span><span class="mh">30</span><span class="p">;</span><span class="w"> </span><span class="n">rst_n</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">1</span><span class="p">;</span>
+<span class="w">        </span><span class="c1">// 等待计到 01.00 (100个tick = 100*10*10ns = 10000ns)</span>
+<span class="w">        </span><span class="p">#</span><span class="mh">120000</span><span class="p">;</span>
+<span class="w">        </span><span class="nb">$finish</span><span class="p">;</span>
+<span class="w">    </span><span class="k">end</span>
+<span class="k">endmodule</span>
+</code></pre></div>
+<p><strong>What to inspect in the simulation</strong>:</p>
+<ul>
+<li>Count sequence: 00.00 → 00.01 → ... → 00.09 → 00.10 → ... → 00.99 → 01.00</li>
+<li>Correct carries: The seconds value increments after 100 hundredths</li>
+</ul>
+<h3 id="step-5-verify-on-the-board">Step 5: Verify on the Board</h3>
+<ul>
+<li>Connect the LED outputs of <code>stopwatch_core_test</code> to LEDs on the development board.</li>
+<li>Connect <code>rst</code> to a button.</li>
+<li>Observe the binary count for hundredths and seconds.</li>
+</ul>
+<p><div class="video-container"><iframe src="../../videos/stopwatch-led.mp4" style="position:relative;width:100%;height:22.172vw" frameborder="0" allowfullscreen alt="type:video"></iframe></div></p></div>
+
+
+
+
+
+
+
+
+  <aside class="md-source-file">
+    
+    
+    
+      
+  
+  <span class="md-source-file__fact">
+    <span class="md-icon" title="Contributors">
+      
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 4a4 4 0 0 1 4 4 4 4 0 0 1-4 4 4 4 0 0 1-4-4 4 4 0 0 1 4-4m0 10c4.42 0 8 1.79 8 4v2H4v-2c0-2.21 3.58-4 8-4"/></svg>
+      
+    </span>
+    <nav>
+      baiyhsz
+    </nav>
+  </span>
+
+    
+    
+  </aside>
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright &copy; 2025 Southern University of Science and Technology
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["search.suggest", "search.highlight", "content.tabs.link", "navigation.tabs", "navigation.top", "content.code.copy"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>
