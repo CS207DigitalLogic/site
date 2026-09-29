@@ -1,0 +1,1845 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Digital Logic Laboratory Course Materials">
+      
+      
+      
+        <link rel="canonical" href="https://cs207digitallogic.github.io/site/en/DigitalLogic_ModuleIntegration/">
+      
+      
+        <link rel="prev" href="../DigitalLogic_StateMachine/">
+      
+      
+        <link rel="next" href="../DigitalLogic_UART/">
+      
+      
+        
+          <link rel="alternate" href="../../DigitalLogic_ModuleIntegration/" hreflang="zh">
+        
+          <link rel="alternate" href="./" hreflang="en">
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>Lab 9: Module Integration - Digital Logic Course</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#digital-logic-button-driven-counter-display" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../" title="Digital Logic Course" class="md-header__button md-logo" aria-label="Digital Logic Course" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Digital Logic Course
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Lab 9: Module Integration
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-hidden="true"  type="radio" name="__palette" id="__palette_0">
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+      <div class="md-header__option">
+  <div class="md-select">
+    
+    <button class="md-header__button md-icon" aria-label="Select language">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m12.87 15.07-2.54-2.51.03-.03A17.5 17.5 0 0 0 14.07 6H17V4h-7V2H8v2H1v2h11.17C11.5 7.92 10.44 9.75 9 11.35 8.07 10.32 7.3 9.19 6.69 8h-2c.73 1.63 1.73 3.17 2.98 4.56l-5.09 5.02L4 19l5-5 3.11 3.11zM18.5 10h-2L12 22h2l1.12-3h4.75L21 22h2zm-2.62 7 1.62-4.33L19.12 17z"/></svg>
+    </button>
+    <div class="md-select__inner">
+      <ul class="md-select__list">
+        
+          <li class="md-select__item">
+            <a href="../../DigitalLogic_ModuleIntegration/" hreflang="zh" class="md-select__link">
+              中文
+            </a>
+          </li>
+        
+          <li class="md-select__item">
+            <a href="./" hreflang="en" class="md-select__link">
+              English
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</div>
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://cs207digitallogic.github.io" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub Repository
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../DigitalLogic_EnvironmentSetup/" class="md-tabs__link">
+          
+  
+  
+  Labs
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../projects/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Projects
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../links/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  OJ Platforms
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../resources/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Course Resources
+
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../" title="Digital Logic Course" class="md-nav__button md-logo" aria-label="Digital Logic Course" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Digital Logic Course
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://cs207digitallogic.github.io" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub Repository
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Labs
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Labs
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../DigitalLogic_EnvironmentSetup/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 1: Environment Setup
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../DigitalLogic_VerilogBasics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 2: Verilog Basics and Structural Modeling
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../DigitalLogic_Dataflow/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 3: Dataflow Modeling and FPGA Verification
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../DigitalLogic_BehaviorModeling/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 4: Behavioral Modeling and Seven-Segment Display
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../DigitalLogic_SequentialLogic/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 5: Sequential Logic—Counters and Clock Dividers
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../DigitalLogic_DynamicDisplay/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 6: Multiplexed Display—Chasing LEDs and Seven-Segment Displays
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../DigitalLogic_ButtonDebounce/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 7: Button Debouncing and Edge Detection
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../DigitalLogic_StateMachine/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 8: State Machines
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 9: Module Integration
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 9: Module Integration
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#objectives" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Objectives
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1-review-of-modular-design" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Review of Modular Design
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. Review of Modular Design">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#11-required-modules" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.1 Required Modules
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#12-top-level-block-diagram" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.2 Top-Level Block Diagram
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-project-requirements-single-digit-counter-display" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Project Requirements: Single-Digit Counter Display
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. Project Requirements: Single-Digit Counter Display">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#21-functional-description" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.1 Functional Description
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#22-module-decomposition" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.2 Module Decomposition
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#23-design-flow" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.3 Design Flow
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-writing-the-top-level-module" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Writing the Top-Level Module
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Writing the Top-Level Module">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#31-port-declarations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.1 Port Declarations
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#32-complete-top-level-module-framework" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.2 Complete Top-Level Module Framework
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#33-key-connections" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.3 Key Connections
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-laboratory-exercise" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Laboratory Exercise
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. Laboratory Exercise">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#step-1-prepare-the-submodules" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 1: Prepare the Submodules
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-2-write-the-top-level-module" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 2: Write the Top-Level Module
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-3-simulation-and-verification-optional" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 3: Simulation and Verification (Optional)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-4-pin-constraints-and-on-board-verification" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 4: Pin Constraints and On-Board Verification
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-questions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Questions
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../DigitalLogic_UART/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 10: UART
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../DigitalLogic_StopwatchCore/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 11 Demo: Stopwatch Core
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../DigitalLogic_StopwatchControl/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 12 Demo: Stopwatch Control
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../DigitalLogic_StopwatchIntegration/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 13 Demo: System Integration
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../DigitalLogic_Memory/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 14: Memory Design and IP Cores
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../projects/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Projects
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../links/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    OJ Platforms
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../resources/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Course Resources
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#objectives" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Objectives
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1-review-of-modular-design" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Review of Modular Design
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. Review of Modular Design">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#11-required-modules" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.1 Required Modules
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#12-top-level-block-diagram" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.2 Top-Level Block Diagram
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-project-requirements-single-digit-counter-display" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Project Requirements: Single-Digit Counter Display
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. Project Requirements: Single-Digit Counter Display">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#21-functional-description" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.1 Functional Description
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#22-module-decomposition" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.2 Module Decomposition
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#23-design-flow" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.3 Design Flow
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-writing-the-top-level-module" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Writing the Top-Level Module
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Writing the Top-Level Module">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#31-port-declarations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.1 Port Declarations
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#32-complete-top-level-module-framework" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.2 Complete Top-Level Module Framework
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#33-key-connections" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.3 Key Connections
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-laboratory-exercise" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Laboratory Exercise
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. Laboratory Exercise">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#step-1-prepare-the-submodules" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 1: Prepare the Submodules
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-2-write-the-top-level-module" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 2: Write the Top-Level Module
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-3-simulation-and-verification-optional" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 3: Simulation and Verification (Optional)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-4-pin-constraints-and-on-board-verification" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 4: Pin Constraints and On-Board Verification
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-questions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Questions
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<div><div class="toc">
+<ul>
+<li><a href="#digital-logic-button-driven-counter-display">Digital Logic: Button-Driven Counter Display</a><ul>
+<li><a href="#objectives">Objectives</a></li>
+<li><a href="#1-review-of-modular-design">1. Review of Modular Design</a><ul>
+<li><a href="#11-required-modules">1.1 Required Modules</a></li>
+<li><a href="#12-top-level-block-diagram">1.2 Top-Level Block Diagram</a></li>
+</ul>
+</li>
+<li><a href="#2-project-requirements-single-digit-counter-display">2. Project Requirements: Single-Digit Counter Display</a><ul>
+<li><a href="#21-functional-description">2.1 Functional Description</a></li>
+<li><a href="#22-module-decomposition">2.2 Module Decomposition</a></li>
+<li><a href="#23-design-flow">2.3 Design Flow</a></li>
+</ul>
+</li>
+<li><a href="#3-writing-the-top-level-module">3. Writing the Top-Level Module</a><ul>
+<li><a href="#31-port-declarations">3.1 Port Declarations</a></li>
+<li><a href="#32-complete-top-level-module-framework">3.2 Complete Top-Level Module Framework</a></li>
+<li><a href="#33-key-connections">3.3 Key Connections</a></li>
+</ul>
+</li>
+<li><a href="#4-laboratory-exercise">4. Laboratory Exercise</a><ul>
+<li><a href="#step-1-prepare-the-submodules">Step 1: Prepare the Submodules</a></li>
+<li><a href="#step-2-write-the-top-level-module">Step 2: Write the Top-Level Module</a></li>
+<li><a href="#step-3-simulation-and-verification-optional">Step 3: Simulation and Verification (Optional)</a></li>
+<li><a href="#step-4-pin-constraints-and-on-board-verification">Step 4: Pin Constraints and On-Board Verification</a></li>
+</ul>
+</li>
+<li><a href="#5-questions">5. Questions</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<hr>
+<h1 id="digital-logic-button-driven-counter-display">Digital Logic: Button-Driven Counter Display</h1>
+<h2 id="objectives">Objectives</h2>
+<ul>
+<li>Master the design of module interconnections through a top-level module.</li>
+<li>Practice assembling the independent modules into a complete system.</li>
+<li>Understand module-interface design and signal-naming conventions.</li>
+<li>Build a single-digit hexadecimal counter display: each button press advances the display by one value in a repeating 0–F–0 sequence.</li>
+</ul>
+<hr>
+<h2 id="1-review-of-modular-design">1. Review of Modular Design</h2>
+<h3 id="11-required-modules">1.1 Required Modules</h3>
+<p>In previous weeks, we implemented the following independent modules:</p>
+<table>
+<thead>
+<tr>
+<th>Module</th>
+<th>Function</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>counter_mod</code></td>
+<td>Modulo-N counter with enable and carry</td>
+</tr>
+<tr>
+<td><code>dynamic_display</code></td>
+<td>Seven-segment display driver</td>
+</tr>
+<tr>
+<td><code>btn_debounce</code></td>
+<td>Button debouncing</td>
+</tr>
+<tr>
+<td><code>edge_detect</code></td>
+<td>Edge detection</td>
+</tr>
+</tbody>
+</table>
+<h3 id="12-top-level-block-diagram">1.2 Top-Level Block Diagram</h3>
+<div class="highlight"><pre><span></span><code>     ┌──────────────────────── 顶层模块 ──────────────────────┐
+     │                                                       │
+     │  ┌──────────┐  pulse   ┌──────────┐  count            │
+clk─→│  │ btn_deb  │ ────────→│ counter  │────────┐          │
+btn─→│  │+ edge_de │          │ MOD(16)  │        │          │
+     │  └──────────┘          └──────────┘        │          │
+     │                                            │          │
+     │                                     digit0 │          │ 
+     │                      ┌─────────────────┐←──│          │
+     │                      │ dynamic_display │   │  seg ──→ seg
+     │   digit1,2,3 = 0 ───→│   (4位)         │───┤─→ an  ──→ an
+     │                      └─────────────────┘              │
+     │                                                       │
+     └───────────────────────────────────────────────────────┘
+</code></pre></div>
+<hr>
+<h2 id="2-project-requirements-single-digit-counter-display">2. Project Requirements: Single-Digit Counter Display</h2>
+<h3 id="21-functional-description">2.1 Functional Description</h3>
+<p>Design a single-digit hexadecimal counter display:</p>
+<ul>
+<li>Use <strong>one seven-segment digit</strong> to display a single hexadecimal value.</li>
+<li>Display sequence: 0 → 1 → 2 → ... → 9 → A → B → ... → F → 0, repeating continuously.</li>
+<li><strong>Increment the displayed value by 1 on each button press.</strong></li>
+<li>Button debouncing ensures that each press produces exactly one pulse.</li>
+<li>Pressing the reset button clears the value to zero.</li>
+</ul>
+<h3 id="22-module-decomposition">2.2 Module Decomposition</h3>
+<table>
+<thead>
+<tr>
+<th>Submodule</th>
+<th>Instances</th>
+<th>Function</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>counter_mod #(.MOD(16))</code></td>
+<td>1</td>
+<td>Modulo-16 counter (0–9, A–F)</td>
+</tr>
+<tr>
+<td><code>dynamic_display</code></td>
+<td>1</td>
+<td>Display driver using one digit</td>
+</tr>
+<tr>
+<td><code>btn_debounce</code></td>
+<td>1</td>
+<td>Button debouncing</td>
+</tr>
+<tr>
+<td><code>edge_detect</code></td>
+<td>1</td>
+<td>Button edge detection</td>
+</tr>
+</tbody>
+</table>
+<h3 id="23-design-flow">2.3 Design Flow</h3>
+<div class="highlight"><pre><span></span><code>按键 → 消抖 → 边沿检测 → 计数器enable → 计数器输出 → 数码管显示
+(btn)  (clean) (pulse)    (en)         (count)      (seg)
+</code></pre></div>
+<p><img alt="image-20260409194723052" src="../../images/image-20260409194723052.png"></p>
+<hr>
+<h2 id="3-writing-the-top-level-module">3. Writing the Top-Level Module</h2>
+<h3 id="31-port-declarations">3.1 Port Declarations</h3>
+<div class="highlight"><pre><span></span><code><span class="k">module</span><span class="w"> </span><span class="n">hex_counter_top</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="k">input</span><span class="w">        </span><span class="n">clk</span><span class="p">,</span><span class="w">       </span><span class="c1">// 100MHz 系统时钟</span>
+<span class="w">    </span><span class="k">input</span><span class="w">        </span><span class="n">btn</span><span class="p">,</span><span class="w">       </span><span class="c1">// 按键 （Ego1：R15）</span>
+<span class="w">    </span><span class="k">output</span><span class="w"> </span><span class="p">[</span><span class="mh">7</span><span class="o">:</span><span class="mh">0</span><span class="p">]</span><span class="w"> </span><span class="n">seg</span><span class="p">,</span><span class="w">       </span><span class="c1">// 数码管段选</span>
+<span class="w">    </span><span class="k">output</span><span class="w"> </span><span class="p">[</span><span class="mh">3</span><span class="o">:</span><span class="mh">0</span><span class="p">]</span><span class="w"> </span><span class="n">an</span><span class="w">         </span><span class="c1">// 数码管片选</span>
+<span class="p">);</span>
+</code></pre></div>
+<h3 id="32-complete-top-level-module-framework">3.2 Complete Top-Level Module Framework</h3>
+<div class="highlight"><pre><span></span><code><span class="k">module</span><span class="w"> </span><span class="n">hex_counter_top</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="k">input</span><span class="w">        </span><span class="n">clk</span><span class="p">,</span><span class="w">       </span><span class="c1">// 100MHz 系统时钟</span>
+<span class="w">    </span><span class="k">input</span><span class="w">        </span><span class="n">btn_inc</span><span class="p">,</span><span class="w">   </span><span class="c1">// 增加按键</span>
+<span class="w">    </span><span class="k">output</span><span class="w"> </span><span class="p">[</span><span class="mh">7</span><span class="o">:</span><span class="mh">0</span><span class="p">]</span><span class="w"> </span><span class="n">seg</span><span class="p">,</span><span class="w">       </span><span class="c1">// 数码管段选</span>
+<span class="w">    </span><span class="k">output</span><span class="w"> </span><span class="p">[</span><span class="mh">3</span><span class="o">:</span><span class="mh">0</span><span class="p">]</span><span class="w"> </span><span class="n">an</span><span class="w">         </span><span class="c1">// 数码管片选</span>
+<span class="p">);</span>
+
+<span class="w">    </span><span class="c1">// 内部信号</span>
+<span class="w">    </span><span class="kt">wire</span><span class="w"> </span><span class="n">btn_clean</span><span class="p">;</span><span class="w"> </span><span class="c1">//消抖后的按键信号</span>
+<span class="w">    </span><span class="kt">wire</span><span class="w"> </span><span class="n">btn_pulse</span><span class="p">;</span><span class="w"> </span><span class="c1">//按键脉冲</span>
+<span class="w">    </span><span class="kt">wire</span><span class="w"> </span><span class="p">[</span><span class="mh">3</span><span class="o">:</span><span class="mh">0</span><span class="p">]</span><span class="w"> </span><span class="n">count</span><span class="p">;</span>
+
+<span class="w">    </span><span class="c1">// 按键消抖</span>
+<span class="w">    </span><span class="n">btn_debounce</span><span class="w"> </span><span class="n">u_deb</span><span class="w"> </span><span class="p">(</span>
+<span class="w">        </span><span class="p">.</span><span class="n">clk</span><span class="p">(</span><span class="n">clk</span><span class="p">),</span><span class="w"> </span><span class="p">.</span><span class="n">rst_n</span><span class="p">(</span><span class="mh">1</span><span class="mb">'b1</span><span class="p">),</span>
+<span class="w">        </span><span class="p">.</span><span class="n">btn_in</span><span class="p">(</span><span class="n">btn</span><span class="p">),</span><span class="w"> </span><span class="p">.</span><span class="n">btn_out</span><span class="p">(</span><span class="n">btn_clean</span><span class="p">)</span>
+<span class="w">    </span><span class="p">);</span>
+
+<span class="w">    </span><span class="c1">// 边沿检测</span>
+<span class="w">    </span><span class="n">edge_detect</span><span class="w"> </span><span class="n">u_edge</span><span class="w"> </span><span class="p">(</span>
+<span class="w">        </span><span class="p">.</span><span class="n">clk</span><span class="p">(</span><span class="n">clk</span><span class="p">),</span><span class="w"> </span><span class="p">.</span><span class="n">rst_n</span><span class="p">(</span><span class="mh">1</span><span class="mb">'b1</span><span class="p">),</span>
+<span class="w">        </span><span class="p">.</span><span class="n">sig_in</span><span class="p">(</span><span class="n">btn_clean</span><span class="p">),</span>
+<span class="w">        </span><span class="p">.</span><span class="n">pos_edge</span><span class="p">(</span><span class="n">btn_pulse</span><span class="p">),</span><span class="w"> </span><span class="p">.</span><span class="n">neg_edge</span><span class="p">()</span>
+<span class="w">    </span><span class="p">);</span>
+
+<span class="w">    </span><span class="c1">// 计数器</span>
+<span class="w">    </span><span class="n">counter_mod</span><span class="w"> </span><span class="p">...</span>
+
+<span class="w">    </span><span class="c1">// 数码管显示</span>
+<span class="w">    </span><span class="n">dynamic_display</span><span class="w"> </span><span class="p">...</span>
+
+<span class="k">endmodule</span>
+</code></pre></div>
+<h3 id="33-key-connections">3.3 Key Connections</h3>
+<table>
+<thead>
+<tr>
+<th>Signal</th>
+<th>Source</th>
+<th>Destination</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>btn</code> → <code>btn_clean</code></td>
+<td>Button → debounce module</td>
+<td>Debounced signal</td>
+<td>Remove button bounce</td>
+</tr>
+<tr>
+<td><code>btn_clean</code> → <code>btn_pulse</code></td>
+<td>Debounce → edge detector</td>
+<td>Pulse signal</td>
+<td>Trigger on the rising edge</td>
+</tr>
+<tr>
+<td><code>btn_pulse</code> → <code>counter_mod.en</code></td>
+<td>Pulse → counter</td>
+<td>Count enable</td>
+<td>Increment once per pulse</td>
+</tr>
+<tr>
+<td><code>count</code> → <code>digit[?]</code></td>
+<td>Counter → display</td>
+<td>Single-digit value</td>
+<td>Hexadecimal display</td>
+</tr>
+<tr>
+<td><code>digit[?]</code></td>
+<td>0</td>
+<td>Display</td>
+<td>Other digits remain blank</td>
+</tr>
+<tr>
+<td><code>seg</code>, <code>an</code></td>
+<td>Display driver</td>
+<td>External display</td>
+<td>Segment- and digit-select signals</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="4-laboratory-exercise">4. Laboratory Exercise</h2>
+<h3 id="step-1-prepare-the-submodules">Step 1: Prepare the Submodules</h3>
+<p>Copy the following modules into the project:</p>
+<ul>
+<li><code>counter_mod.v</code> —check the parameter setting</li>
+<li><code>dynamic_display.v</code> </li>
+<li><code>btn_debounce.v</code> </li>
+<li><code>edge_detect.v</code> </li>
+</ul>
+<h3 id="step-2-write-the-top-level-module">Step 2: Write the Top-Level Module</h3>
+<p>Following Section 3, write <code>hex_counter_top.v</code>:</p>
+<ul>
+<li>Instantiate the button debounce, edge-detection, counter, and display-driver modules.</li>
+<li><strong>Important</strong>: Connect <code>btn_pulse</code> correctly to <code>counter_mod.en</code>.</li>
+<li>Set <code>counter_mod.MOD</code> for counting from 0 through 15.</li>
+<li>Connect <code>count</code> only to <code>digit0</code>; set all other digits to 0.</li>
+</ul>
+<h3 id="step-3-simulation-and-verification-optional">Step 3: Simulation and Verification (Optional)</h3>
+<ul>
+<li>Verify that each button event increments the count exactly once. Adjust the debounce parameter to suit the simulation duration.</li>
+<li>Verify the hexadecimal sequence 0→1→...→9→A→B→C→D→E→F→0.</li>
+</ul>
+<h3 id="step-4-pin-constraints-and-on-board-verification">Step 4: Pin Constraints and On-Board Verification</h3>
+<ul>
+<li>Use the display constraints.</li>
+<li>Add a constraint for the button selected as the increment button.</li>
+<li>Activate only the rightmost digit (<code>an[0]=0</code>, with all other bits set to 1).</li>
+</ul>
+<hr>
+<h2 id="5-questions">5. Questions</h2>
+<p><strong>Q1: Without modifying <code>counter_mod</code>, how can you change only the top-level connections so that the counter runs from 0 through 9 (decimal) instead of 0 through F?</strong></p>
+<ul>
+<li>Use a parameterized setting.</li>
+</ul>
+<p><strong>Q3: How would you modify the design to display a two-digit hexadecimal value from 0x00 through 0xFF?</strong></p>
+<p>Approach:</p>
+<ul>
+<li>Cascade two counters, one for the low digit and one for the high digit.</li>
+<li>Low-digit enable = <code>btn_pulse</code>.</li>
+<li>High-digit enable = the low digit's carry signal.</li>
+<li>Connect the two count values to two display digits.</li>
+</ul>
+<p><strong>Q4: Why use the <code>dynamic_display</code> module instead of driving the display directly?</strong></p>
+<p>Analysis:</p>
+<ul>
+<li><code>dynamic_display</code> encapsulates the seven-segment drive logic and the mapping of hexadecimal values to glyphs.</li>
+<li>Modularity improves code reuse and readability.</li>
+<li>The module supports multiplexed scanning of multiple display digits.</li>
+</ul></div>
+
+
+
+
+
+
+
+
+  <aside class="md-source-file">
+    
+    
+    
+      
+  
+  <span class="md-source-file__fact">
+    <span class="md-icon" title="Contributors">
+      
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 4a4 4 0 0 1 4 4 4 4 0 0 1-4 4 4 4 0 0 1-4-4 4 4 0 0 1 4-4m0 10c4.42 0 8 1.79 8 4v2H4v-2c0-2.21 3.58-4 8-4"/></svg>
+      
+    </span>
+    <nav>
+      baiyhsz
+    </nav>
+  </span>
+
+    
+    
+  </aside>
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright &copy; 2025 Southern University of Science and Technology
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["search.suggest", "search.highlight", "content.tabs.link", "navigation.tabs", "navigation.top", "content.code.copy"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>

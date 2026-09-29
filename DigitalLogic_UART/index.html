@@ -1,0 +1,2908 @@
+
+<!doctype html>
+<html lang="zh" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="数字逻辑实验课程资料">
+      
+      
+      
+        <link rel="canonical" href="https://cs207digitallogic.github.io/site/DigitalLogic_UART/">
+      
+      
+        <link rel="prev" href="../DigitalLogic_ModuleIntegration/">
+      
+      
+        <link rel="next" href="../DigitalLogic_StopwatchCore/">
+      
+      
+        
+          <link rel="alternate" href="./" hreflang="zh">
+        
+          <link rel="alternate" href="../en/DigitalLogic_UART/" hreflang="en">
+        
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>Lab10 串口 - 数字逻辑课程</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#uart" class="md-skip">
+          跳转至
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="页眉">
+    <a href=".." title="数字逻辑课程" class="md-header__button md-logo" aria-label="数字逻辑课程" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            数字逻辑课程
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Lab10 串口
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-hidden="true"  type="radio" name="__palette" id="__palette_0">
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+      <div class="md-header__option">
+  <div class="md-select">
+    
+    <button class="md-header__button md-icon" aria-label="选择当前语言">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m12.87 15.07-2.54-2.51.03-.03A17.5 17.5 0 0 0 14.07 6H17V4h-7V2H8v2H1v2h11.17C11.5 7.92 10.44 9.75 9 11.35 8.07 10.32 7.3 9.19 6.69 8h-2c.73 1.63 1.73 3.17 2.98 4.56l-5.09 5.02L4 19l5-5 3.11 3.11zM18.5 10h-2L12 22h2l1.12-3h4.75L21 22h2zm-2.62 7 1.62-4.33L19.12 17z"/></svg>
+    </button>
+    <div class="md-select__inner">
+      <ul class="md-select__list">
+        
+          <li class="md-select__item">
+            <a href="./" hreflang="zh" class="md-select__link">
+              中文
+            </a>
+          </li>
+        
+          <li class="md-select__item">
+            <a href="../en/DigitalLogic_UART/" hreflang="en" class="md-select__link">
+              English
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</div>
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="搜索" placeholder="搜索" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="查找">
+        
+        <button type="reset" class="md-search__icon md-icon" title="清空当前内容" aria-label="清空当前内容" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            正在初始化搜索引擎
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://cs207digitallogic.github.io" title="前往仓库" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub Repository
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="标签" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href=".." class="md-tabs__link">
+        
+  
+  
+    
+  
+  首页
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../DigitalLogic_EnvironmentSetup/" class="md-tabs__link">
+          
+  
+  
+  实验
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../projects/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  课程项目
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../links/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  在线OJ
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../resources/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  课程资源
+
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="导航栏" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="数字逻辑课程" class="md-nav__button md-logo" aria-label="数字逻辑课程" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    数字逻辑课程
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://cs207digitallogic.github.io" title="前往仓库" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub Repository
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    首页
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    实验
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    实验
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../DigitalLogic_EnvironmentSetup/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 1 环境搭建
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../DigitalLogic_VerilogBasics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 2 Verilog 基础与结构化建模
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../DigitalLogic_Dataflow/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 3 数据流建模与 FPGA 验证
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../DigitalLogic_BehaviorModeling/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 4 行为建模与数码管显示
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../DigitalLogic_SequentialLogic/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 5 时序逻辑——计数器与分频器
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../DigitalLogic_DynamicDisplay/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 6 动态显示——跑马灯与数码管
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../DigitalLogic_ButtonDebounce/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 7 按键消抖与边沿检测
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../DigitalLogic_StateMachine/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 8 状态机
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../DigitalLogic_ModuleIntegration/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 9 模块集成
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab10 串口
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab10 串口
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        实验目标
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1-uart" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. UART 基础
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. UART 基础">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#11-uart" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.1 什么是 UART？
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#12-uart" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.2 UART 数据帧
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#13" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.3 波特率分频
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#14" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.4 使用参数提高模块复用性
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-uart-demo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. UART Demo 功能与结构
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. UART Demo 功能与结构">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#21" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.1 实验功能
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#22" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.2 顶层端口
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#23" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.3 模块划分
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-uart" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. UART 接收模块
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. UART 接收模块">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#31" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.1 接收流程
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#32" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.2 接收模块代码
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-uart" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. UART 发送模块
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. UART 发送模块">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#41" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.1 发送流程
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#42" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.2 发送模块代码
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. 顶层模块设计
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5. 顶层模块设计">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#51" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.1 发送按键边沿检测
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#52" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.2 完整顶层代码
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. 引脚约束
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-uart" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. UART 环回仿真
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="7. UART 环回仿真">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#71-testbench" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.1 Testbench
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#72" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.2 仿真检查点
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#73-vivado" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.3 在 Vivado 中添加内部信号
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8. 上板测试
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="8. 上板测试">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#81" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8.1 准备工作
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#82" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8.2 串口调试助手设置
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#83-fpga" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8.3 FPGA → 电脑
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#84-fpga" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8.4 电脑 → FPGA
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#85-ascii" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8.5 ASCII 字符测试
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#9" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9. 本周实验任务
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="9. 本周实验任务">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-uart-demo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        任务1：完成 UART Demo
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-ascii" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        任务2：发送 ASCII 字符 *
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        任务3：仿真调试记录
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        上板验收标准
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        附录：常见问题
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="附录：常见问题">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        思考题
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../DigitalLogic_StopwatchCore/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 11 Demo——秒表核心
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../DigitalLogic_StopwatchControl/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 12 Demo——秒表控制
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../DigitalLogic_StopwatchIntegration/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 13 Demo——系统集成
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../DigitalLogic_Memory/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 14 存储器设计与 IP 核
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../projects/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    课程项目
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../links/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    在线OJ
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../resources/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    课程资源
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        实验目标
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1-uart" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. UART 基础
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. UART 基础">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#11-uart" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.1 什么是 UART？
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#12-uart" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.2 UART 数据帧
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#13" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.3 波特率分频
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#14" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.4 使用参数提高模块复用性
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-uart-demo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. UART Demo 功能与结构
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. UART Demo 功能与结构">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#21" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.1 实验功能
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#22" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.2 顶层端口
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#23" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.3 模块划分
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-uart" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. UART 接收模块
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. UART 接收模块">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#31" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.1 接收流程
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#32" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.2 接收模块代码
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-uart" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. UART 发送模块
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. UART 发送模块">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#41" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.1 发送流程
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#42" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.2 发送模块代码
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. 顶层模块设计
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5. 顶层模块设计">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#51" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.1 发送按键边沿检测
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#52" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.2 完整顶层代码
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. 引脚约束
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-uart" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. UART 环回仿真
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="7. UART 环回仿真">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#71-testbench" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.1 Testbench
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#72" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.2 仿真检查点
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#73-vivado" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.3 在 Vivado 中添加内部信号
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8. 上板测试
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="8. 上板测试">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#81" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8.1 准备工作
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#82" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8.2 串口调试助手设置
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#83-fpga" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8.3 FPGA → 电脑
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#84-fpga" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8.4 电脑 → FPGA
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#85-ascii" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8.5 ASCII 字符测试
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#9" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9. 本周实验任务
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="9. 本周实验任务">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-uart-demo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        任务1：完成 UART Demo
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-ascii" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        任务2：发送 ASCII 字符 *
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        任务3：仿真调试记录
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        上板验收标准
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        附录：常见问题
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="附录：常见问题">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        思考题
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<div><div class="toc">
+<ul>
+<li><a href="#uart">数字逻辑：UART 串口通信与仿真调试</a><ul>
+<li><a href="#_1">实验目标</a></li>
+<li><a href="#1-uart">1. UART 基础</a><ul>
+<li><a href="#11-uart">1.1 什么是 UART？</a></li>
+<li><a href="#12-uart">1.2 UART 数据帧</a></li>
+<li><a href="#13">1.3 波特率分频</a></li>
+<li><a href="#14">1.4 使用参数提高模块复用性</a></li>
+</ul>
+</li>
+<li><a href="#2-uart-demo">2. UART Demo 功能与结构</a><ul>
+<li><a href="#21">2.1 实验功能</a></li>
+<li><a href="#22">2.2 顶层端口</a></li>
+<li><a href="#23">2.3 模块划分</a></li>
+</ul>
+</li>
+<li><a href="#3-uart">3. UART 接收模块</a><ul>
+<li><a href="#31">3.1 接收流程</a></li>
+<li><a href="#32">3.2 接收模块代码</a></li>
+</ul>
+</li>
+<li><a href="#4-uart">4. UART 发送模块</a><ul>
+<li><a href="#41">4.1 发送流程</a></li>
+<li><a href="#42">4.2 发送模块代码</a></li>
+</ul>
+</li>
+<li><a href="#5">5. 顶层模块设计</a><ul>
+<li><a href="#51">5.1 发送按键边沿检测</a></li>
+<li><a href="#52">5.2 完整顶层代码</a></li>
+</ul>
+</li>
+<li><a href="#6">6. 引脚约束</a></li>
+<li><a href="#7-uart">7. UART 环回仿真</a><ul>
+<li><a href="#71-testbench">7.1 Testbench</a></li>
+<li><a href="#72">7.2 仿真检查点</a></li>
+<li><a href="#73-vivado">7.3 在 Vivado 中添加内部信号</a></li>
+</ul>
+</li>
+<li><a href="#8">8. 上板测试</a><ul>
+<li><a href="#81">8.1 准备工作</a></li>
+<li><a href="#82">8.2 串口调试助手设置</a></li>
+<li><a href="#83-fpga">8.3 FPGA → 电脑</a></li>
+<li><a href="#84-fpga">8.4 电脑 → FPGA</a></li>
+<li><a href="#85-ascii">8.5 ASCII 字符测试</a></li>
+</ul>
+</li>
+<li><a href="#9">9. 本周实验任务</a><ul>
+<li><a href="#1-uart-demo">任务1：完成 UART Demo</a></li>
+<li><a href="#2-ascii">任务2：发送 ASCII 字符 *</a></li>
+<li><a href="#3">任务3：仿真调试记录</a></li>
+<li><a href="#_2">上板验收标准</a></li>
+</ul>
+</li>
+<li><a href="#_3">附录：常见问题</a><ul>
+<li><a href="#_4">思考题</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+<hr>
+<h1 id="uart">数字逻辑：UART 串口通信与仿真调试</h1>
+<h2 id="_1">实验目标</h2>
+<ul>
+<li>理解 UART 异步串行通信的基本原理与 <code>8N1</code> 数据帧格式</li>
+<li>掌握波特率分频参数的计算方法，以及 Verilog 模块参数 <code>parameter</code> 的使用</li>
+<li>使用 Verilog 实现 UART 发送模块和接收模块</li>
+<li>完成 EGO1 与电脑串口调试助手之间的双向通信</li>
+<li>掌握利用 Vivado 波形窗口和内部信号定位问题的基本方法</li>
+</ul>
+<hr>
+<h2 id="1-uart">1. UART 基础</h2>
+<h3 id="11-uart">1.1 什么是 UART？</h3>
+<p>UART（Universal Asynchronous Receiver/Transmitter，通用异步收发器）是一种常用的串行通信方式。</p>
+<p>与同步通信不同，UART 不传输时钟信号。发送端和接收端必须提前约定相同的波特率和帧格式，再按照约定的时间间隔发送、采样数据。</p>
+<p>UART 全双工通信通常只需要 3 根线：</p>
+<table>
+<thead>
+<tr>
+<th>信号</th>
+<th>方向</th>
+<th>功能</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>TX</code></td>
+<td>发送端输出</td>
+<td>串行发送数据</td>
+</tr>
+<tr>
+<td><code>RX</code></td>
+<td>接收端输入</td>
+<td>串行接收数据</td>
+</tr>
+<tr>
+<td><code>GND</code></td>
+<td>双方共地</td>
+<td>提供共同的电平参考</td>
+</tr>
+</tbody>
+</table>
+<p>连接两个设备时应当交叉连接数据线：一方的 <code>TX</code> 连接另一方的 <code>RX</code>，同时保证两端共地。</p>
+<h3 id="12-uart">1.2 UART 数据帧</h3>
+<p>UART 数据线在空闲状态保持高电平。一次传输由起始位、数据位、可选校验位和停止位组成。</p>
+<p><img alt="UART 数据帧结构" src="../images/uart-frame-structure.png"></p>
+<p>本实验统一使用 <code>115200-8-N-1</code>：</p>
+<table>
+<thead>
+<tr>
+<th>配置项</th>
+<th>本实验设置</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>波特率</td>
+<td><code>115200</code></td>
+<td>每秒传输 115200 个符号</td>
+</tr>
+<tr>
+<td>数据位</td>
+<td><code>8</code></td>
+<td>每帧传输 1 字节（LSB起传）</td>
+</tr>
+<tr>
+<td>校验位</td>
+<td><code>None</code></td>
+<td>不使用奇偶校验</td>
+</tr>
+<tr>
+<td>停止位</td>
+<td><code>1</code></td>
+<td>使用 1 位高电平停止位</td>
+</tr>
+</tbody>
+</table>
+<p>一帧数据的传输顺序如下：</p>
+<ol>
+<li>空闲状态：<code>1</code></li>
+<li>起始位：<code>0</code></li>
+<li>8 位数据：从最低位 <code>LSB</code> 到最高位 <code>MSB</code></li>
+<li>停止位：<code>1</code></li>
+</ol>
+<p>例如发送 <code>8'h53</code>，其二进制为 <code>0101_0011</code>。UART 数据位按照 LSB first 传输，因此线上数据位依次为 <code>1、1、0、0、1、0、1、0</code>。</p>
+<h3 id="13">1.3 波特率分频</h3>
+<p>FPGA 使用 100 MHz 系统时钟，而 UART 每一位需要保持一个波特周期。代码中用分频计数器产生采样或移位时刻：</p>
+<div class="highlight"><pre><span></span><code><span class="k">localparam</span><span class="w"> </span><span class="n">BAUD_DIV</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">CLK_FREQ</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">BAUD_RATE</span><span class="p">;</span>
+</code></pre></div>
+<p>本实验中：</p>
+<div class="highlight"><pre><span></span><code>BAUD_DIV = 100_000_000 / 115_200 = 868（整数除法）
+</code></pre></div>
+<p>因此每个 UART 位保持约 868 个系统时钟周期。实际波特率约为 <code>100_000_000 / 868 = 115207.37</code>，与目标值的误差约为 <code>0.0064%</code>，可以正常通信。</p>
+<h3 id="14">1.4 使用参数提高模块复用性</h3>
+<p><code>parameter</code> 是编译期常量。将时钟频率和波特率写成参数，同一份 UART 模块可以复用于不同的时钟和通信速率：</p>
+<div class="highlight"><pre><span></span><code><span class="k">module</span><span class="w"> </span><span class="n">uart_tx</span><span class="w"> </span><span class="p">#(</span>
+<span class="w">    </span><span class="k">parameter</span><span class="w"> </span><span class="n">CLK_FREQ</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="mh">100</span><span class="n">_000_000</span><span class="p">,</span>
+<span class="w">    </span><span class="k">parameter</span><span class="w"> </span><span class="n">BAUD_RATE</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">115200</span>
+<span class="p">)(</span>
+<span class="w">    </span><span class="c1">// 端口定义</span>
+<span class="p">);</span>
+</code></pre></div>
+<p>在顶层模块实例化时可以覆盖参数：</p>
+<div class="highlight"><pre><span></span><code><span class="n">uart_tx</span><span class="w"> </span><span class="p">#(</span>
+<span class="w">    </span><span class="p">.</span><span class="n">CLK_FREQ</span><span class="p">(</span><span class="mh">100</span><span class="n">_000_000</span><span class="p">),</span>
+<span class="w">    </span><span class="p">.</span><span class="n">BAUD_RATE</span><span class="p">(</span><span class="mh">115200</span><span class="p">)</span>
+<span class="p">)</span><span class="w"> </span><span class="n">uart_tx_inst</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="c1">// 端口连接</span>
+<span class="p">);</span>
+</code></pre></div>
+<hr>
+<h2 id="2-uart-demo">2. UART Demo 功能与结构</h2>
+<h3 id="21">2.1 实验功能</h3>
+<p>将 UART 电路下载到 EGO1 后，实现以下双向通信：</p>
+<ul>
+<li><strong>FPGA → 电脑</strong>：用 8 位拨码开关设置一个字节，按下发送按键后，通过 <code>uart_tx</code> 发送到电脑，并在串口调试助手的接收窗口显示</li>
+<li><strong>电脑 → FPGA</strong>：在串口调试助手中发送一个字节，FPGA 通过 <code>uart_rx</code> 接收，并用 8 个 LED 显示该字节</li>
+</ul>
+<p><img alt="EGO1 UART 双向通信示例" src="../images/uart-board-demo.png"></p>
+<h3 id="22">2.2 顶层端口</h3>
+<div class="highlight"><pre><span></span><code><span class="k">module</span><span class="w"> </span><span class="n">top</span><span class="p">(</span>
+<span class="w">    </span><span class="k">input</span><span class="w">  </span><span class="kt">wire</span><span class="w">       </span><span class="n">clk</span><span class="p">,</span><span class="w">             </span><span class="c1">// 100 MHz 系统时钟</span>
+<span class="w">    </span><span class="k">input</span><span class="w">  </span><span class="kt">wire</span><span class="w"> </span><span class="p">[</span><span class="mh">7</span><span class="o">:</span><span class="mh">0</span><span class="p">]</span><span class="w"> </span><span class="n">key</span><span class="p">,</span><span class="w">             </span><span class="c1">// 8 位拨码开关</span>
+<span class="w">    </span><span class="k">input</span><span class="w">  </span><span class="kt">wire</span><span class="w">       </span><span class="n">uart_rx</span><span class="p">,</span><span class="w">         </span><span class="c1">// 电脑发送到 FPGA 的数据</span>
+<span class="w">    </span><span class="k">output</span><span class="w"> </span><span class="kt">wire</span><span class="w">       </span><span class="n">uart_tx</span><span class="p">,</span><span class="w">         </span><span class="c1">// FPGA 发送到电脑的数据</span>
+<span class="w">    </span><span class="k">output</span><span class="w"> </span><span class="kt">reg</span><span class="w">  </span><span class="p">[</span><span class="mh">7</span><span class="o">:</span><span class="mh">0</span><span class="p">]</span><span class="w"> </span><span class="n">led</span><span class="p">,</span><span class="w">             </span><span class="c1">// 显示接收到的数据</span>
+<span class="w">    </span><span class="k">input</span><span class="w">  </span><span class="kt">wire</span><span class="w">       </span><span class="n">uart_tx_rst_n</span><span class="p">,</span><span class="w">   </span><span class="c1">// UART TX 复位/使能，低有效</span>
+<span class="w">    </span><span class="k">input</span><span class="w">  </span><span class="kt">wire</span><span class="w">       </span><span class="n">uart_rx_rst_n</span><span class="p">,</span><span class="w">   </span><span class="c1">// UART RX 复位/使能，低有效</span>
+<span class="w">    </span><span class="k">input</span><span class="w">  </span><span class="kt">wire</span><span class="w">       </span><span class="n">send_one</span><span class="p">,</span><span class="w">        </span><span class="c1">// 低有效发送按键</span>
+<span class="w">    </span><span class="k">output</span><span class="w"> </span><span class="kt">wire</span><span class="w">       </span><span class="n">uart_tx_work</span><span class="p">,</span><span class="w">    </span><span class="c1">// TX 工作状态指示</span>
+<span class="w">    </span><span class="k">output</span><span class="w"> </span><span class="kt">wire</span><span class="w">       </span><span class="n">uart_rx_work</span><span class="w">     </span><span class="c1">// RX 工作状态指示</span>
+<span class="p">);</span>
+</code></pre></div>
+<table>
+<thead>
+<tr>
+<th>顶层端口</th>
+<th>板上资源</th>
+<th>功能</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>key[7:0]</code></td>
+<td>8 个拨码开关</td>
+<td>设置待发送字节</td>
+</tr>
+<tr>
+<td><code>send_one</code></td>
+<td>按键</td>
+<td>按下一次，触发一次发送</td>
+</tr>
+<tr>
+<td><code>led[7:0]</code></td>
+<td>8 个 LED</td>
+<td>显示电脑发来的字节</td>
+</tr>
+<tr>
+<td><code>uart_tx_rst_n</code></td>
+<td>拨码开关</td>
+<td>置 1 时允许发送模块工作</td>
+</tr>
+<tr>
+<td><code>uart_rx_rst_n</code></td>
+<td>拨码开关</td>
+<td>置 1 时允许接收模块工作</td>
+</tr>
+<tr>
+<td><code>uart_tx_work</code></td>
+<td>LED</td>
+<td>显示发送模块是否已解除复位</td>
+</tr>
+<tr>
+<td><code>uart_rx_work</code></td>
+<td>LED</td>
+<td>显示接收模块是否已解除复位</td>
+</tr>
+<tr>
+<td><code>uart_tx</code> / <code>uart_rx</code></td>
+<td>板载 UART</td>
+<td>与电脑进行串行通信</td>
+</tr>
+</tbody>
+</table>
+<h3 id="23">2.3 模块划分</h3>
+<p><img alt="UART Demo 综合结构" src="../images/uart-top-structure.png"></p>
+<p>系统可分为 4 个主要部分：</p>
+<ol>
+<li><code>uart_rx</code>：同步并采样 <code>uart_rx</code>，输出接收到的字节和完成脉冲</li>
+<li>LED 锁存：检测 <code>rx_done</code>，把 <code>rx_data</code> 保存到 <code>led</code></li>
+<li>按键边沿检测：把一次按键动作转换为单个时钟周期的 <code>send_flag</code></li>
+<li><code>uart_tx</code>：收到 <code>send_flag</code> 后，把拨码开关数据串行发送到电脑</li>
+</ol>
+<hr>
+<h2 id="3-uart">3. UART 接收模块</h2>
+<h3 id="31">3.1 接收流程</h3>
+<p><img alt="UART 接收流程" src="../images/uart-rx-flow.png"></p>
+<p>接收模块按以下步骤工作：</p>
+<ol>
+<li>使用两级寄存器 <code>rx_d1</code>、<code>rx_d2</code> 将异步输入同步到系统时钟域，降低亚稳态传播风险</li>
+<li>空闲时等待 <code>rx_d2</code> 从高电平变为低电平，即检测起始位</li>
+<li>先等待约半个波特周期，对齐到起始位中间</li>
+<li>之后每隔一个波特周期采样一位数据</li>
+<li>按 LSB first 顺序保存 8 个数据位</li>
+<li>到达停止位采样时刻后更新 <code>rx_data</code>，并产生一个时钟周期的 <code>rx_done</code></li>
+</ol>
+<h3 id="32">3.2 接收模块代码</h3>
+<div class="highlight"><pre><span></span><code><span class="no">`timescale</span><span class="w"> </span><span class="mh">1</span><span class="n">ns</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mh">1</span><span class="n">ps</span>
+
+<span class="k">module</span><span class="w"> </span><span class="n">uart_rx</span><span class="w"> </span><span class="p">#(</span>
+<span class="w">    </span><span class="k">parameter</span><span class="w"> </span><span class="n">CLK_FREQ</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="mh">100</span><span class="n">_000_000</span><span class="p">,</span>
+<span class="w">    </span><span class="k">parameter</span><span class="w"> </span><span class="n">BAUD_RATE</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">115200</span>
+<span class="p">)(</span>
+<span class="w">    </span><span class="k">input</span><span class="w">  </span><span class="kt">wire</span><span class="w">       </span><span class="n">clk</span><span class="p">,</span>
+<span class="w">    </span><span class="k">input</span><span class="w">  </span><span class="kt">wire</span><span class="w">       </span><span class="n">rst_n</span><span class="p">,</span>
+<span class="w">    </span><span class="k">input</span><span class="w">  </span><span class="kt">wire</span><span class="w">       </span><span class="n">rx</span><span class="p">,</span><span class="w">          </span><span class="c1">// 串口输入信号</span>
+<span class="w">    </span><span class="k">output</span><span class="w"> </span><span class="kt">reg</span><span class="w">  </span><span class="p">[</span><span class="mh">7</span><span class="o">:</span><span class="mh">0</span><span class="p">]</span><span class="w"> </span><span class="n">rx_data</span><span class="p">,</span><span class="w">     </span><span class="c1">// 接收到的字节</span>
+<span class="w">    </span><span class="k">output</span><span class="w"> </span><span class="kt">reg</span><span class="w">        </span><span class="n">rx_done</span><span class="w">      </span><span class="c1">// 接收完成脉冲</span>
+<span class="p">);</span>
+
+<span class="w">    </span><span class="k">localparam</span><span class="w"> </span><span class="n">BAUD_DIV</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">CLK_FREQ</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">BAUD_RATE</span><span class="p">;</span>
+
+<span class="w">    </span><span class="kt">reg</span><span class="w"> </span><span class="p">[</span><span class="mh">15</span><span class="o">:</span><span class="mh">0</span><span class="p">]</span><span class="w"> </span><span class="n">baud_cnt</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">reg</span><span class="w"> </span><span class="p">[</span><span class="mh">3</span><span class="o">:</span><span class="mh">0</span><span class="p">]</span><span class="w">  </span><span class="n">bit_idx</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">reg</span><span class="w"> </span><span class="p">[</span><span class="mh">9</span><span class="o">:</span><span class="mh">0</span><span class="p">]</span><span class="w">  </span><span class="n">rx_shift</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">reg</span><span class="w">        </span><span class="n">rx_busy</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">reg</span><span class="w">        </span><span class="n">rx_d1</span><span class="p">,</span><span class="w"> </span><span class="n">rx_d2</span><span class="p">;</span>
+
+<span class="w">    </span><span class="c1">// 两级同步，降低异步输入带来的亚稳态风险</span>
+<span class="w">    </span><span class="k">always</span><span class="w"> </span><span class="p">@(</span><span class="k">posedge</span><span class="w"> </span><span class="n">clk</span><span class="p">)</span><span class="w"> </span><span class="k">begin</span>
+<span class="w">        </span><span class="n">rx_d1</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">rx</span><span class="p">;</span>
+<span class="w">        </span><span class="n">rx_d2</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">rx_d1</span><span class="p">;</span>
+<span class="w">    </span><span class="k">end</span>
+
+<span class="w">    </span><span class="k">always</span><span class="w"> </span><span class="p">@(</span><span class="k">posedge</span><span class="w"> </span><span class="n">clk</span><span class="w"> </span><span class="k">or</span><span class="w"> </span><span class="k">negedge</span><span class="w"> </span><span class="n">rst_n</span><span class="p">)</span><span class="w"> </span><span class="k">begin</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">rst_n</span><span class="p">)</span><span class="w"> </span><span class="k">begin</span>
+<span class="w">            </span><span class="n">baud_cnt</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mh">16</span><span class="mi">'d0</span><span class="p">;</span>
+<span class="w">            </span><span class="n">bit_idx</span><span class="w">  </span><span class="o">&lt;=</span><span class="w"> </span><span class="mh">4</span><span class="mi">'d0</span><span class="p">;</span>
+<span class="w">            </span><span class="n">rx_busy</span><span class="w">  </span><span class="o">&lt;=</span><span class="w"> </span><span class="mh">1</span><span class="mb">'b0</span><span class="p">;</span>
+<span class="w">            </span><span class="n">rx_done</span><span class="w">  </span><span class="o">&lt;=</span><span class="w"> </span><span class="mh">1</span><span class="mb">'b0</span><span class="p">;</span>
+<span class="w">            </span><span class="n">rx_data</span><span class="w">  </span><span class="o">&lt;=</span><span class="w"> </span><span class="mh">8</span><span class="mb">'b0</span><span class="p">;</span>
+<span class="w">        </span><span class="k">end</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="k">begin</span>
+<span class="w">            </span><span class="c1">// 默认拉低，使 rx_done 只保持一个时钟周期</span>
+<span class="w">            </span><span class="n">rx_done</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mh">1</span><span class="mb">'b0</span><span class="p">;</span>
+
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">rx_busy</span><span class="p">)</span><span class="w"> </span><span class="k">begin</span>
+<span class="w">                </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">rx_d2</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mh">1</span><span class="mb">'b0</span><span class="p">)</span><span class="w"> </span><span class="k">begin</span>
+<span class="w">                    </span><span class="c1">// 检测到起始位，先对齐到该位中间</span>
+<span class="w">                    </span><span class="n">rx_busy</span><span class="w">  </span><span class="o">&lt;=</span><span class="w"> </span><span class="mh">1</span><span class="mb">'b1</span><span class="p">;</span>
+<span class="w">                    </span><span class="n">baud_cnt</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">BAUD_DIV</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mh">2</span><span class="p">;</span>
+<span class="w">                    </span><span class="n">bit_idx</span><span class="w">  </span><span class="o">&lt;=</span><span class="w"> </span><span class="mh">4</span><span class="mi">'d0</span><span class="p">;</span>
+<span class="w">                </span><span class="k">end</span>
+<span class="w">            </span><span class="k">end</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="k">begin</span>
+<span class="w">                </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">baud_cnt</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">BAUD_DIV</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mh">1</span><span class="p">)</span><span class="w"> </span><span class="k">begin</span>
+<span class="w">                    </span><span class="n">baud_cnt</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mh">16</span><span class="mi">'d0</span><span class="p">;</span>
+<span class="w">                    </span><span class="n">bit_idx</span><span class="w">  </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">bit_idx</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mh">1</span><span class="mb">'b1</span><span class="p">;</span>
+
+<span class="w">                    </span><span class="k">case</span><span class="w"> </span><span class="p">(</span><span class="n">bit_idx</span><span class="p">)</span>
+<span class="w">                        </span><span class="mh">4</span><span class="mi">'d0</span><span class="o">:</span><span class="w"> </span><span class="p">;</span><span class="w">  </span><span class="c1">// 起始位采样时刻</span>
+<span class="w">                        </span><span class="mh">4</span><span class="mi">'d1</span><span class="p">,</span><span class="w"> </span><span class="mh">4</span><span class="mi">'d2</span><span class="p">,</span><span class="w"> </span><span class="mh">4</span><span class="mi">'d3</span><span class="p">,</span><span class="w"> </span><span class="mh">4</span><span class="mi">'d4</span><span class="p">,</span>
+<span class="w">                        </span><span class="mh">4</span><span class="mi">'d5</span><span class="p">,</span><span class="w"> </span><span class="mh">4</span><span class="mi">'d6</span><span class="p">,</span><span class="w"> </span><span class="mh">4</span><span class="mi">'d7</span><span class="p">,</span><span class="w"> </span><span class="mh">4</span><span class="mi">'d8</span><span class="o">:</span>
+<span class="w">                            </span><span class="n">rx_shift</span><span class="p">[</span><span class="n">bit_idx</span><span class="o">-</span><span class="mh">1</span><span class="p">]</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">rx_d2</span><span class="p">;</span>
+<span class="w">                        </span><span class="mh">4</span><span class="mi">'d9</span><span class="o">:</span><span class="w"> </span><span class="k">begin</span>
+<span class="w">                            </span><span class="c1">// 停止位采样时刻</span>
+<span class="w">                            </span><span class="n">rx_busy</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mh">1</span><span class="mb">'b0</span><span class="p">;</span>
+<span class="w">                            </span><span class="n">rx_data</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">rx_shift</span><span class="p">[</span><span class="mh">7</span><span class="o">:</span><span class="mh">0</span><span class="p">];</span>
+<span class="w">                            </span><span class="n">rx_done</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mh">1</span><span class="mb">'b1</span><span class="p">;</span>
+<span class="w">                        </span><span class="k">end</span>
+<span class="w">                        </span><span class="k">default</span><span class="o">:</span><span class="w"> </span><span class="p">;</span>
+<span class="w">                    </span><span class="k">endcase</span>
+<span class="w">                </span><span class="k">end</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="k">begin</span>
+<span class="w">                    </span><span class="n">baud_cnt</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">baud_cnt</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mh">1</span><span class="mb">'b1</span><span class="p">;</span>
+<span class="w">                </span><span class="k">end</span>
+<span class="w">            </span><span class="k">end</span>
+<span class="w">        </span><span class="k">end</span>
+<span class="w">    </span><span class="k">end</span>
+
+<span class="k">endmodule</span>
+</code></pre></div>
+<blockquote>
+<p><strong>注意</strong>：本实验代码用于理解基本接收流程，没有加入过采样、起始位二次确认、停止位合法性检查和错误标志。工程中的高可靠 UART 通常会增加这些功能。</p>
+</blockquote>
+<hr>
+<h2 id="4-uart">4. UART 发送模块</h2>
+<h3 id="41">4.1 发送流程</h3>
+<p><img alt="UART 发送流程" src="../images/uart-tx-flow.png"></p>
+<p>发送模块有两个主要工作状态：</p>
+<ul>
+<li><strong>Idle</strong>：<code>tx_busy = 0</code>，串口线保持高电平；等待 <code>tx_start</code></li>
+<li><strong>Transmit</strong>：<code>tx_busy = 1</code>，每隔一个波特周期发送移位寄存器的最低位</li>
+</ul>
+<p>收到有效的 <code>tx_start</code> 后，将完整的 10 位 UART 帧装入移位寄存器：</p>
+<div class="highlight"><pre><span></span><code><span class="n">tx_shift</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="p">{</span><span class="mh">1</span><span class="mb">'b1</span><span class="p">,</span><span class="w"> </span><span class="n">tx_data</span><span class="p">,</span><span class="w"> </span><span class="mh">1</span><span class="mb">'b0</span><span class="p">};</span>
+</code></pre></div>
+<p>从右向左看依次是起始位、8 位数据和停止位。发送时每次输出 <code>tx_shift[0]</code>，再将寄存器右移一位。</p>
+<h3 id="42">4.2 发送模块代码</h3>
+<div class="highlight"><pre><span></span><code><span class="no">`timescale</span><span class="w"> </span><span class="mh">1</span><span class="n">ns</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mh">1</span><span class="n">ps</span>
+
+<span class="k">module</span><span class="w"> </span><span class="n">uart_tx</span><span class="w"> </span><span class="p">#(</span>
+<span class="w">    </span><span class="k">parameter</span><span class="w"> </span><span class="n">CLK_FREQ</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="mh">100</span><span class="n">_000_000</span><span class="p">,</span>
+<span class="w">    </span><span class="k">parameter</span><span class="w"> </span><span class="n">BAUD_RATE</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">115200</span>
+<span class="p">)(</span>
+<span class="w">    </span><span class="k">input</span><span class="w">  </span><span class="kt">wire</span><span class="w">       </span><span class="n">clk</span><span class="p">,</span>
+<span class="w">    </span><span class="k">input</span><span class="w">  </span><span class="kt">wire</span><span class="w">       </span><span class="n">rst_n</span><span class="p">,</span>
+<span class="w">    </span><span class="k">input</span><span class="w">  </span><span class="kt">wire</span><span class="w">       </span><span class="n">tx_start</span><span class="p">,</span><span class="w">    </span><span class="c1">// 单周期发送触发信号</span>
+<span class="w">    </span><span class="k">input</span><span class="w">  </span><span class="kt">wire</span><span class="w"> </span><span class="p">[</span><span class="mh">7</span><span class="o">:</span><span class="mh">0</span><span class="p">]</span><span class="w"> </span><span class="n">tx_data</span><span class="p">,</span><span class="w">     </span><span class="c1">// 待发送字节</span>
+<span class="w">    </span><span class="k">output</span><span class="w"> </span><span class="kt">reg</span><span class="w">        </span><span class="n">tx</span><span class="p">,</span><span class="w">          </span><span class="c1">// 串口输出</span>
+<span class="w">    </span><span class="k">output</span><span class="w"> </span><span class="kt">reg</span><span class="w">        </span><span class="n">tx_busy</span><span class="w">      </span><span class="c1">// 发送忙标志</span>
+<span class="p">);</span>
+
+<span class="w">    </span><span class="k">localparam</span><span class="w"> </span><span class="n">BAUD_DIV</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">CLK_FREQ</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">BAUD_RATE</span><span class="p">;</span>
+
+<span class="w">    </span><span class="kt">reg</span><span class="w"> </span><span class="p">[</span><span class="mh">15</span><span class="o">:</span><span class="mh">0</span><span class="p">]</span><span class="w"> </span><span class="n">baud_cnt</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">reg</span><span class="w"> </span><span class="p">[</span><span class="mh">3</span><span class="o">:</span><span class="mh">0</span><span class="p">]</span><span class="w">  </span><span class="n">bit_idx</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">reg</span><span class="w"> </span><span class="p">[</span><span class="mh">9</span><span class="o">:</span><span class="mh">0</span><span class="p">]</span><span class="w">  </span><span class="n">tx_shift</span><span class="p">;</span>
+
+<span class="w">    </span><span class="k">always</span><span class="w"> </span><span class="p">@(</span><span class="k">posedge</span><span class="w"> </span><span class="n">clk</span><span class="w"> </span><span class="k">or</span><span class="w"> </span><span class="k">negedge</span><span class="w"> </span><span class="n">rst_n</span><span class="p">)</span><span class="w"> </span><span class="k">begin</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">rst_n</span><span class="p">)</span><span class="w"> </span><span class="k">begin</span>
+<span class="w">            </span><span class="n">baud_cnt</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mh">16</span><span class="mi">'d0</span><span class="p">;</span>
+<span class="w">            </span><span class="n">bit_idx</span><span class="w">  </span><span class="o">&lt;=</span><span class="w"> </span><span class="mh">4</span><span class="mi">'d0</span><span class="p">;</span>
+<span class="w">            </span><span class="n">tx_shift</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mh">10</span><span class="mb">'b11</span><span class="n">_1111_1111</span><span class="p">;</span>
+<span class="w">            </span><span class="n">tx</span><span class="w">        </span><span class="o">&lt;=</span><span class="w"> </span><span class="mh">1</span><span class="mb">'b1</span><span class="p">;</span>
+<span class="w">            </span><span class="n">tx_busy</span><span class="w">   </span><span class="o">&lt;=</span><span class="w"> </span><span class="mh">1</span><span class="mb">'b0</span><span class="p">;</span>
+<span class="w">        </span><span class="k">end</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="k">begin</span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">tx_start</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="o">!</span><span class="n">tx_busy</span><span class="p">)</span><span class="w"> </span><span class="k">begin</span>
+<span class="w">                </span><span class="c1">// 停止位 + 8 位数据 + 起始位</span>
+<span class="w">                </span><span class="n">tx_shift</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="p">{</span><span class="mh">1</span><span class="mb">'b1</span><span class="p">,</span><span class="w"> </span><span class="n">tx_data</span><span class="p">,</span><span class="w"> </span><span class="mh">1</span><span class="mb">'b0</span><span class="p">};</span>
+<span class="w">                </span><span class="n">tx_busy</span><span class="w">  </span><span class="o">&lt;=</span><span class="w"> </span><span class="mh">1</span><span class="mb">'b1</span><span class="p">;</span>
+<span class="w">                </span><span class="n">baud_cnt</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mh">16</span><span class="mi">'d0</span><span class="p">;</span>
+<span class="w">                </span><span class="n">bit_idx</span><span class="w">  </span><span class="o">&lt;=</span><span class="w"> </span><span class="mh">4</span><span class="mi">'d0</span><span class="p">;</span>
+<span class="w">            </span><span class="k">end</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">tx_busy</span><span class="p">)</span><span class="w"> </span><span class="k">begin</span>
+<span class="w">                </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">baud_cnt</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">BAUD_DIV</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mh">1</span><span class="p">)</span><span class="w"> </span><span class="k">begin</span>
+<span class="w">                    </span><span class="n">baud_cnt</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">baud_cnt</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mh">1</span><span class="mb">'b1</span><span class="p">;</span>
+<span class="w">                </span><span class="k">end</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="k">begin</span>
+<span class="w">                    </span><span class="n">baud_cnt</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mh">16</span><span class="mi">'d0</span><span class="p">;</span>
+<span class="w">                    </span><span class="n">tx</span><span class="w">       </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">tx_shift</span><span class="p">[</span><span class="mh">0</span><span class="p">];</span>
+<span class="w">                    </span><span class="n">tx_shift</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="p">{</span><span class="mh">1</span><span class="mb">'b1</span><span class="p">,</span><span class="w"> </span><span class="n">tx_shift</span><span class="p">[</span><span class="mh">9</span><span class="o">:</span><span class="mh">1</span><span class="p">]};</span>
+<span class="w">                    </span><span class="n">bit_idx</span><span class="w">  </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">bit_idx</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mh">1</span><span class="mb">'b1</span><span class="p">;</span>
+
+<span class="w">                    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">bit_idx</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mh">4</span><span class="mi">'d9</span><span class="p">)</span>
+<span class="w">                        </span><span class="n">tx_busy</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mh">1</span><span class="mb">'b0</span><span class="p">;</span>
+<span class="w">                </span><span class="k">end</span>
+<span class="w">            </span><span class="k">end</span>
+<span class="w">        </span><span class="k">end</span>
+<span class="w">    </span><span class="k">end</span>
+
+<span class="k">endmodule</span>
+</code></pre></div>
+<blockquote>
+<p><strong>注意</strong>：当 <code>tx_busy = 1</code> 时，新的 <code>tx_start</code> 不会被接受。顶层控制电路应等待发送结束后再发起下一次传输。</p>
+</blockquote>
+<hr>
+<h2 id="5">5. 顶层模块设计</h2>
+<h3 id="51">5.1 发送按键边沿检测</h3>
+<p>EGO1 实验按键为低有效：未按下时为 <code>1</code>，按下时变为 <code>0</code>。下面的逻辑检测下降沿，并产生一个时钟周期的 <code>send_flag</code>：</p>
+<div class="highlight"><pre><span></span><code><span class="kt">reg</span><span class="w"> </span><span class="n">send_one_d1</span><span class="p">,</span><span class="w"> </span><span class="n">send_one_d2</span><span class="p">;</span>
+
+<span class="k">always</span><span class="w"> </span><span class="p">@(</span><span class="k">posedge</span><span class="w"> </span><span class="n">clk</span><span class="w"> </span><span class="k">or</span><span class="w"> </span><span class="k">negedge</span><span class="w"> </span><span class="n">uart_tx_rst_n</span><span class="p">)</span><span class="w"> </span><span class="k">begin</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">uart_tx_rst_n</span><span class="p">)</span><span class="w"> </span><span class="k">begin</span>
+<span class="w">        </span><span class="n">send_one_d1</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mh">1</span><span class="mb">'b0</span><span class="p">;</span>
+<span class="w">        </span><span class="n">send_one_d2</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mh">1</span><span class="mb">'b0</span><span class="p">;</span>
+<span class="w">    </span><span class="k">end</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="k">begin</span>
+<span class="w">        </span><span class="n">send_one_d1</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">send_one</span><span class="p">;</span>
+<span class="w">        </span><span class="n">send_one_d2</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">send_one_d1</span><span class="p">;</span>
+<span class="w">    </span><span class="k">end</span>
+<span class="k">end</span>
+
+<span class="kt">wire</span><span class="w"> </span><span class="n">send_flag</span><span class="p">;</span>
+<span class="k">assign</span><span class="w"> </span><span class="n">send_flag</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">~</span><span class="n">send_one_d1</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">send_one_d2</span><span class="p">;</span>
+</code></pre></div>
+<p>表达式成立时，当前采样值为 <code>0</code>、上一拍采样值为 <code>1</code>，即检测到按下动作。</p>
+<p>本 Demo 没有加入按键消抖。若一次按键出现多次发送，应复用 Lab7 的 <code>btn_debounce</code>，先消抖再进行边沿检测。</p>
+<h3 id="52">5.2 完整顶层代码</h3>
+<div class="highlight"><pre><span></span><code><span class="no">`timescale</span><span class="w"> </span><span class="mh">1</span><span class="n">ns</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mh">1</span><span class="n">ps</span>
+
+<span class="k">module</span><span class="w"> </span><span class="n">top</span><span class="p">(</span>
+<span class="w">    </span><span class="k">input</span><span class="w">  </span><span class="kt">wire</span><span class="w">       </span><span class="n">clk</span><span class="p">,</span>
+<span class="w">    </span><span class="k">input</span><span class="w">  </span><span class="kt">wire</span><span class="w"> </span><span class="p">[</span><span class="mh">7</span><span class="o">:</span><span class="mh">0</span><span class="p">]</span><span class="w"> </span><span class="n">key</span><span class="p">,</span>
+<span class="w">    </span><span class="k">input</span><span class="w">  </span><span class="kt">wire</span><span class="w">       </span><span class="n">uart_rx</span><span class="p">,</span>
+<span class="w">    </span><span class="k">output</span><span class="w"> </span><span class="kt">wire</span><span class="w">       </span><span class="n">uart_tx</span><span class="p">,</span>
+<span class="w">    </span><span class="k">output</span><span class="w"> </span><span class="kt">reg</span><span class="w">  </span><span class="p">[</span><span class="mh">7</span><span class="o">:</span><span class="mh">0</span><span class="p">]</span><span class="w"> </span><span class="n">led</span><span class="p">,</span>
+<span class="w">    </span><span class="k">input</span><span class="w">  </span><span class="kt">wire</span><span class="w">       </span><span class="n">uart_tx_rst_n</span><span class="p">,</span>
+<span class="w">    </span><span class="k">input</span><span class="w">  </span><span class="kt">wire</span><span class="w">       </span><span class="n">uart_rx_rst_n</span><span class="p">,</span>
+<span class="w">    </span><span class="k">input</span><span class="w">  </span><span class="kt">wire</span><span class="w">       </span><span class="n">send_one</span><span class="p">,</span>
+<span class="w">    </span><span class="k">output</span><span class="w"> </span><span class="kt">wire</span><span class="w">       </span><span class="n">uart_tx_work</span><span class="p">,</span>
+<span class="w">    </span><span class="k">output</span><span class="w"> </span><span class="kt">wire</span><span class="w">       </span><span class="n">uart_rx_work</span>
+<span class="p">);</span>
+
+<span class="w">    </span><span class="c1">// UART RX 输出</span>
+<span class="w">    </span><span class="kt">wire</span><span class="w"> </span><span class="p">[</span><span class="mh">7</span><span class="o">:</span><span class="mh">0</span><span class="p">]</span><span class="w"> </span><span class="n">rx_data</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">wire</span><span class="w">       </span><span class="n">rx_done</span><span class="p">;</span>
+
+<span class="w">    </span><span class="c1">// UART TX 状态</span>
+<span class="w">    </span><span class="kt">wire</span><span class="w">       </span><span class="n">tx_busy</span><span class="p">;</span>
+
+<span class="w">    </span><span class="k">assign</span><span class="w"> </span><span class="n">uart_tx_work</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">uart_tx_rst_n</span><span class="p">;</span>
+<span class="w">    </span><span class="k">assign</span><span class="w"> </span><span class="n">uart_rx_work</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">uart_rx_rst_n</span><span class="p">;</span>
+
+<span class="w">    </span><span class="n">uart_rx</span><span class="w"> </span><span class="p">#(</span>
+<span class="w">        </span><span class="p">.</span><span class="n">CLK_FREQ</span><span class="p">(</span><span class="mh">100</span><span class="n">_000_000</span><span class="p">),</span>
+<span class="w">        </span><span class="p">.</span><span class="n">BAUD_RATE</span><span class="p">(</span><span class="mh">115200</span><span class="p">)</span>
+<span class="w">    </span><span class="p">)</span><span class="w"> </span><span class="n">uart_rx_inst</span><span class="w"> </span><span class="p">(</span>
+<span class="w">        </span><span class="p">.</span><span class="n">clk</span><span class="p">(</span><span class="n">clk</span><span class="p">),</span>
+<span class="w">        </span><span class="p">.</span><span class="n">rst_n</span><span class="p">(</span><span class="n">uart_rx_rst_n</span><span class="p">),</span>
+<span class="w">        </span><span class="p">.</span><span class="n">rx</span><span class="p">(</span><span class="n">uart_rx</span><span class="p">),</span>
+<span class="w">        </span><span class="p">.</span><span class="n">rx_data</span><span class="p">(</span><span class="n">rx_data</span><span class="p">),</span>
+<span class="w">        </span><span class="p">.</span><span class="n">rx_done</span><span class="p">(</span><span class="n">rx_done</span><span class="p">)</span>
+<span class="w">    </span><span class="p">);</span>
+
+<span class="w">    </span><span class="c1">// 低有效按键的下降沿检测</span>
+<span class="w">    </span><span class="kt">reg</span><span class="w"> </span><span class="n">send_one_d1</span><span class="p">,</span><span class="w"> </span><span class="n">send_one_d2</span><span class="p">;</span>
+
+<span class="w">    </span><span class="k">always</span><span class="w"> </span><span class="p">@(</span><span class="k">posedge</span><span class="w"> </span><span class="n">clk</span><span class="w"> </span><span class="k">or</span><span class="w"> </span><span class="k">negedge</span><span class="w"> </span><span class="n">uart_tx_rst_n</span><span class="p">)</span><span class="w"> </span><span class="k">begin</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">uart_tx_rst_n</span><span class="p">)</span><span class="w"> </span><span class="k">begin</span>
+<span class="w">            </span><span class="n">send_one_d1</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mh">1</span><span class="mb">'b0</span><span class="p">;</span>
+<span class="w">            </span><span class="n">send_one_d2</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mh">1</span><span class="mb">'b0</span><span class="p">;</span>
+<span class="w">        </span><span class="k">end</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="k">begin</span>
+<span class="w">            </span><span class="n">send_one_d1</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">send_one</span><span class="p">;</span>
+<span class="w">            </span><span class="n">send_one_d2</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">send_one_d1</span><span class="p">;</span>
+<span class="w">        </span><span class="k">end</span>
+<span class="w">    </span><span class="k">end</span>
+
+<span class="w">    </span><span class="kt">wire</span><span class="w"> </span><span class="n">send_flag</span><span class="p">;</span>
+<span class="w">    </span><span class="k">assign</span><span class="w"> </span><span class="n">send_flag</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">~</span><span class="n">send_one_d1</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">send_one_d2</span><span class="p">;</span>
+
+<span class="w">    </span><span class="n">uart_tx</span><span class="w"> </span><span class="p">#(</span>
+<span class="w">        </span><span class="p">.</span><span class="n">CLK_FREQ</span><span class="p">(</span><span class="mh">100</span><span class="n">_000_000</span><span class="p">),</span>
+<span class="w">        </span><span class="p">.</span><span class="n">BAUD_RATE</span><span class="p">(</span><span class="mh">115200</span><span class="p">)</span>
+<span class="w">    </span><span class="p">)</span><span class="w"> </span><span class="n">uart_tx_inst</span><span class="w"> </span><span class="p">(</span>
+<span class="w">        </span><span class="p">.</span><span class="n">clk</span><span class="p">(</span><span class="n">clk</span><span class="p">),</span>
+<span class="w">        </span><span class="p">.</span><span class="n">rst_n</span><span class="p">(</span><span class="n">uart_tx_rst_n</span><span class="p">),</span>
+<span class="w">        </span><span class="p">.</span><span class="n">tx_start</span><span class="p">(</span><span class="n">send_flag</span><span class="p">),</span>
+<span class="w">        </span><span class="p">.</span><span class="n">tx_data</span><span class="p">(</span><span class="n">key</span><span class="p">),</span>
+<span class="w">        </span><span class="p">.</span><span class="n">tx</span><span class="p">(</span><span class="n">uart_tx</span><span class="p">),</span>
+<span class="w">        </span><span class="p">.</span><span class="n">tx_busy</span><span class="p">(</span><span class="n">tx_busy</span><span class="p">)</span>
+<span class="w">    </span><span class="p">);</span>
+
+<span class="w">    </span><span class="c1">// 接收完成后锁存数据，LED 保持显示最近收到的字节</span>
+<span class="w">    </span><span class="k">always</span><span class="w"> </span><span class="p">@(</span><span class="k">posedge</span><span class="w"> </span><span class="n">clk</span><span class="w"> </span><span class="k">or</span><span class="w"> </span><span class="k">negedge</span><span class="w"> </span><span class="n">uart_rx_rst_n</span><span class="p">)</span><span class="w"> </span><span class="k">begin</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">uart_rx_rst_n</span><span class="p">)</span>
+<span class="w">            </span><span class="n">led</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mh">8</span><span class="mb">'b0</span><span class="p">;</span>
+<span class="w">        </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">rx_done</span><span class="p">)</span>
+<span class="w">            </span><span class="n">led</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">rx_data</span><span class="p">;</span>
+<span class="w">    </span><span class="k">end</span>
+
+<span class="k">endmodule</span>
+</code></pre></div>
+<hr>
+<h2 id="6">6. 引脚约束</h2>
+<p><img alt="EGO1 UART 控件位置" src="../images/uart-board-controls.png"></p>
+<p>将下列约束保存为 <code>top.xdc</code>。端口名称必须与顶层模块完全一致。</p>
+<div class="highlight"><pre><span></span><code><span class="c">## LED[7:0]</span>
+<span class="nv">set_property</span><span class="w"> </span>IOSTANDARD<span class="w"> </span>LVCMOS33<span class="w"> </span><span class="k">[</span><span class="nv">get_ports</span><span class="w"> </span><span class="k">{</span><span class="nv">led</span><span class="k">[</span><span class="nv">7</span><span class="k">]}]</span>
+<span class="nv">set_property</span><span class="w"> </span>IOSTANDARD<span class="w"> </span>LVCMOS33<span class="w"> </span><span class="k">[</span><span class="nv">get_ports</span><span class="w"> </span><span class="k">{</span><span class="nv">led</span><span class="k">[</span><span class="nv">6</span><span class="k">]}]</span>
+<span class="nv">set_property</span><span class="w"> </span>IOSTANDARD<span class="w"> </span>LVCMOS33<span class="w"> </span><span class="k">[</span><span class="nv">get_ports</span><span class="w"> </span><span class="k">{</span><span class="nv">led</span><span class="k">[</span><span class="nv">5</span><span class="k">]}]</span>
+<span class="nv">set_property</span><span class="w"> </span>IOSTANDARD<span class="w"> </span>LVCMOS33<span class="w"> </span><span class="k">[</span><span class="nv">get_ports</span><span class="w"> </span><span class="k">{</span><span class="nv">led</span><span class="k">[</span><span class="nv">4</span><span class="k">]}]</span>
+<span class="nv">set_property</span><span class="w"> </span>IOSTANDARD<span class="w"> </span>LVCMOS33<span class="w"> </span><span class="k">[</span><span class="nv">get_ports</span><span class="w"> </span><span class="k">{</span><span class="nv">led</span><span class="k">[</span><span class="nv">3</span><span class="k">]}]</span>
+<span class="nv">set_property</span><span class="w"> </span>IOSTANDARD<span class="w"> </span>LVCMOS33<span class="w"> </span><span class="k">[</span><span class="nv">get_ports</span><span class="w"> </span><span class="k">{</span><span class="nv">led</span><span class="k">[</span><span class="nv">2</span><span class="k">]}]</span>
+<span class="nv">set_property</span><span class="w"> </span>IOSTANDARD<span class="w"> </span>LVCMOS33<span class="w"> </span><span class="k">[</span><span class="nv">get_ports</span><span class="w"> </span><span class="k">{</span><span class="nv">led</span><span class="k">[</span><span class="nv">1</span><span class="k">]}]</span>
+<span class="nv">set_property</span><span class="w"> </span>IOSTANDARD<span class="w"> </span>LVCMOS33<span class="w"> </span><span class="k">[</span><span class="nv">get_ports</span><span class="w"> </span><span class="k">{</span><span class="nv">led</span><span class="k">[</span><span class="nv">0</span><span class="k">]}]</span>
+
+<span class="nv">set_property</span><span class="w"> </span>PACKAGE_PIN<span class="w"> </span>F6<span class="w"> </span><span class="k">[</span><span class="nv">get_ports</span><span class="w"> </span><span class="k">{</span><span class="nv">led</span><span class="k">[</span><span class="nv">7</span><span class="k">]}]</span>
+<span class="nv">set_property</span><span class="w"> </span>PACKAGE_PIN<span class="w"> </span>G4<span class="w"> </span><span class="k">[</span><span class="nv">get_ports</span><span class="w"> </span><span class="k">{</span><span class="nv">led</span><span class="k">[</span><span class="nv">6</span><span class="k">]}]</span>
+<span class="nv">set_property</span><span class="w"> </span>PACKAGE_PIN<span class="w"> </span>G3<span class="w"> </span><span class="k">[</span><span class="nv">get_ports</span><span class="w"> </span><span class="k">{</span><span class="nv">led</span><span class="k">[</span><span class="nv">5</span><span class="k">]}]</span>
+<span class="nv">set_property</span><span class="w"> </span>PACKAGE_PIN<span class="w"> </span>J4<span class="w"> </span><span class="k">[</span><span class="nv">get_ports</span><span class="w"> </span><span class="k">{</span><span class="nv">led</span><span class="k">[</span><span class="nv">4</span><span class="k">]}]</span>
+<span class="nv">set_property</span><span class="w"> </span>PACKAGE_PIN<span class="w"> </span>H4<span class="w"> </span><span class="k">[</span><span class="nv">get_ports</span><span class="w"> </span><span class="k">{</span><span class="nv">led</span><span class="k">[</span><span class="nv">3</span><span class="k">]}]</span>
+<span class="nv">set_property</span><span class="w"> </span>PACKAGE_PIN<span class="w"> </span>J3<span class="w"> </span><span class="k">[</span><span class="nv">get_ports</span><span class="w"> </span><span class="k">{</span><span class="nv">led</span><span class="k">[</span><span class="nv">2</span><span class="k">]}]</span>
+<span class="nv">set_property</span><span class="w"> </span>PACKAGE_PIN<span class="w"> </span>J2<span class="w"> </span><span class="k">[</span><span class="nv">get_ports</span><span class="w"> </span><span class="k">{</span><span class="nv">led</span><span class="k">[</span><span class="nv">1</span><span class="k">]}]</span>
+<span class="nv">set_property</span><span class="w"> </span>PACKAGE_PIN<span class="w"> </span>K2<span class="w"> </span><span class="k">[</span><span class="nv">get_ports</span><span class="w"> </span><span class="k">{</span><span class="nv">led</span><span class="k">[</span><span class="nv">0</span><span class="k">]}]</span>
+
+<span class="c">## 拨码开关 key[7:0]</span>
+<span class="nv">set_property</span><span class="w"> </span>IOSTANDARD<span class="w"> </span>LVCMOS33<span class="w"> </span><span class="k">[</span><span class="nv">get_ports</span><span class="w"> </span><span class="k">{</span><span class="nv">key</span><span class="k">[</span><span class="nv">7</span><span class="k">]}]</span>
+<span class="nv">set_property</span><span class="w"> </span>IOSTANDARD<span class="w"> </span>LVCMOS33<span class="w"> </span><span class="k">[</span><span class="nv">get_ports</span><span class="w"> </span><span class="k">{</span><span class="nv">key</span><span class="k">[</span><span class="nv">6</span><span class="k">]}]</span>
+<span class="nv">set_property</span><span class="w"> </span>IOSTANDARD<span class="w"> </span>LVCMOS33<span class="w"> </span><span class="k">[</span><span class="nv">get_ports</span><span class="w"> </span><span class="k">{</span><span class="nv">key</span><span class="k">[</span><span class="nv">5</span><span class="k">]}]</span>
+<span class="nv">set_property</span><span class="w"> </span>IOSTANDARD<span class="w"> </span>LVCMOS33<span class="w"> </span><span class="k">[</span><span class="nv">get_ports</span><span class="w"> </span><span class="k">{</span><span class="nv">key</span><span class="k">[</span><span class="nv">4</span><span class="k">]}]</span>
+<span class="nv">set_property</span><span class="w"> </span>IOSTANDARD<span class="w"> </span>LVCMOS33<span class="w"> </span><span class="k">[</span><span class="nv">get_ports</span><span class="w"> </span><span class="k">{</span><span class="nv">key</span><span class="k">[</span><span class="nv">3</span><span class="k">]}]</span>
+<span class="nv">set_property</span><span class="w"> </span>IOSTANDARD<span class="w"> </span>LVCMOS33<span class="w"> </span><span class="k">[</span><span class="nv">get_ports</span><span class="w"> </span><span class="k">{</span><span class="nv">key</span><span class="k">[</span><span class="nv">2</span><span class="k">]}]</span>
+<span class="nv">set_property</span><span class="w"> </span>IOSTANDARD<span class="w"> </span>LVCMOS33<span class="w"> </span><span class="k">[</span><span class="nv">get_ports</span><span class="w"> </span><span class="k">{</span><span class="nv">key</span><span class="k">[</span><span class="nv">1</span><span class="k">]}]</span>
+<span class="nv">set_property</span><span class="w"> </span>IOSTANDARD<span class="w"> </span>LVCMOS33<span class="w"> </span><span class="k">[</span><span class="nv">get_ports</span><span class="w"> </span><span class="k">{</span><span class="nv">key</span><span class="k">[</span><span class="nv">0</span><span class="k">]}]</span>
+
+<span class="nv">set_property</span><span class="w"> </span>PACKAGE_PIN<span class="w"> </span>P5<span class="w"> </span><span class="k">[</span><span class="nv">get_ports</span><span class="w"> </span><span class="k">{</span><span class="nv">key</span><span class="k">[</span><span class="nv">7</span><span class="k">]}]</span>
+<span class="nv">set_property</span><span class="w"> </span>PACKAGE_PIN<span class="w"> </span>P4<span class="w"> </span><span class="k">[</span><span class="nv">get_ports</span><span class="w"> </span><span class="k">{</span><span class="nv">key</span><span class="k">[</span><span class="nv">6</span><span class="k">]}]</span>
+<span class="nv">set_property</span><span class="w"> </span>PACKAGE_PIN<span class="w"> </span>P3<span class="w"> </span><span class="k">[</span><span class="nv">get_ports</span><span class="w"> </span><span class="k">{</span><span class="nv">key</span><span class="k">[</span><span class="nv">5</span><span class="k">]}]</span>
+<span class="nv">set_property</span><span class="w"> </span>PACKAGE_PIN<span class="w"> </span>P2<span class="w"> </span><span class="k">[</span><span class="nv">get_ports</span><span class="w"> </span><span class="k">{</span><span class="nv">key</span><span class="k">[</span><span class="nv">4</span><span class="k">]}]</span>
+<span class="nv">set_property</span><span class="w"> </span>PACKAGE_PIN<span class="w"> </span>R2<span class="w"> </span><span class="k">[</span><span class="nv">get_ports</span><span class="w"> </span><span class="k">{</span><span class="nv">key</span><span class="k">[</span><span class="nv">3</span><span class="k">]}]</span>
+<span class="nv">set_property</span><span class="w"> </span>PACKAGE_PIN<span class="w"> </span>M4<span class="w"> </span><span class="k">[</span><span class="nv">get_ports</span><span class="w"> </span><span class="k">{</span><span class="nv">key</span><span class="k">[</span><span class="nv">2</span><span class="k">]}]</span>
+<span class="nv">set_property</span><span class="w"> </span>PACKAGE_PIN<span class="w"> </span>N4<span class="w"> </span><span class="k">[</span><span class="nv">get_ports</span><span class="w"> </span><span class="k">{</span><span class="nv">key</span><span class="k">[</span><span class="nv">1</span><span class="k">]}]</span>
+<span class="nv">set_property</span><span class="w"> </span>PACKAGE_PIN<span class="w"> </span>R1<span class="w"> </span><span class="k">[</span><span class="nv">get_ports</span><span class="w"> </span><span class="k">{</span><span class="nv">key</span><span class="k">[</span><span class="nv">0</span><span class="k">]}]</span>
+
+<span class="c">## 系统时钟与按键</span>
+<span class="nv">set_property</span><span class="w"> </span>IOSTANDARD<span class="w"> </span>LVCMOS33<span class="w"> </span><span class="k">[</span><span class="nv">get_ports</span><span class="w"> </span>clk<span class="k">]</span>
+<span class="nv">set_property</span><span class="w"> </span>IOSTANDARD<span class="w"> </span>LVCMOS33<span class="w"> </span><span class="k">[</span><span class="nv">get_ports</span><span class="w"> </span>send_one<span class="k">]</span>
+<span class="nv">set_property</span><span class="w"> </span>PACKAGE_PIN<span class="w"> </span>P17<span class="w"> </span><span class="k">[</span><span class="nv">get_ports</span><span class="w"> </span>clk<span class="k">]</span>
+<span class="nv">set_property</span><span class="w"> </span>PACKAGE_PIN<span class="w"> </span>R11<span class="w"> </span><span class="k">[</span><span class="nv">get_ports</span><span class="w"> </span>send_one<span class="k">]</span>
+
+<span class="c">## UART TX/RX 复位开关与状态 LED</span>
+<span class="nv">set_property</span><span class="w"> </span>IOSTANDARD<span class="w"> </span>LVCMOS33<span class="w"> </span><span class="k">[</span><span class="nv">get_ports</span><span class="w"> </span>uart_tx_rst_n<span class="k">]</span>
+<span class="nv">set_property</span><span class="w"> </span>IOSTANDARD<span class="w"> </span>LVCMOS33<span class="w"> </span><span class="k">[</span><span class="nv">get_ports</span><span class="w"> </span>uart_rx_rst_n<span class="k">]</span>
+<span class="nv">set_property</span><span class="w"> </span>IOSTANDARD<span class="w"> </span>LVCMOS33<span class="w"> </span><span class="k">[</span><span class="nv">get_ports</span><span class="w"> </span>uart_tx_work<span class="k">]</span>
+<span class="nv">set_property</span><span class="w"> </span>IOSTANDARD<span class="w"> </span>LVCMOS33<span class="w"> </span><span class="k">[</span><span class="nv">get_ports</span><span class="w"> </span>uart_rx_work<span class="k">]</span>
+
+<span class="nv">set_property</span><span class="w"> </span>PACKAGE_PIN<span class="w"> </span>T3<span class="w"> </span><span class="k">[</span><span class="nv">get_ports</span><span class="w"> </span>uart_tx_rst_n<span class="k">]</span>
+<span class="nv">set_property</span><span class="w"> </span>PACKAGE_PIN<span class="w"> </span>T5<span class="w"> </span><span class="k">[</span><span class="nv">get_ports</span><span class="w"> </span>uart_rx_rst_n<span class="k">]</span>
+<span class="nv">set_property</span><span class="w"> </span>PACKAGE_PIN<span class="w"> </span>M1<span class="w"> </span><span class="k">[</span><span class="nv">get_ports</span><span class="w"> </span>uart_tx_work<span class="k">]</span>
+<span class="nv">set_property</span><span class="w"> </span>PACKAGE_PIN<span class="w"> </span>K3<span class="w"> </span><span class="k">[</span><span class="nv">get_ports</span><span class="w"> </span>uart_rx_work<span class="k">]</span>
+
+<span class="c">## 板载 UART</span>
+<span class="nv">set_property</span><span class="w"> </span>IOSTANDARD<span class="w"> </span>LVCMOS33<span class="w"> </span><span class="k">[</span><span class="nv">get_ports</span><span class="w"> </span>uart_tx<span class="k">]</span>
+<span class="nv">set_property</span><span class="w"> </span>IOSTANDARD<span class="w"> </span>LVCMOS33<span class="w"> </span><span class="k">[</span><span class="nv">get_ports</span><span class="w"> </span>uart_rx<span class="k">]</span>
+<span class="nv">set_property</span><span class="w"> </span>PACKAGE_PIN<span class="w"> </span>T4<span class="w"> </span><span class="k">[</span><span class="nv">get_ports</span><span class="w"> </span>uart_tx<span class="k">]</span>
+<span class="nv">set_property</span><span class="w"> </span>PACKAGE_PIN<span class="w"> </span>N5<span class="w"> </span><span class="k">[</span><span class="nv">get_ports</span><span class="w"> </span>uart_rx<span class="k">]</span>
+</code></pre></div>
+<hr>
+<h2 id="7-uart">7. UART 环回仿真</h2>
+<p>上板前先将 <code>uart_tx</code> 的输出直接连接到 <code>uart_rx</code> 的输入，在 testbench 内完成环回测试。这样可以同时验证发送帧格式、接收采样和完成脉冲。</p>
+<p>为了缩短仿真时间，testbench 将波特率临时提高到 1 MHz。发送和接收模块使用相同参数即可，综合上板时仍使用 115200。</p>
+<h3 id="71-testbench">7.1 Testbench</h3>
+<div class="highlight"><pre><span></span><code><span class="no">`timescale</span><span class="w"> </span><span class="mh">1</span><span class="n">ns</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mh">1</span><span class="n">ps</span>
+
+<span class="k">module</span><span class="w"> </span><span class="n">tb_uart_loopback</span><span class="p">;</span>
+<span class="w">    </span><span class="k">localparam</span><span class="w"> </span><span class="n">CLK_FREQ</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="mh">100</span><span class="n">_000_000</span><span class="p">;</span>
+<span class="w">    </span><span class="k">localparam</span><span class="w"> </span><span class="n">BAUD_RATE</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">1</span><span class="n">_000_000</span><span class="p">;</span><span class="w">  </span><span class="c1">// 仅用于加速仿真</span>
+
+<span class="w">    </span><span class="kt">reg</span><span class="w">        </span><span class="n">clk</span><span class="w">      </span><span class="o">=</span><span class="w"> </span><span class="mh">1</span><span class="mb">'b0</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">reg</span><span class="w">        </span><span class="n">rst_n</span><span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="mh">1</span><span class="mb">'b0</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">reg</span><span class="w">        </span><span class="n">tx_start</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">1</span><span class="mb">'b0</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">reg</span><span class="w">  </span><span class="p">[</span><span class="mh">7</span><span class="o">:</span><span class="mh">0</span><span class="p">]</span><span class="w"> </span><span class="n">tx_data</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="mh">8'h00</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">wire</span><span class="w">       </span><span class="n">uart_line</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">wire</span><span class="w">       </span><span class="n">tx_busy</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">wire</span><span class="w"> </span><span class="p">[</span><span class="mh">7</span><span class="o">:</span><span class="mh">0</span><span class="p">]</span><span class="w"> </span><span class="n">rx_data</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">wire</span><span class="w">       </span><span class="n">rx_done</span><span class="p">;</span>
+
+<span class="w">    </span><span class="k">always</span><span class="w"> </span><span class="p">#</span><span class="mh">5</span><span class="w"> </span><span class="n">clk</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">~</span><span class="n">clk</span><span class="p">;</span><span class="w">  </span><span class="c1">// 100 MHz</span>
+
+<span class="w">    </span><span class="n">uart_tx</span><span class="w"> </span><span class="p">#(</span>
+<span class="w">        </span><span class="p">.</span><span class="n">CLK_FREQ</span><span class="p">(</span><span class="n">CLK_FREQ</span><span class="p">),</span>
+<span class="w">        </span><span class="p">.</span><span class="n">BAUD_RATE</span><span class="p">(</span><span class="n">BAUD_RATE</span><span class="p">)</span>
+<span class="w">    </span><span class="p">)</span><span class="w"> </span><span class="n">u_tx</span><span class="w"> </span><span class="p">(</span>
+<span class="w">        </span><span class="p">.</span><span class="n">clk</span><span class="p">(</span><span class="n">clk</span><span class="p">),</span>
+<span class="w">        </span><span class="p">.</span><span class="n">rst_n</span><span class="p">(</span><span class="n">rst_n</span><span class="p">),</span>
+<span class="w">        </span><span class="p">.</span><span class="n">tx_start</span><span class="p">(</span><span class="n">tx_start</span><span class="p">),</span>
+<span class="w">        </span><span class="p">.</span><span class="n">tx_data</span><span class="p">(</span><span class="n">tx_data</span><span class="p">),</span>
+<span class="w">        </span><span class="p">.</span><span class="n">tx</span><span class="p">(</span><span class="n">uart_line</span><span class="p">),</span>
+<span class="w">        </span><span class="p">.</span><span class="n">tx_busy</span><span class="p">(</span><span class="n">tx_busy</span><span class="p">)</span>
+<span class="w">    </span><span class="p">);</span>
+
+<span class="w">    </span><span class="n">uart_rx</span><span class="w"> </span><span class="p">#(</span>
+<span class="w">        </span><span class="p">.</span><span class="n">CLK_FREQ</span><span class="p">(</span><span class="n">CLK_FREQ</span><span class="p">),</span>
+<span class="w">        </span><span class="p">.</span><span class="n">BAUD_RATE</span><span class="p">(</span><span class="n">BAUD_RATE</span><span class="p">)</span>
+<span class="w">    </span><span class="p">)</span><span class="w"> </span><span class="n">u_rx</span><span class="w"> </span><span class="p">(</span>
+<span class="w">        </span><span class="p">.</span><span class="n">clk</span><span class="p">(</span><span class="n">clk</span><span class="p">),</span>
+<span class="w">        </span><span class="p">.</span><span class="n">rst_n</span><span class="p">(</span><span class="n">rst_n</span><span class="p">),</span>
+<span class="w">        </span><span class="p">.</span><span class="n">rx</span><span class="p">(</span><span class="n">uart_line</span><span class="p">),</span>
+<span class="w">        </span><span class="p">.</span><span class="n">rx_data</span><span class="p">(</span><span class="n">rx_data</span><span class="p">),</span>
+<span class="w">        </span><span class="p">.</span><span class="n">rx_done</span><span class="p">(</span><span class="n">rx_done</span><span class="p">)</span>
+<span class="w">    </span><span class="p">);</span>
+
+<span class="w">    </span><span class="k">task</span><span class="w"> </span><span class="n">send_byte</span><span class="p">;</span>
+<span class="w">        </span><span class="k">input</span><span class="w"> </span><span class="p">[</span><span class="mh">7</span><span class="o">:</span><span class="mh">0</span><span class="p">]</span><span class="w"> </span><span class="n">data</span><span class="p">;</span>
+<span class="w">        </span><span class="k">begin</span>
+<span class="w">            </span><span class="k">wait</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">tx_busy</span><span class="p">);</span>
+<span class="w">            </span><span class="p">@(</span><span class="k">posedge</span><span class="w"> </span><span class="n">clk</span><span class="p">);</span>
+<span class="w">            </span><span class="n">tx_data</span><span class="w">  </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">data</span><span class="p">;</span>
+<span class="w">            </span><span class="n">tx_start</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mh">1</span><span class="mb">'b1</span><span class="p">;</span>
+<span class="w">            </span><span class="p">@(</span><span class="k">posedge</span><span class="w"> </span><span class="n">clk</span><span class="p">);</span>
+<span class="w">            </span><span class="n">tx_start</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mh">1</span><span class="mb">'b0</span><span class="p">;</span>
+
+<span class="w">            </span><span class="p">@(</span><span class="k">posedge</span><span class="w"> </span><span class="n">rx_done</span><span class="p">);</span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">rx_data</span><span class="w"> </span><span class="o">!==</span><span class="w"> </span><span class="n">data</span><span class="p">)</span><span class="w"> </span><span class="k">begin</span>
+<span class="w">                </span><span class="nb">$display</span><span class="p">(</span><span class="s">"ERROR: expected %02h, received %02h"</span><span class="p">,</span><span class="w"> </span><span class="n">data</span><span class="p">,</span><span class="w"> </span><span class="n">rx_data</span><span class="p">);</span>
+<span class="w">                </span><span class="n">$fatal</span><span class="p">;</span>
+<span class="w">            </span><span class="k">end</span>
+<span class="w">            </span><span class="nb">$display</span><span class="p">(</span><span class="s">"PASS: sent %02h, received %02h"</span><span class="p">,</span><span class="w"> </span><span class="n">data</span><span class="p">,</span><span class="w"> </span><span class="n">rx_data</span><span class="p">);</span>
+<span class="w">        </span><span class="k">end</span>
+<span class="w">    </span><span class="k">endtask</span>
+
+<span class="w">    </span><span class="k">initial</span><span class="w"> </span><span class="k">begin</span>
+<span class="w">        </span><span class="p">#</span><span class="mh">100</span><span class="p">;</span>
+<span class="w">        </span><span class="n">rst_n</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">1</span><span class="mb">'b1</span><span class="p">;</span>
+
+<span class="w">        </span><span class="n">send_byte</span><span class="p">(</span><span class="mh">8'h48</span><span class="p">);</span>
+<span class="w">        </span><span class="n">send_byte</span><span class="p">(</span><span class="mh">8'h83</span><span class="p">);</span>
+<span class="w">        </span><span class="n">send_byte</span><span class="p">(</span><span class="mh">8'h2A</span><span class="p">);</span>
+
+<span class="w">        </span><span class="p">#</span><span class="mh">1000</span><span class="p">;</span>
+<span class="w">        </span><span class="nb">$finish</span><span class="p">;</span>
+<span class="w">    </span><span class="k">end</span>
+<span class="k">endmodule</span>
+</code></pre></div>
+<h3 id="72">7.2 仿真检查点</h3>
+<p>运行仿真后，应检查：</p>
+<ol>
+<li><code>tx_start</code> 只保持一个系统时钟周期</li>
+<li><code>tx_busy</code> 在整个 10 位数据帧期间保持高电平</li>
+<li><code>uart_line</code> 空闲时为高电平，随后依次出现起始位、8 位数据和停止位</li>
+<li><code>rx_done</code> 在每个字节接收完成时只拉高一个系统时钟周期</li>
+<li><code>rx_data</code> 依次得到 <code>8'h48</code>、<code>8'h83</code> 和 <code>8'h2A</code></li>
+</ol>
+<p>该 testbench 使用配套的 <code>uart_tx.v</code> 和 <code>uart_rx.v</code> 实测可依次输出：</p>
+<div class="highlight"><pre><span></span><code>PASS: sent 48, received 48
+PASS: sent 83, received 83
+PASS: sent 2a, received 2a
+</code></pre></div>
+<h3 id="73-vivado">7.3 在 Vivado 中添加内部信号</h3>
+<p><img alt="Vivado 仿真中的 Scope、Objects 与 Waveform" src="../images/vivado-simulation-windows.png"></p>
+<p>Vivado 仿真界面中常用的三个窗口为：</p>
+<table>
+<thead>
+<tr>
+<th>窗口</th>
+<th>功能</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Scope</td>
+<td>选择 testbench、DUT 和子模块实例</td>
+</tr>
+<tr>
+<td>Objects</td>
+<td>显示当前实例的端口与内部信号</td>
+</tr>
+<tr>
+<td>Waveform</td>
+<td>观察信号随时间的变化</td>
+</tr>
+</tbody>
+</table>
+<p>调试时先在 Scope 中选择 <code>u_tx</code> 或 <code>u_rx</code>，再从 Objects 中把 <code>baud_cnt</code>、<code>bit_idx</code>、<code>tx_shift</code>、<code>rx_shift</code>、<code>tx_busy</code>、<code>rx_busy</code> 等内部信号加入 Waveform。重新运行仿真，从第一个不符合预期的信号开始追踪问题。</p>
+<hr>
+<h2 id="8">8. 上板测试</h2>
+<h3 id="81">8.1 准备工作</h3>
+<ol>
+<li>将 <code>uart_rx.v</code>、<code>uart_tx.v</code>、<code>top.v</code> 和 <code>top.xdc</code> 加入 Vivado 工程</li>
+<li>将 <code>top</code> 设置为顶层模块</li>
+<li>依次执行综合、实现并生成 bitstream</li>
+<li>使用 USB 数据线连接 EGO1 的 <strong>JTAG &amp; UART</strong> 接口</li>
+<li>下载 bitstream</li>
+<li>将 <code>uart_tx_rst_n</code> 和 <code>uart_rx_rst_n</code> 对应的开关置 1，使发送与接收模块退出复位</li>
+</ol>
+<h3 id="82">8.2 串口调试助手设置</h3>
+<p><img alt="串口调试助手设置" src="../images/uart-serial-settings.png"></p>
+<p>选择 EGO1 对应的串口，并设置：</p>
+<ul>
+<li>波特率：<code>115200</code></li>
+<li>校验位：<code>None</code></li>
+<li>数据位：<code>8</code></li>
+<li>停止位：<code>1</code></li>
+<li>测试二进制字节时，勾选“十六进制显示”和“按十六进制发送”</li>
+</ul>
+<p>然后点击“打开”。如果无法确定串口号，可以在 Windows 设备管理器中观察开发板插入前后新增的 COM 端口。</p>
+<h3 id="83-fpga">8.3 FPGA → 电脑</h3>
+<p>按下表设置拨码开关，再按一次 <code>send_one</code>：</p>
+<table>
+<thead>
+<tr>
+<th>拨码开关 <code>key[7:0]</code></th>
+<th>十六进制</th>
+<th>串口接收窗口预期结果</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>0100_1000</code></td>
+<td><code>0x48</code></td>
+<td><code>48</code></td>
+</tr>
+<tr>
+<td><code>1111_0100</code></td>
+<td><code>0xF4</code></td>
+<td><code>F4</code></td>
+</tr>
+<tr>
+<td><code>0010_1010</code></td>
+<td><code>0x2A</code></td>
+<td>十六进制模式显示 <code>2A</code>；文本模式显示 <code>*</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="84-fpga">8.4 电脑 → FPGA</h3>
+<p>在串口发送窗口输入十六进制数据并点击“发送”：</p>
+<table>
+<thead>
+<tr>
+<th>发送数据</th>
+<th>LED <code>led[7:0]</code> 预期状态</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>83</code></td>
+<td><code>1000_0011</code></td>
+</tr>
+<tr>
+<td><code>17</code></td>
+<td><code>0001_0111</code></td>
+</tr>
+</tbody>
+</table>
+<p>LED 会保持显示最近一次成功接收的数据，直到收到下一个字节或接收模块复位。</p>
+<h3 id="85-ascii">8.5 ASCII 字符测试</h3>
+<p>ASCII 字符 <code>*</code> 的编码为 <code>8'h2A</code>，二进制为 <code>0010_1010</code>。将拨码开关设置为该值并按下发送按键，在串口调试助手中关闭十六进制显示后，应看到字符 <code>*</code>。</p>
+<p><img alt="ASCII 星号发送结果" src="../images/uart-ascii-asterisk-result.png"></p>
+<hr>
+<h2 id="9">9. 本周实验任务</h2>
+<h3 id="1-uart-demo">任务1：完成 UART Demo</h3>
+<ol>
+<li>创建 Vivado 工程并加入 3 个 Verilog 文件和 1 个 XDC 文件</li>
+<li>完成 UART 环回仿真，确认 3 组测试数据均能正确接收</li>
+<li>生成 bitstream 并下载到 EGO1</li>
+<li>完成 FPGA → 电脑和电脑 → FPGA 的双向通信</li>
+</ol>
+<h3 id="2-ascii">任务2：发送 ASCII 字符 <code>*</code></h3>
+<ol>
+<li>查表或计算字符 <code>*</code> 的 ASCII 编码</li>
+<li>用拨码开关设置对应的 8 位数据</li>
+<li>按下发送按键</li>
+<li>在串口调试助手的文本显示模式中观察字符 <code>*</code></li>
+</ol>
+<h3 id="3">任务3：仿真调试记录</h3>
+<p>在 Waveform 中至少加入以下信号，并截图记录一次完整的数据帧：</p>
+<ul>
+<li><code>uart_line</code></li>
+<li><code>u_tx.tx_busy</code></li>
+<li><code>u_tx.bit_idx</code></li>
+<li><code>u_rx.rx_busy</code></li>
+<li><code>u_rx.bit_idx</code></li>
+<li><code>rx_done</code></li>
+<li><code>rx_data</code></li>
+</ul>
+<p>说明起始位、数据位、停止位分别位于波形的哪个时间段，并解释 <code>rx_done</code> 为什么只保持一个系统时钟周期。</p>
+<h3 id="_2">上板验收标准</h3>
+<ol class="task-list">
+<li class="task-list-item"><input type="checkbox" disabled> 上电并解除复位后，<code>uart_tx_work</code> 和 <code>uart_rx_work</code> 指示灯亮</li>
+<li class="task-list-item"><input type="checkbox" disabled> 拨码开关设置为 <code>0100_1000</code>，按键后电脑收到 <code>48</code></li>
+<li class="task-list-item"><input type="checkbox" disabled> 拨码开关设置为 <code>0010_1010</code>，按键后电脑文本窗口显示 <code>*</code></li>
+<li class="task-list-item"><input type="checkbox" disabled> 电脑发送 <code>83</code>，LED 显示 <code>1000_0011</code></li>
+<li class="task-list-item"><input type="checkbox" disabled> 电脑发送 <code>17</code>，LED 显示 <code>0001_0111</code></li>
+<li class="task-list-item"><input type="checkbox" disabled> 环回仿真中发送值与接收值一致</li>
+<li class="task-list-item"><input type="checkbox" disabled> 能在 Vivado 中添加内部信号并解释一帧 UART 波形</li>
+</ol>
+<hr>
+<h2 id="_3">附录：常见问题</h2>
+<table>
+<thead>
+<tr>
+<th>现象</th>
+<th>可能原因</th>
+<th>排查方法</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>串口无法打开</td>
+<td>COM 口选择错误或被其他软件占用</td>
+<td>重新插拔开发板，在设备管理器中确认端口；关闭占用串口的软件</td>
+</tr>
+<tr>
+<td>电脑收到乱码</td>
+<td>两端波特率或帧格式不一致</td>
+<td>两端统一设置为 <code>115200-8-N-1</code></td>
+</tr>
+<tr>
+<td>电脑收不到 FPGA 数据</td>
+<td>TX 模块仍在复位、按键未产生脉冲或串口未打开</td>
+<td>检查 <code>uart_tx_work</code>、<code>send_flag</code> 和 <code>tx_busy</code></td>
+</tr>
+<tr>
+<td>FPGA LED 不更新</td>
+<td>RX 模块仍在复位、电脑发送模式错误或 RX 引脚错误</td>
+<td>检查 <code>uart_rx_work</code>、<code>rx_done</code> 和 XDC</td>
+</tr>
+<tr>
+<td>按一次键发送多次</td>
+<td>机械按键抖动</td>
+<td>在边沿检测前加入 <code>btn_debounce</code></td>
+</tr>
+<tr>
+<td>接收数据偶尔错误</td>
+<td>波特率误差、连接或采样稳定性问题</td>
+<td>检查参数与共地；观察 <code>rx_d2</code>、<code>baud_cnt</code> 和 <code>bit_idx</code></td>
+</tr>
+<tr>
+<td>波形中出现 <code>X</code></td>
+<td>寄存器尚未复位或 testbench 激励不完整</td>
+<td>先施加复位，再开始发送；检查所有输入是否有确定值</td>
+</tr>
+<tr>
+<td>波形中出现 <code>Z</code></td>
+<td>信号未驱动或端口漏接</td>
+<td>从顶层端口开始，沿模块连线逐级检查驱动来源</td>
+</tr>
+</tbody>
+</table>
+<h3 id="_4">思考题</h3>
+<ol>
+<li>为什么 UART 接收端要在每一位的中间采样，而不是在位边界采样？</li>
+<li>如果系统时钟改为 50 MHz，<code>BAUD_DIV</code> 应如何变化？</li>
+<li>当前接收模块为什么不能报告帧错误？应增加哪些判断和输出信号？</li>
+<li>如何加入 FIFO，使发送端可以连续提交多个字节，而不必等待每个字节发送完成？</li>
+</ol></div>
+
+
+
+
+
+
+
+
+  <aside class="md-source-file">
+    
+    
+    
+      
+  
+  <span class="md-source-file__fact">
+    <span class="md-icon" title="贡献者">
+      
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 4a4 4 0 0 1 4 4 4 4 0 0 1-4 4 4 4 0 0 1-4-4 4 4 0 0 1 4-4m0 10c4.42 0 8 1.79 8 4v2H4v-2c0-2.21 3.58-4 8-4"/></svg>
+      
+    </span>
+    <nav>
+      baiyhsz
+    </nav>
+  </span>
+
+    
+    
+  </aside>
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  回到页面顶部
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright &copy; 2025 南方科技大学
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["search.suggest", "search.highlight", "content.tabs.link", "navigation.tabs", "navigation.top", "content.code.copy"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "\u5df2\u590d\u5236", "clipboard.copy": "\u590d\u5236", "search.result.more.one": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.more.other": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 # \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.none": "\u6ca1\u6709\u627e\u5230\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.one": "\u627e\u5230 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.other": "# \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.placeholder": "\u952e\u5165\u4ee5\u5f00\u59cb\u641c\u7d22", "search.result.term.missing": "\u7f3a\u5c11", "select.version": "\u9009\u62e9\u5f53\u524d\u7248\u672c"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>
