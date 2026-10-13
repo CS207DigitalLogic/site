@@ -1,0 +1,1941 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Digital Logic Laboratory Course Materials">
+      
+      
+      
+        <link rel="canonical" href="https://cs207digitallogic.github.io/site/en/DigitalLogic_StateMachine/">
+      
+      
+        <link rel="prev" href="../DigitalLogic_ButtonDebounce/">
+      
+      
+        <link rel="next" href="../DigitalLogic_ModuleIntegration/">
+      
+      
+        
+          <link rel="alternate" href="../../DigitalLogic_StateMachine/" hreflang="zh">
+        
+          <link rel="alternate" href="./" hreflang="en">
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>Lab 8: State Machines - Digital Logic Course</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#digital-logic-finite-state-machines" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../" title="Digital Logic Course" class="md-header__button md-logo" aria-label="Digital Logic Course" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Digital Logic Course
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Lab 8: State Machines
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-hidden="true"  type="radio" name="__palette" id="__palette_0">
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+      <div class="md-header__option">
+  <div class="md-select">
+    
+    <button class="md-header__button md-icon" aria-label="Select language">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m12.87 15.07-2.54-2.51.03-.03A17.5 17.5 0 0 0 14.07 6H17V4h-7V2H8v2H1v2h11.17C11.5 7.92 10.44 9.75 9 11.35 8.07 10.32 7.3 9.19 6.69 8h-2c.73 1.63 1.73 3.17 2.98 4.56l-5.09 5.02L4 19l5-5 3.11 3.11zM18.5 10h-2L12 22h2l1.12-3h4.75L21 22h2zm-2.62 7 1.62-4.33L19.12 17z"/></svg>
+    </button>
+    <div class="md-select__inner">
+      <ul class="md-select__list">
+        
+          <li class="md-select__item">
+            <a href="../../DigitalLogic_StateMachine/" hreflang="zh" class="md-select__link">
+              中文
+            </a>
+          </li>
+        
+          <li class="md-select__item">
+            <a href="./" hreflang="en" class="md-select__link">
+              English
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</div>
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://cs207digitallogic.github.io" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub Repository
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../DigitalLogic_EnvironmentSetup/" class="md-tabs__link">
+          
+  
+  
+  Labs
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../projects/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Projects
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../links/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  OJ Platforms
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../resources/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Course Resources
+
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../" title="Digital Logic Course" class="md-nav__button md-logo" aria-label="Digital Logic Course" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Digital Logic Course
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://cs207digitallogic.github.io" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub Repository
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Labs
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Labs
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../DigitalLogic_EnvironmentSetup/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 1: Environment Setup
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../DigitalLogic_VerilogBasics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 2: Verilog Basics and Structural Modeling
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../DigitalLogic_Dataflow/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 3: Dataflow Modeling and FPGA Verification
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../DigitalLogic_BehaviorModeling/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 4: Behavioral Modeling and Seven-Segment Display
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../DigitalLogic_SequentialLogic/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 5: Sequential Logic—Counters and Clock Dividers
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../DigitalLogic_DynamicDisplay/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 6: Multiplexed Display—Chasing LEDs and Seven-Segment Displays
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../DigitalLogic_ButtonDebounce/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 7: Button Debouncing and Edge Detection
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 8: State Machines
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 8: State Machines
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#objectives" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Objectives
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1-finite-state-machines" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Finite State Machines
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. Finite State Machines">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#11-what-is-a-finite-state-machine" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.1 What Is a Finite State Machine?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#12-components-of-a-state-machine" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.2 Components of a State Machine
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#13-moore-versus-mealy-machines" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.3 Moore Versus Mealy Machines
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-three-process-state-machine-template" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Three-Process State-Machine Template
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. Three-Process State-Machine Template">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#21-process-1-state-register-sequential-logic" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.1 Process 1: State Register (Sequential Logic)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#22-process-2-next-state-logic-combinational-logic" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.2 Process 2: Next-State Logic (Combinational Logic)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#23-process-3-output-logic-combinational-logic-moore-type" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.3 Process 3: Output Logic (Combinational Logic, Moore Type)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#24-state-encoding" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.4 State Encoding
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-two-process-state-machine-template" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Two-Process State-Machine Template
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Two-Process State-Machine Template">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#31-process-1-state-register-sequential-logic" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.1 Process 1: State Register (Sequential Logic)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#32-process-2-next-state-and-output-logic-combinational-logic" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.2 Process 2: Next-State and Output Logic (Combinational Logic)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-laboratory-exercise-count-detection" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Laboratory Exercise: Count Detection
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. Laboratory Exercise: Count Detection">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#41-requirements" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.1 Requirements
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#42-moore-or-mealy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.2 Moore or Mealy?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#43-simulation-and-verification" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.3 Simulation and Verification
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#44-on-board-verification" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.4 On-Board Verification
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-questions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Questions
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../DigitalLogic_ModuleIntegration/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 9: Module Integration
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../DigitalLogic_UART/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 10: UART
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../DigitalLogic_StopwatchCore/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 11 Demo: Stopwatch Core
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../DigitalLogic_StopwatchControl/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 12 Demo: Stopwatch Control
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../DigitalLogic_StopwatchIntegration/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 13 Demo: System Integration
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../DigitalLogic_Memory/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 14: Memory Design and IP Cores
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../projects/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Projects
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../links/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    OJ Platforms
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../resources/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Course Resources
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#objectives" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Objectives
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1-finite-state-machines" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Finite State Machines
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. Finite State Machines">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#11-what-is-a-finite-state-machine" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.1 What Is a Finite State Machine?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#12-components-of-a-state-machine" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.2 Components of a State Machine
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#13-moore-versus-mealy-machines" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.3 Moore Versus Mealy Machines
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-three-process-state-machine-template" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Three-Process State-Machine Template
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. Three-Process State-Machine Template">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#21-process-1-state-register-sequential-logic" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.1 Process 1: State Register (Sequential Logic)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#22-process-2-next-state-logic-combinational-logic" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.2 Process 2: Next-State Logic (Combinational Logic)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#23-process-3-output-logic-combinational-logic-moore-type" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.3 Process 3: Output Logic (Combinational Logic, Moore Type)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#24-state-encoding" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.4 State Encoding
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-two-process-state-machine-template" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Two-Process State-Machine Template
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Two-Process State-Machine Template">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#31-process-1-state-register-sequential-logic" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.1 Process 1: State Register (Sequential Logic)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#32-process-2-next-state-and-output-logic-combinational-logic" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.2 Process 2: Next-State and Output Logic (Combinational Logic)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-laboratory-exercise-count-detection" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Laboratory Exercise: Count Detection
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. Laboratory Exercise: Count Detection">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#41-requirements" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.1 Requirements
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#42-moore-or-mealy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.2 Moore or Mealy?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#43-simulation-and-verification" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.3 Simulation and Verification
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#44-on-board-verification" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.4 On-Board Verification
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-questions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Questions
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<div><div class="toc">
+<ul>
+<li><a href="#digital-logic-finite-state-machines">Digital Logic: Finite State Machines</a><ul>
+<li><a href="#objectives">Objectives</a></li>
+<li><a href="#1-finite-state-machines">1. Finite State Machines</a><ul>
+<li><a href="#11-what-is-a-finite-state-machine">1.1 What Is a Finite State Machine?</a></li>
+<li><a href="#12-components-of-a-state-machine">1.2 Components of a State Machine</a></li>
+<li><a href="#13-moore-versus-mealy-machines">1.3 Moore Versus Mealy Machines</a></li>
+</ul>
+</li>
+<li><a href="#2-three-process-state-machine-template">2. Three-Process State-Machine Template</a><ul>
+<li><a href="#21-process-1-state-register-sequential-logic">2.1 Process 1: State Register (Sequential Logic)</a></li>
+<li><a href="#22-process-2-next-state-logic-combinational-logic">2.2 Process 2: Next-State Logic (Combinational Logic)</a></li>
+<li><a href="#23-process-3-output-logic-combinational-logic-moore-type">2.3 Process 3: Output Logic (Combinational Logic, Moore Type)</a></li>
+<li><a href="#24-state-encoding">2.4 State Encoding</a></li>
+</ul>
+</li>
+<li><a href="#3-two-process-state-machine-template">3. Two-Process State-Machine Template</a><ul>
+<li><a href="#31-process-1-state-register-sequential-logic">3.1 Process 1: State Register (Sequential Logic)</a></li>
+<li><a href="#32-process-2-next-state-and-output-logic-combinational-logic">3.2 Process 2: Next-State and Output Logic (Combinational Logic)</a></li>
+</ul>
+</li>
+<li><a href="#4-laboratory-exercise-count-detection">4. Laboratory Exercise: Count Detection</a><ul>
+<li><a href="#41-requirements">4.1 Requirements</a></li>
+<li><a href="#42-moore-or-mealy">4.2 Moore or Mealy?</a></li>
+<li><a href="#43-simulation-and-verification">4.3 Simulation and Verification</a></li>
+<li><a href="#44-on-board-verification">4.4 On-Board Verification</a></li>
+</ul>
+</li>
+<li><a href="#5-questions">5. Questions</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<hr>
+<h1 id="digital-logic-finite-state-machines">Digital Logic: Finite State Machines</h1>
+<h2 id="objectives">Objectives</h2>
+<ul>
+<li>Understand the fundamental concepts of a finite state machine (FSM).</li>
+<li>Understand the difference between Moore and Mealy state machines.</li>
+<li>Master the <strong>three-process</strong> style for describing a state machine in Verilog.</li>
+</ul>
+<hr>
+<h2 id="1-finite-state-machines">1. Finite State Machines</h2>
+<h3 id="11-what-is-a-finite-state-machine">1.1 What Is a Finite State Machine?</h3>
+<p>A finite state machine (FSM) is a sequential-logic model that:</p>
+<ul>
+<li>Has a <strong>finite number of states</strong>.</li>
+<li>Moves from its current state to a next state under <strong>clock control</strong>, according to the current state and input signals.</li>
+<li>Produces outputs according to the state and, in some machines, the inputs.</li>
+</ul>
+<p>State machines are fundamental tools in digital-system design and are widely used for control logic, protocol processing, sequence detection, and other applications.</p>
+<h3 id="12-components-of-a-state-machine">1.2 Components of a State Machine</h3>
+<p><img alt="image-20260409201210216" src="../../images/image-20260409201210216.png"></p>
+<h3 id="13-moore-versus-mealy-machines">1.3 Moore Versus Mealy Machines</h3>
+<table>
+<thead>
+<tr>
+<th>Characteristic</th>
+<th>Moore machine</th>
+<th>Mealy machine</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Output depends on</td>
+<td><strong>Current state only</strong></td>
+<td>Current state <strong>and</strong> inputs</td>
+</tr>
+<tr>
+<td>Output changes</td>
+<td>After a state transition</td>
+<td>May change immediately when an input changes</td>
+</tr>
+<tr>
+<td>Number of states</td>
+<td>Usually greater</td>
+<td>Usually smaller</td>
+</tr>
+<tr>
+<td>Output stability</td>
+<td>More stable and synchronized to the clock</td>
+<td>May produce glitches</td>
+</tr>
+<tr>
+<td>Typical use</td>
+<td>Control logic and outputs that must be stable</td>
+<td>Logic that must respond quickly to inputs</td>
+</tr>
+</tbody>
+</table>
+<p><img alt="image-20260409201148039" src="../../images/image-20260409201148039.png"></p>
+<blockquote>
+<p><strong>This course recommends Moore machines</strong> because their outputs are more stable and they are easier to understand and debug.</p>
+</blockquote>
+<h2 id="2-three-process-state-machine-template">2. Three-Process State-Machine Template</h2>
+<p>The three-process style places the three parts of a state machine in three separate <code>always</code> blocks. This structure is clear, maintainable, and is the <strong>recommended standard style</strong>.</p>
+<h3 id="21-process-1-state-register-sequential-logic">2.1 Process 1: State Register (Sequential Logic)</h3>
+<div class="highlight"><pre><span></span><code><span class="c1">// 第一段：状态寄存器——在时钟边沿更新状态</span>
+<span class="k">always</span><span class="w"> </span><span class="p">@(</span><span class="k">posedge</span><span class="w"> </span><span class="n">clk</span><span class="w"> </span><span class="k">or</span><span class="w"> </span><span class="k">negedge</span><span class="w"> </span><span class="n">rst_n</span><span class="p">)</span><span class="w"> </span><span class="k">begin</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">rst_n</span><span class="p">)</span>
+<span class="w">        </span><span class="n">state</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">IDLE</span><span class="p">;</span><span class="w">       </span><span class="c1">// 复位到初始状态</span>
+<span class="w">    </span><span class="k">else</span>
+<span class="w">        </span><span class="n">state</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">next_state</span><span class="p">;</span><span class="w"> </span><span class="c1">// 更新为次态</span>
+<span class="k">end</span>
+</code></pre></div>
+<h3 id="22-process-2-next-state-logic-combinational-logic">2.2 Process 2: Next-State Logic (Combinational Logic)</h3>
+<div class="highlight"><pre><span></span><code><span class="c1">// 第二段：次态逻辑——根据当前状态和输入，决定下一个状态</span>
+<span class="k">always</span><span class="w"> </span><span class="p">@(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="k">begin</span>
+<span class="w">    </span><span class="k">case</span><span class="w"> </span><span class="p">(</span><span class="n">state</span><span class="p">)</span>
+<span class="w">        </span><span class="nl">IDLE:</span><span class="w"> </span><span class="k">begin</span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">start</span><span class="p">)</span>
+<span class="w">                </span><span class="n">next_state</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">STATE_A</span><span class="p">;</span>
+<span class="w">            </span><span class="k">else</span>
+<span class="w">                </span><span class="n">next_state</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">IDLE</span><span class="p">;</span>
+<span class="w">        </span><span class="k">end</span>
+<span class="w">        </span><span class="nl">STATE_A:</span><span class="w"> </span><span class="k">begin</span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">condition</span><span class="p">)</span>
+<span class="w">                </span><span class="n">next_state</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">STATE_B</span><span class="p">;</span>
+<span class="w">            </span><span class="k">else</span>
+<span class="w">                </span><span class="n">next_state</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">STATE_A</span><span class="p">;</span>
+<span class="w">        </span><span class="k">end</span>
+<span class="w">        </span><span class="nl">STATE_B:</span><span class="w"> </span><span class="k">begin</span>
+<span class="w">            </span><span class="n">next_state</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">IDLE</span><span class="p">;</span>
+<span class="w">        </span><span class="k">end</span>
+<span class="w">        </span><span class="k">default</span><span class="o">:</span><span class="w"> </span><span class="n">next_state</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">IDLE</span><span class="p">;</span>
+<span class="w">    </span><span class="k">endcase</span>
+<span class="k">end</span>
+</code></pre></div>
+<h3 id="23-process-3-output-logic-combinational-logic-moore-type">2.3 Process 3: Output Logic (Combinational Logic, Moore Type)</h3>
+<div class="highlight"><pre><span></span><code><span class="c1">// 第三段：输出逻辑——仅根据当前状态决定输出（Moore型）</span>
+<span class="k">always</span><span class="w"> </span><span class="p">@(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="k">begin</span>
+<span class="w">    </span><span class="k">case</span><span class="w"> </span><span class="p">(</span><span class="n">state</span><span class="p">)</span>
+<span class="w">        </span><span class="nl">IDLE:</span><span class="w"> </span><span class="k">begin</span>
+<span class="w">            </span><span class="n">led</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">1</span><span class="mb">'b0</span><span class="p">;</span>
+<span class="w">        </span><span class="k">end</span>
+<span class="w">        </span><span class="nl">STATE_A:</span><span class="w"> </span><span class="k">begin</span>
+<span class="w">            </span><span class="n">led</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">1</span><span class="mb">'b1</span><span class="p">;</span>
+<span class="w">        </span><span class="k">end</span>
+<span class="w">        </span><span class="nl">STATE_B:</span><span class="w"> </span><span class="k">begin</span>
+<span class="w">            </span><span class="n">buzzer</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">1</span><span class="mb">'b1</span><span class="p">;</span>
+<span class="w">        </span><span class="k">end</span>
+<span class="w">        </span><span class="k">default</span><span class="o">:</span><span class="w"> </span><span class="k">begin</span>
+<span class="w">            </span><span class="n">led</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">1</span><span class="mb">'b0</span><span class="p">;</span>
+<span class="w">            </span><span class="n">buzzer</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">1</span><span class="mb">'b0</span><span class="p">;</span>
+<span class="w">        </span><span class="k">end</span>
+<span class="w">    </span><span class="k">endcase</span>
+<span class="k">end</span>
+</code></pre></div>
+<h3 id="24-state-encoding">2.4 State Encoding</h3>
+<p>Define state constants using <code>localparam</code> or <code>parameter</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="c1">// 状态定义</span>
+<span class="k">localparam</span><span class="w"> </span><span class="n">IDLE</span><span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="mh">2</span><span class="mi">'d0</span><span class="p">;</span>
+<span class="k">localparam</span><span class="w"> </span><span class="n">STATE_A</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">2</span><span class="mi">'d1</span><span class="p">;</span>
+<span class="k">localparam</span><span class="w"> </span><span class="n">STATE_B</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">2</span><span class="mi">'d2</span><span class="p">;</span>
+
+<span class="kt">reg</span><span class="w"> </span><span class="p">[</span><span class="mh">1</span><span class="o">:</span><span class="mh">0</span><span class="p">]</span><span class="w"> </span><span class="n">state</span><span class="p">,</span><span class="w"> </span><span class="n">next_state</span><span class="p">;</span>
+</code></pre></div>
+<p><img alt="image-20260409202246744" src="../../images/image-20260409202246744.png"></p>
+<blockquote>
+<p><strong>Note</strong>: Both <code>state</code> and <code>next_state</code> are declared as type <code>reg</code>, but <code>state</code> is assigned in a sequential block and is synthesized as a register, whereas <code>next_state</code> is assigned in a combinational block and is synthesized as combinational logic.</p>
+</blockquote>
+<hr>
+<h2 id="3-two-process-state-machine-template">3. Two-Process State-Machine Template</h2>
+<p>The two-process style differs from the three-process style as follows:</p>
+<ol>
+<li><strong>Process 1</strong>: State register (sequential logic)</li>
+<li><strong>Process 2</strong>: Combined next-state and output logic (combinational logic)</li>
+</ol>
+<h3 id="31-process-1-state-register-sequential-logic">3.1 Process 1: State Register (Sequential Logic)</h3>
+<div class="highlight"><pre><span></span><code><span class="c1">// 第一段：状态寄存器——在时钟边沿更新状态</span>
+<span class="k">always</span><span class="w"> </span><span class="p">@(</span><span class="k">posedge</span><span class="w"> </span><span class="n">clk</span><span class="w"> </span><span class="k">or</span><span class="w"> </span><span class="k">negedge</span><span class="w"> </span><span class="n">rst_n</span><span class="p">)</span><span class="w"> </span><span class="k">begin</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">rst_n</span><span class="p">)</span>
+<span class="w">        </span><span class="n">state</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">IDLE</span><span class="p">;</span><span class="w">       </span><span class="c1">// 复位到初始状态</span>
+<span class="w">    </span><span class="k">else</span>
+<span class="w">        </span><span class="n">state</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">next_state</span><span class="p">;</span><span class="w"> </span><span class="c1">// 更新为次态</span>
+<span class="k">end</span>
+</code></pre></div>
+<h3 id="32-process-2-next-state-and-output-logic-combinational-logic">3.2 Process 2: Next-State and Output Logic (Combinational Logic)</h3>
+<div class="highlight"><pre><span></span><code><span class="c1">// 第二段：次态逻辑 + 输出逻辑（组合逻辑合并）</span>
+<span class="k">always</span><span class="w"> </span><span class="p">@(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="k">begin</span>
+<span class="w">    </span><span class="c1">// 根据当前状态和输入，决定次态和输出</span>
+<span class="w">    </span><span class="k">case</span><span class="w"> </span><span class="p">(</span><span class="n">state</span><span class="p">)</span>
+<span class="w">        </span><span class="nl">IDLE:</span><span class="w"> </span><span class="k">begin</span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">start</span><span class="p">)</span><span class="w"> </span><span class="k">begin</span>
+<span class="w">                </span><span class="n">next_state</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">STATE_A</span><span class="p">;</span>
+<span class="w">                </span><span class="n">led</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">1</span><span class="mb">'b1</span><span class="p">;</span><span class="w">          </span><span class="c1">// 同时就输出</span>
+<span class="w">            </span><span class="k">end</span>
+<span class="w">        </span><span class="k">end</span>
+<span class="w">        </span><span class="nl">STATE_A:</span><span class="w"> </span><span class="k">begin</span>
+<span class="w">            </span><span class="n">led</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">1</span><span class="mb">'b1</span><span class="p">;</span><span class="w">              </span><span class="c1">// Moore型输出</span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">condition</span><span class="p">)</span>
+<span class="w">                </span><span class="n">next_state</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">STATE_B</span><span class="p">;</span>
+<span class="w">        </span><span class="k">end</span>
+<span class="w">        </span><span class="nl">STATE_B:</span><span class="w"> </span><span class="k">begin</span>
+<span class="w">            </span><span class="n">buzzer</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">1</span><span class="mb">'b1</span><span class="p">;</span>
+<span class="w">            </span><span class="n">next_state</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">IDLE</span><span class="p">;</span>
+<span class="w">        </span><span class="k">end</span>
+<span class="w">        </span><span class="k">default</span><span class="o">:</span><span class="w"> </span><span class="k">begin</span>
+<span class="w">            </span><span class="n">next_state</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">state</span><span class="p">;</span>
+<span class="w">            </span><span class="n">led</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">1</span><span class="mb">'b0</span><span class="p">;</span>
+<span class="w">            </span><span class="n">buzzer</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">1</span><span class="mb">'b0</span><span class="p">;</span>
+<span class="w">        </span><span class="k">end</span>
+<span class="w">    </span><span class="k">endcase</span>
+<span class="k">end</span>
+</code></pre></div>
+<blockquote>
+<p><strong>Recommendation</strong>: Prefer the three-process style. It requires slightly more code but provides a clearer structure and is easier to maintain and debug.</p>
+</blockquote>
+<h2 id="4-laboratory-exercise-count-detection">4. Laboratory Exercise: Count Detection</h2>
+<h3 id="41-requirements">4.1 Requirements</h3>
+<p>Use both two-process and three-process styles to design a count-detection circuit with the following characteristics.</p>
+<p><strong>Inputs</strong>:</p>
+<ul>
+<li><code>clk</code>: 100 MHz system clock</li>
+<li><code>x_in[4:0]</code>: Five-bit input sampled on each rising edge of <code>clk</code></li>
+</ul>
+<p><strong>Output</strong>:</p>
+<ul>
+<li><code>y_out</code>: Validity indicator</li>
+</ul>
+<p><strong>Function</strong>:</p>
+<p>On each rising edge of the clock, the circuit samples the bits in <code>x_in</code>. It accumulates the <strong>total number of 1s received across all samples</strong>.</p>
+<ul>
+<li>When the accumulated number of 1s is a <strong>multiple of 5</strong>, <code>y_out = 1</code> (valid).</li>
+<li>Otherwise, <code>y_out = 0</code> (invalid).</li>
+</ul>
+<p><strong>Example</strong>:</p>
+<table>
+<thead>
+<tr>
+<th>Time</th>
+<th><code>x_in</code></th>
+<th>1s in this sample</th>
+<th>Accumulated 1s</th>
+<th><code>y_out</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>0b00001</td>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+</tr>
+<tr>
+<td>1</td>
+<td>0b00001</td>
+<td>1</td>
+<td>2</td>
+<td>0</td>
+</tr>
+<tr>
+<td>2</td>
+<td>0b00001</td>
+<td>1</td>
+<td>3</td>
+<td>0</td>
+</tr>
+<tr>
+<td>3</td>
+<td>0b00011</td>
+<td>2</td>
+<td>5</td>
+<td>1 ✓</td>
+</tr>
+<tr>
+<td>4</td>
+<td>0b00111</td>
+<td>3</td>
+<td>8</td>
+<td>0</td>
+</tr>
+<tr>
+<td>5</td>
+<td>0b00010</td>
+<td>1</td>
+<td>9</td>
+<td>0</td>
+</tr>
+<tr>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>15</td>
+<td>1 ✓</td>
+</tr>
+</tbody>
+</table>
+<h3 id="42-moore-or-mealy">4.2 Moore or Mealy?</h3>
+<ul>
+<li><code>y_out</code> depends only on the <strong>accumulated state</strong>, representing the total number of 1s received, and not on the current input.</li>
+<li>The design is therefore a <strong>Moore state machine</strong>.</li>
+</ul>
+<h3 id="43-simulation-and-verification">4.3 Simulation and Verification</h3>
+<p>Use a testbench to verify that the two-process and three-process implementations behave identically:</p>
+<div class="highlight"><pre><span></span><code><span class="no">`timescale</span><span class="w"> </span><span class="mh">1</span><span class="n">ns</span><span class="o">/</span><span class="mh">1</span><span class="n">ps</span>
+<span class="k">module</span><span class="w"> </span><span class="n">tb_bit_counter</span><span class="p">();</span>
+<span class="w">    </span><span class="kt">reg</span><span class="w"> </span><span class="n">clk</span><span class="p">,</span><span class="w"> </span><span class="n">rst_n</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">reg</span><span class="w"> </span><span class="p">[</span><span class="mh">4</span><span class="o">:</span><span class="mh">0</span><span class="p">]</span><span class="w"> </span><span class="n">x_in</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">wire</span><span class="w"> </span><span class="n">y_out_2stage</span><span class="p">,</span><span class="w"> </span><span class="n">y_out_3stage</span><span class="p">;</span>
+
+<span class="w">    </span><span class="n">bit_counter_2stage</span><span class="w"> </span><span class="n">u1</span><span class="p">(...);</span><span class="w">  </span><span class="c1">// 两段式</span>
+<span class="w">    </span><span class="n">bit_counter_3stage</span><span class="w"> </span><span class="n">u2</span><span class="p">(...);</span><span class="w">  </span><span class="c1">// 三段式</span>
+
+<span class="w">    </span><span class="k">initial</span><span class="w"> </span><span class="n">clk</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0</span><span class="p">;</span>
+<span class="w">    </span><span class="k">always</span><span class="w"> </span><span class="p">#</span><span class="mh">5</span><span class="w"> </span><span class="n">clk</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">~</span><span class="n">clk</span><span class="p">;</span>
+
+<span class="w">    </span><span class="k">initial</span><span class="w"> </span><span class="k">begin</span>
+<span class="w">        </span><span class="n">rst_n</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0</span><span class="p">;</span><span class="w"> </span><span class="p">#</span><span class="mh">50</span><span class="p">;</span><span class="w"> </span><span class="n">rst_n</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">1</span><span class="p">;</span>
+
+<span class="w">        </span><span class="c1">// 测试用例：单个1重复5次</span>
+<span class="w">        </span><span class="k">repeat</span><span class="p">(</span><span class="mh">5</span><span class="p">)</span><span class="w"> </span><span class="k">begin</span>
+<span class="w">            </span><span class="n">x_in</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">5</span><span class="mb">'b00001</span><span class="p">;</span><span class="w">  </span><span class="p">#</span><span class="mh">100</span><span class="p">;</span>
+<span class="w">            </span><span class="n">x_in</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">5</span><span class="mb">'b00000</span><span class="p">;</span><span class="w">  </span><span class="p">#</span><span class="mh">100</span><span class="p">;</span>
+<span class="w">        </span><span class="k">end</span>
+
+<span class="w">        </span><span class="c1">// 此时应该回到state=0，y_out=1</span>
+<span class="w">        </span><span class="nb">$finish</span><span class="p">;</span>
+<span class="w">    </span><span class="k">end</span>
+<span class="k">endmodule</span>
+</code></pre></div>
+<h3 id="44-on-board-verification">4.4 On-Board Verification</h3>
+<p>Testing directly at the 100 MHz system-clock rate is difficult. Use a <strong>button, debouncing, and edge detection</strong> to emulate a sampling pulse.</p>
+<p><strong>Procedure</strong>:</p>
+<ol>
+<li><strong>Program the bitstream.</strong></li>
+<li><strong>Set five switches</strong> to configure <code>x_in[4:0]</code>.</li>
+<li><strong>Press the button</strong> once to sample <code>x_in</code> once.</li>
+<li><strong>Observe the result</strong>:</li>
+<li>Optionally show the current state on the seven-segment display.</li>
+<li>Show <code>y_out</code> on an LED.</li>
+<li><code>y_out</code> is asserted when the accumulated number of sampled 1s reaches a multiple of 5.</li>
+</ol>
+<h2 id="5-questions">5. Questions</h2>
+<p><strong>Q1: Can a Mealy machine be used?</strong></p>
+<p>Approach:</p>
+<ul>
+<li>Compute <code>y_out = (next_state == S0) ? 1'b1 : 1'b0</code> in combinational logic.</li>
+<li>The output will then respond immediately to an input change.</li>
+<li>This approach can produce glitches and must be used carefully.</li>
+</ul>
+<p><strong>Q2: Why is a single-process style discouraged?</strong></p>
+<p>In a single-process design, state transitions and outputs are placed together in one <code>always @(posedge clk)</code> block.</p>
+<p><strong>Disadvantages</strong>:</p>
+<ol>
+<li><strong>Poor readability</strong>: Sequential and combinational logic are mixed and difficult to distinguish.</li>
+<li><strong>Error-prone</strong>: It is easy to confuse blocking assignments (<code>=</code>) with non-blocking assignments (<code>&lt;=</code>).</li>
+<li><strong>Difficult maintenance</strong>: Logic changes can easily introduce bugs.</li>
+<li><strong>Poor conformity</strong>: The style does not follow the recommended Verilog HDL design convention used in this course.</li>
+<li><strong>Synthesis uncertainty</strong>: Different tools may interpret the description differently and produce different synthesis results.</li>
+</ol></div>
+
+
+
+
+
+
+
+
+  <aside class="md-source-file">
+    
+    
+    
+      
+  
+  <span class="md-source-file__fact">
+    <span class="md-icon" title="Contributors">
+      
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 4a4 4 0 0 1 4 4 4 4 0 0 1-4 4 4 4 0 0 1-4-4 4 4 0 0 1 4-4m0 10c4.42 0 8 1.79 8 4v2H4v-2c0-2.21 3.58-4 8-4"/></svg>
+      
+    </span>
+    <nav>
+      baiyhsz
+    </nav>
+  </span>
+
+    
+    
+  </aside>
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright &copy; 2025 Southern University of Science and Technology
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["search.suggest", "search.highlight", "content.tabs.link", "navigation.tabs", "navigation.top", "content.code.copy"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>
