@@ -1,0 +1,2254 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Digital Logic Laboratory Course Materials">
+      
+      
+      
+        <link rel="canonical" href="https://cs207digitallogic.github.io/site/en/DigitalLogic_ButtonDebounce/">
+      
+      
+        <link rel="prev" href="../DigitalLogic_DynamicDisplay/">
+      
+      
+        <link rel="next" href="../DigitalLogic_StateMachine/">
+      
+      
+        
+          <link rel="alternate" href="../../DigitalLogic_ButtonDebounce/" hreflang="zh">
+        
+          <link rel="alternate" href="./" hreflang="en">
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>Lab 7: Button Debouncing and Edge Detection - Digital Logic Course</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#digital-logic-button-debouncing-and-edge-detection" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../" title="Digital Logic Course" class="md-header__button md-logo" aria-label="Digital Logic Course" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Digital Logic Course
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Lab 7: Button Debouncing and Edge Detection
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-hidden="true"  type="radio" name="__palette" id="__palette_0">
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+      <div class="md-header__option">
+  <div class="md-select">
+    
+    <button class="md-header__button md-icon" aria-label="Select language">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m12.87 15.07-2.54-2.51.03-.03A17.5 17.5 0 0 0 14.07 6H17V4h-7V2H8v2H1v2h11.17C11.5 7.92 10.44 9.75 9 11.35 8.07 10.32 7.3 9.19 6.69 8h-2c.73 1.63 1.73 3.17 2.98 4.56l-5.09 5.02L4 19l5-5 3.11 3.11zM18.5 10h-2L12 22h2l1.12-3h4.75L21 22h2zm-2.62 7 1.62-4.33L19.12 17z"/></svg>
+    </button>
+    <div class="md-select__inner">
+      <ul class="md-select__list">
+        
+          <li class="md-select__item">
+            <a href="../../DigitalLogic_ButtonDebounce/" hreflang="zh" class="md-select__link">
+              中文
+            </a>
+          </li>
+        
+          <li class="md-select__item">
+            <a href="./" hreflang="en" class="md-select__link">
+              English
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</div>
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://cs207digitallogic.github.io" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub Repository
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../DigitalLogic_EnvironmentSetup/" class="md-tabs__link">
+          
+  
+  
+  Labs
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../projects/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Projects
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../links/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  OJ Platforms
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../resources/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Course Resources
+
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../" title="Digital Logic Course" class="md-nav__button md-logo" aria-label="Digital Logic Course" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Digital Logic Course
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://cs207digitallogic.github.io" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub Repository
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Labs
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Labs
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../DigitalLogic_EnvironmentSetup/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 1: Environment Setup
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../DigitalLogic_VerilogBasics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 2: Verilog Basics and Structural Modeling
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../DigitalLogic_Dataflow/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 3: Dataflow Modeling and FPGA Verification
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../DigitalLogic_BehaviorModeling/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 4: Behavioral Modeling and Seven-Segment Display
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../DigitalLogic_SequentialLogic/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 5: Sequential Logic—Counters and Clock Dividers
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../DigitalLogic_DynamicDisplay/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 6: Multiplexed Display—Chasing LEDs and Seven-Segment Displays
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 7: Button Debouncing and Edge Detection
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 7: Button Debouncing and Edge Detection
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#objectives" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Objectives
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1-the-button-bouncing-problem" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. The Button Bouncing Problem
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. The Button Bouncing Problem">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#11-physical-characteristics-of-mechanical-buttons" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.1 Physical Characteristics of Mechanical Buttons
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#12-why-bouncing-is-a-problem" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.2 Why Bouncing Is a Problem
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-edge-detection-from-level-to-single-pulse" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Edge Detection: From Level to Single Pulse
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. Edge Detection: From Level to Single Pulse">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#21-why-not-use-the-level-directly-as-an-enable" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.1 Why Not Use the Level Directly as an Enable?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#22-do-not-use-posedge-on-ordinary-signals" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.2 Do Not Use posedge on Ordinary Signals
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#23-edge-detection-principle" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.3 Edge Detection Principle
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#24-edge-detection-code" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.4 Edge Detection Code
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-observing-bounce-edge-detection-on-the-raw-button" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Observing Bounce: Edge Detection on the Raw Button
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Observing Bounce: Edge Detection on the Raw Button">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#31-experiment" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.1 Experiment
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#32-observation-and-analysis" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.2 Observation and Analysis
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-method-1-level-type-debouncing-edge-detection" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Method 1: Level-Type Debouncing + Edge Detection
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. Method 1: Level-Type Debouncing + Edge Detection">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#41-principle-sample-and-wait-for-stability" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.1 Principle: Sample and Wait for Stability
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#42-delay-parameter-calculation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.2 Delay Parameter Calculation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#43-code" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.3 Code
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#44-timing-analysis" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.4 Timing Analysis
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#45-simulation-tip" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.5 Simulation Tip
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-method-2-pulse-type-debouncing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Method 2: Pulse-Type Debouncing
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5. Method 2: Pulse-Type Debouncing">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#51-idea" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.1 Idea
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#52-code" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.2 Code
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#53-timing-analysis" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.3 Timing Analysis
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#54-question" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.4 Question
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-comparison-of-the-two-methods" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Comparison of the Two Methods
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-lab-exercises" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. Lab Exercises
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="7. Lab Exercises">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#exercise-1-basic-toggle-an-led-on-each-press" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exercise 1 (Basic): Toggle an LED on Each Press
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exercise-2-intermediate-optional-implement-with-method-2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exercise 2 (Intermediate, optional): Implement with Method 2
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exercise-3-extension-optional" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exercise 3 (Extension, optional)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#appendix-faq" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Appendix: FAQ
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../DigitalLogic_StateMachine/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 8: State Machines
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../DigitalLogic_ModuleIntegration/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 9: Module Integration
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../DigitalLogic_UART/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 10: UART
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../DigitalLogic_StopwatchCore/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 11 Demo: Stopwatch Core
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../DigitalLogic_StopwatchControl/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 12 Demo: Stopwatch Control
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../DigitalLogic_StopwatchIntegration/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 13 Demo: System Integration
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../DigitalLogic_Memory/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 14: Memory Design and IP Cores
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../projects/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Projects
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../links/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    OJ Platforms
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../resources/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Course Resources
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#objectives" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Objectives
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1-the-button-bouncing-problem" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. The Button Bouncing Problem
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. The Button Bouncing Problem">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#11-physical-characteristics-of-mechanical-buttons" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.1 Physical Characteristics of Mechanical Buttons
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#12-why-bouncing-is-a-problem" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.2 Why Bouncing Is a Problem
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-edge-detection-from-level-to-single-pulse" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Edge Detection: From Level to Single Pulse
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. Edge Detection: From Level to Single Pulse">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#21-why-not-use-the-level-directly-as-an-enable" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.1 Why Not Use the Level Directly as an Enable?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#22-do-not-use-posedge-on-ordinary-signals" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.2 Do Not Use posedge on Ordinary Signals
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#23-edge-detection-principle" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.3 Edge Detection Principle
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#24-edge-detection-code" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.4 Edge Detection Code
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-observing-bounce-edge-detection-on-the-raw-button" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Observing Bounce: Edge Detection on the Raw Button
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Observing Bounce: Edge Detection on the Raw Button">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#31-experiment" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.1 Experiment
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#32-observation-and-analysis" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.2 Observation and Analysis
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-method-1-level-type-debouncing-edge-detection" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Method 1: Level-Type Debouncing + Edge Detection
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. Method 1: Level-Type Debouncing + Edge Detection">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#41-principle-sample-and-wait-for-stability" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.1 Principle: Sample and Wait for Stability
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#42-delay-parameter-calculation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.2 Delay Parameter Calculation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#43-code" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.3 Code
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#44-timing-analysis" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.4 Timing Analysis
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#45-simulation-tip" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.5 Simulation Tip
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-method-2-pulse-type-debouncing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Method 2: Pulse-Type Debouncing
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5. Method 2: Pulse-Type Debouncing">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#51-idea" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.1 Idea
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#52-code" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.2 Code
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#53-timing-analysis" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.3 Timing Analysis
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#54-question" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.4 Question
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-comparison-of-the-two-methods" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Comparison of the Two Methods
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-lab-exercises" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. Lab Exercises
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="7. Lab Exercises">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#exercise-1-basic-toggle-an-led-on-each-press" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exercise 1 (Basic): Toggle an LED on Each Press
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exercise-2-intermediate-optional-implement-with-method-2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exercise 2 (Intermediate, optional): Implement with Method 2
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exercise-3-extension-optional" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exercise 3 (Extension, optional)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#appendix-faq" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Appendix: FAQ
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<div><div class="toc">
+<ul>
+<li><a href="#digital-logic-button-debouncing-and-edge-detection">Digital Logic: Button Debouncing and Edge Detection</a><ul>
+<li><a href="#objectives">Objectives</a></li>
+<li><a href="#1-the-button-bouncing-problem">1. The Button Bouncing Problem</a><ul>
+<li><a href="#11-physical-characteristics-of-mechanical-buttons">1.1 Physical Characteristics of Mechanical Buttons</a></li>
+<li><a href="#12-why-bouncing-is-a-problem">1.2 Why Bouncing Is a Problem</a></li>
+</ul>
+</li>
+<li><a href="#2-edge-detection-from-level-to-single-pulse">2. Edge Detection: From Level to Single Pulse</a><ul>
+<li><a href="#21-why-not-use-the-level-directly-as-an-enable">2.1 Why Not Use the Level Directly as an Enable?</a></li>
+<li><a href="#22-do-not-use-posedge-on-ordinary-signals">2.2 Do Not Use posedge on Ordinary Signals</a></li>
+<li><a href="#23-edge-detection-principle">2.3 Edge Detection Principle</a></li>
+<li><a href="#24-edge-detection-code">2.4 Edge Detection Code</a></li>
+</ul>
+</li>
+<li><a href="#3-observing-bounce-edge-detection-on-the-raw-button">3. Observing Bounce: Edge Detection on the Raw Button</a><ul>
+<li><a href="#31-experiment">3.1 Experiment</a></li>
+<li><a href="#32-observation-and-analysis">3.2 Observation and Analysis</a></li>
+</ul>
+</li>
+<li><a href="#4-method-1-level-type-debouncing-edge-detection">4. Method 1: Level-Type Debouncing + Edge Detection</a><ul>
+<li><a href="#41-principle-sample-and-wait-for-stability">4.1 Principle: Sample and Wait for Stability</a></li>
+<li><a href="#42-delay-parameter-calculation">4.2 Delay Parameter Calculation</a></li>
+<li><a href="#43-code">4.3 Code</a></li>
+<li><a href="#44-timing-analysis">4.4 Timing Analysis</a></li>
+<li><a href="#45-simulation-tip">4.5 Simulation Tip</a></li>
+</ul>
+</li>
+<li><a href="#5-method-2-pulse-type-debouncing">5. Method 2: Pulse-Type Debouncing</a><ul>
+<li><a href="#51-idea">5.1 Idea</a></li>
+<li><a href="#52-code">5.2 Code</a></li>
+<li><a href="#53-timing-analysis">5.3 Timing Analysis</a></li>
+<li><a href="#54-question">5.4 Question</a></li>
+</ul>
+</li>
+<li><a href="#6-comparison-of-the-two-methods">6. Comparison of the Two Methods</a></li>
+<li><a href="#7-lab-exercises">7. Lab Exercises</a><ul>
+<li><a href="#exercise-1-basic-toggle-an-led-on-each-press">Exercise 1 (Basic): Toggle an LED on Each Press</a></li>
+<li><a href="#exercise-2-intermediate-optional-implement-with-method-2">Exercise 2 (Intermediate, optional): Implement with Method 2</a></li>
+<li><a href="#exercise-3-extension-optional">Exercise 3 (Extension, optional)</a></li>
+</ul>
+</li>
+<li><a href="#appendix-faq">Appendix: FAQ</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<hr>
+<h1 id="digital-logic-button-debouncing-and-edge-detection">Digital Logic: Button Debouncing and Edge Detection</h1>
+<h2 id="objectives">Objectives</h2>
+<ul>
+<li>Understand the bouncing behavior of mechanical buttons and its effect on digital circuits</li>
+<li>Master the principle of edge detection (extracting a single-cycle pulse from a level signal)</li>
+<li>Master two counter-based debouncing methods: <strong>level-type debouncing</strong> and <strong>pulse-type debouncing</strong></li>
+<li>Understand the differences between the two methods and when to use each</li>
+<li>Implement the correct behavior: "one press, one response"</li>
+</ul>
+<blockquote>
+<p><strong>Note</strong>: The 5 general-purpose push buttons on the right side of the EGO1 board are <strong>low when idle and high when pressed</strong> (active-high). All code and waveforms in this document assume active-high buttons. Every design in this lab is written as <strong>a single module</strong>.</p>
+</blockquote>
+<hr>
+<h2 id="1-the-button-bouncing-problem">1. The Button Bouncing Problem</h2>
+<h3 id="11-physical-characteristics-of-mechanical-buttons">1.1 Physical Characteristics of Mechanical Buttons</h3>
+<p>The buttons on the board are mechanical switches. When a button is pressed or released, the metal contacts <strong>bounce</strong> several times, causing the signal to toggle rapidly between 0 and 1 for about <strong>5~20 ms</strong>.</p>
+<p><img alt="Button bounce" src="../../images/fig1_bounce.png"></p>
+<h3 id="12-why-bouncing-is-a-problem">1.2 Why Bouncing Is a Problem</h3>
+<p>If an un-debounced button signal is used directly to drive a counter:</p>
+<ul>
+<li>You expect "one press, +1"</li>
+<li>What you may actually get is "one press, +3~10"</li>
+<li>Because every bounce produces a rising edge, and each one triggers the counter</li>
+</ul>
+<p>This lab solves the "one press, one response" problem in two steps:</p>
+<ol>
+<li><strong>Edge detection</strong>: fixes "the circuit keeps responding while the button is held" (Section 2)</li>
+<li><strong>Debouncing</strong>: fixes "one press triggers several responses" (Sections 4 and 5)</li>
+</ol>
+<hr>
+<h2 id="2-edge-detection-from-level-to-single-pulse">2. Edge Detection: From Level to Single Pulse</h2>
+<h3 id="21-why-not-use-the-level-directly-as-an-enable">2.1 Why Not Use the Level Directly as an Enable?</h3>
+<p>Suppose the button signal is already a clean level (ignore bouncing for now), and we want "one press, counter +1". The most direct code is:</p>
+<div class="highlight"><pre><span></span><code><span class="k">always</span><span class="w"> </span><span class="p">@(</span><span class="k">posedge</span><span class="w"> </span><span class="n">clk</span><span class="p">)</span><span class="w"> </span><span class="k">begin</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">btn_level</span><span class="p">)</span>
+<span class="w">        </span><span class="n">cnt</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">cnt</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mh">1</span><span class="mb">'b1</span><span class="p">;</span>
+<span class="k">end</span>
+</code></pre></div>
+<p>The problem: <code>btn_level</code> is a <strong>level signal</strong>. A press lasts roughly 100 ms ~ 1 s, which is <strong>tens of millions of clock cycles</strong> at 100 MHz. The counter increments on every clock edge while the button is held, so one press adds tens of millions.</p>
+<p><img alt="Problem with using a level as enable" src="../../images/fig2_level_enable.png"></p>
+<p>What we need is: <strong>a high level only in the single clock cycle when the button is pressed</strong>. That is what edge detection does.</p>
+<h3 id="22-do-not-use-posedge-on-ordinary-signals">2.2 Do Not Use posedge on Ordinary Signals</h3>
+<p>A common beginner mistake is to put an ordinary signal directly into the sensitivity list of an always block:</p>
+<p><strong>Wrong:</strong></p>
+<div class="highlight"><pre><span></span><code><span class="k">always</span><span class="w"> </span><span class="p">@(</span><span class="k">posedge</span><span class="w"> </span><span class="n">btn_level</span><span class="p">)</span><span class="w"> </span><span class="k">begin</span>
+<span class="w">    </span><span class="n">cnt</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">cnt</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mh">1</span><span class="mb">'b1</span><span class="p">;</span>
+<span class="k">end</span>
+<span class="c1">// btn_level here is just an ordinary signal, not a clock or reset</span>
+</code></pre></div>
+<p>The reason this is wrong: the chip has a dedicated global clock routing network that keeps clock delay low and makes the clock arrive at all flip-flops at the same time. If you use <code>posedge</code> or <code>negedge</code> on an ordinary signal, the synthesis tool treats that signal as a clock. Ordinary routing cannot meet the requirements of the clock network, which can introduce glitches and timing errors, and may even prevent the design from being implemented on the board.</p>
+<p><strong>Correct:</strong></p>
+<div class="highlight"><pre><span></span><code><span class="k">always</span><span class="w"> </span><span class="p">@(</span><span class="k">posedge</span><span class="w"> </span><span class="n">clk</span><span class="p">)</span><span class="w"> </span><span class="k">begin</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">pos_edge</span><span class="p">)</span>
+<span class="w">        </span><span class="n">cnt</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">cnt</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mh">1</span><span class="mb">'b1</span><span class="p">;</span>
+<span class="k">end</span>
+</code></pre></div>
+<p>Here <code>pos_edge</code> is a signal synchronous to <code>clk</code>. When the input signal has a rising edge, <code>pos_edge</code> becomes 1 for exactly one clock cycle. This detects the transition while keeping the whole circuit running on a single clock.</p>
+<h3 id="23-edge-detection-principle">2.3 Edge Detection Principle</h3>
+<p>Use a register to store the signal value from the <strong>previous clock cycle</strong>, and compare the current value with the previous one to detect an edge:</p>
+<div class="highlight"><pre><span></span><code>current  sig_in  : 0 0 0 1 1 1 1 0 0
+previous sig_d   : 0 0 0 0 1 1 1 1 0
+rising   pos_edge: 0 0 0 1 0 0 0 0 0   (current = 1 and previous = 0)
+falling  neg_edge: 0 0 0 0 0 0 0 1 0   (current = 0 and previous = 1)
+</code></pre></div>
+<p>The corresponding timing waveform:</p>
+<p><img alt="Edge detection timing" src="../../images/fig3_edge_principle.png"></p>
+<ul>
+<li><code>sig_d</code> lags <code>sig_in</code> by one clock cycle</li>
+<li>In the one cycle where <code>sig_in</code> has gone high but <code>sig_d</code> has not yet, <code>pos_edge = 1</code></li>
+<li>Likewise, in the one cycle where <code>sig_in</code> has gone low but <code>sig_d</code> has not yet, <code>neg_edge = 1</code></li>
+</ul>
+<h3 id="24-edge-detection-code">2.4 Edge Detection Code</h3>
+<div class="highlight"><pre><span></span><code><span class="k">module</span><span class="w"> </span><span class="n">edge_detect</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="k">input</span><span class="w">      </span><span class="n">clk</span><span class="p">,</span>
+<span class="w">    </span><span class="k">input</span><span class="w">      </span><span class="n">rst_n</span><span class="p">,</span>
+<span class="w">    </span><span class="k">input</span><span class="w">      </span><span class="n">sig_in</span><span class="p">,</span><span class="w">       </span><span class="c1">// input signal</span>
+<span class="w">    </span><span class="k">output</span><span class="w">     </span><span class="n">pos_edge</span><span class="p">,</span><span class="w">     </span><span class="c1">// rising-edge pulse (single cycle)</span>
+<span class="w">    </span><span class="k">output</span><span class="w">     </span><span class="n">neg_edge</span><span class="w">      </span><span class="c1">// falling-edge pulse (single cycle)</span>
+<span class="p">);</span>
+<span class="w">    </span><span class="kt">reg</span><span class="w"> </span><span class="n">sig_d</span><span class="p">;</span><span class="w">  </span><span class="c1">// signal delayed by one cycle</span>
+
+<span class="w">    </span><span class="k">always</span><span class="w"> </span><span class="p">@(</span><span class="k">posedge</span><span class="w"> </span><span class="n">clk</span><span class="w"> </span><span class="k">or</span><span class="w"> </span><span class="k">negedge</span><span class="w"> </span><span class="n">rst_n</span><span class="p">)</span><span class="w"> </span><span class="k">begin</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">rst_n</span><span class="p">)</span>
+<span class="w">            </span><span class="n">sig_d</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mh">1</span><span class="mb">'b0</span><span class="p">;</span>
+<span class="w">        </span><span class="k">else</span>
+<span class="w">            </span><span class="n">sig_d</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">sig_in</span><span class="p">;</span>
+<span class="w">    </span><span class="k">end</span>
+
+<span class="w">    </span><span class="k">assign</span><span class="w"> </span><span class="n">pos_edge</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sig_in</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="o">~</span><span class="n">sig_d</span><span class="p">;</span><span class="w">  </span><span class="c1">// now high, previously low -&gt; rising edge</span>
+<span class="w">    </span><span class="k">assign</span><span class="w"> </span><span class="n">neg_edge</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">~</span><span class="n">sig_in</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">sig_d</span><span class="p">;</span><span class="w">  </span><span class="c1">// now low, previously high -&gt; falling edge</span>
+<span class="k">endmodule</span>
+</code></pre></div>
+<p>Edge detection consists of only three parts: one always block that delays the signal by one cycle, and two assign statements. In the following sections, these lines are written directly into each module that needs them.</p>
+<hr>
+<h2 id="3-observing-bounce-edge-detection-on-the-raw-button">3. Observing Bounce: Edge Detection on the Raw Button</h2>
+<h3 id="31-experiment">3.1 Experiment</h3>
+<p>Without any debouncing, write "edge detection + counter" in one module, and display the count in binary on 8 LEDs:</p>
+<div class="highlight"><pre><span></span><code><span class="k">module</span><span class="w"> </span><span class="n">btn_raw_cnt</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="k">input</span><span class="w">            </span><span class="n">clk</span><span class="p">,</span>
+<span class="w">    </span><span class="k">input</span><span class="w">            </span><span class="n">rst_n</span><span class="p">,</span>
+<span class="w">    </span><span class="k">input</span><span class="w">            </span><span class="n">btn_in</span><span class="p">,</span><span class="w">     </span><span class="c1">// raw button, high when pressed</span>
+<span class="w">    </span><span class="k">output</span><span class="w"> </span><span class="kt">reg</span><span class="w"> </span><span class="p">[</span><span class="mh">7</span><span class="o">:</span><span class="mh">0</span><span class="p">]</span><span class="w"> </span><span class="n">led</span><span class="w">         </span><span class="c1">// count value, binary display</span>
+<span class="p">);</span>
+<span class="w">    </span><span class="c1">// Edge detection</span>
+<span class="w">    </span><span class="kt">reg</span><span class="w">  </span><span class="n">btn_d</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">wire</span><span class="w"> </span><span class="n">btn_pos</span><span class="p">;</span>
+
+<span class="w">    </span><span class="k">always</span><span class="w"> </span><span class="p">@(</span><span class="k">posedge</span><span class="w"> </span><span class="n">clk</span><span class="w"> </span><span class="k">or</span><span class="w"> </span><span class="k">negedge</span><span class="w"> </span><span class="n">rst_n</span><span class="p">)</span><span class="w"> </span><span class="k">begin</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">rst_n</span><span class="p">)</span>
+<span class="w">            </span><span class="n">btn_d</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mh">1</span><span class="mb">'b0</span><span class="p">;</span>
+<span class="w">        </span><span class="k">else</span>
+<span class="w">            </span><span class="n">btn_d</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">btn_in</span><span class="p">;</span>
+<span class="w">    </span><span class="k">end</span>
+
+<span class="w">    </span><span class="k">assign</span><span class="w"> </span><span class="n">btn_pos</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">btn_in</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="o">~</span><span class="n">btn_d</span><span class="p">;</span>
+
+<span class="w">    </span><span class="c1">// Counter: +1 on every detected rising edge</span>
+<span class="w">    </span><span class="k">always</span><span class="w"> </span><span class="p">@(</span><span class="k">posedge</span><span class="w"> </span><span class="n">clk</span><span class="w"> </span><span class="k">or</span><span class="w"> </span><span class="k">negedge</span><span class="w"> </span><span class="n">rst_n</span><span class="p">)</span><span class="w"> </span><span class="k">begin</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">rst_n</span><span class="p">)</span>
+<span class="w">            </span><span class="n">led</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mh">8</span><span class="mi">'d0</span><span class="p">;</span>
+<span class="w">        </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">btn_pos</span><span class="p">)</span>
+<span class="w">            </span><span class="n">led</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">led</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mh">1</span><span class="mb">'b1</span><span class="p">;</span>
+<span class="w">    </span><span class="k">end</span>
+<span class="k">endmodule</span>
+</code></pre></div>
+<p>Program the board, press the button once, and observe the count shown on the LEDs.</p>
+<h3 id="32-observation-and-analysis">3.2 Observation and Analysis</h3>
+<p>One press often increases the count by several. The reason is shown below: during bouncing, every 0→1 transition is a rising edge, and edge detection detects every one of them.</p>
+<p><img alt="Edge detection on raw button" src="../../images/fig5_raw_edge.png"></p>
+<blockquote>
+<p><strong>Tip</strong>: Use a counter for this observation, not an LED toggle. If bouncing produces an even number of rising edges, the LED toggles an even number of times and ends in the same state, which is easily mistaken for a bug in the code.</p>
+</blockquote>
+<p>Conclusion: <strong>edge detection only turns a level into a pulse; it cannot tell a real press from bouncing</strong>. The button must be debounced first.</p>
+<hr>
+<h2 id="4-method-1-level-type-debouncing-edge-detection">4. Method 1: Level-Type Debouncing + Edge Detection</h2>
+<h3 id="41-principle-sample-and-wait-for-stability">4.1 Principle: Sample and Wait for Stability</h3>
+<p>When the input changes, the output does not change immediately; it is updated only after the input has held the new value for 20 ms. Step by step:</p>
+<ol>
+<li>On every clock cycle, compare the button input <code>btn_in</code> with the current output <code>btn_level</code></li>
+<li>If they are equal: nothing has changed, clear the counter</li>
+<li>If they differ: the button may have changed, start counting</li>
+<li>If the button returns to its old value during counting (they become equal again), it is still bouncing — clear the counter and start over</li>
+<li>If the counter reaches 20 ms: the new level is stable, update <code>btn_level</code></li>
+</ol>
+<p>This method <strong>debounces both press and release</strong>. Its output is a clean square wave, delayed by about 20 ms relative to the raw signal. Because the output is a level, edge detection is still needed to obtain the single-cycle pulses <code>btn_pos</code> (press) and <code>btn_neg</code> (release).</p>
+<p><img alt="Level-type debouncing" src="../../images/fig6_level_overview.png"></p>
+<h3 id="42-delay-parameter-calculation">4.2 Delay Parameter Calculation</h3>
+<ul>
+<li>Target debounce time: about <strong>20 ms</strong></li>
+<li>System clock: 100 MHz → 1 cycle = 10 ns</li>
+<li>20 ms = 20,000,000 ns</li>
+<li>Required count = 20,000,000 / 10 = <strong>2,000,000</strong></li>
+</ul>
+<p>So <code>CNT_MAX = 2_000_000</code>.</p>
+<p>Counter width: the count range is 0 ~ 1,999,999, and 2²¹ = 2,097,152 &gt; 2,000,000, so the width is <strong>21 bits</strong>, i.e. <code>reg [20:0] cnt</code>.</p>
+<h3 id="43-code">4.3 Code</h3>
+<p>Debouncing and edge detection are written in the same module:</p>
+<div class="highlight"><pre><span></span><code><span class="k">module</span><span class="w"> </span><span class="n">btn_debounce</span><span class="w"> </span><span class="p">#(</span>
+<span class="w">    </span><span class="k">parameter</span><span class="w"> </span><span class="n">CNT_MAX</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">21</span><span class="mi">'d2</span><span class="n">_000_000</span><span class="w">      </span><span class="c1">// 20ms @ 100MHz</span>
+<span class="p">)(</span>
+<span class="w">    </span><span class="k">input</span><span class="w">      </span><span class="n">clk</span><span class="p">,</span>
+<span class="w">    </span><span class="k">input</span><span class="w">      </span><span class="n">rst_n</span><span class="p">,</span>
+<span class="w">    </span><span class="k">input</span><span class="w">      </span><span class="n">btn_in</span><span class="p">,</span><span class="w">                     </span><span class="c1">// button input, high when pressed</span>
+<span class="w">    </span><span class="k">output</span><span class="w"> </span><span class="kt">reg</span><span class="w"> </span><span class="n">btn_level</span><span class="p">,</span><span class="w">                  </span><span class="c1">// clean, debounced level</span>
+<span class="w">    </span><span class="k">output</span><span class="w">     </span><span class="n">btn_pos</span><span class="p">,</span><span class="w">                    </span><span class="c1">// single-cycle pulse on press</span>
+<span class="w">    </span><span class="k">output</span><span class="w">     </span><span class="n">btn_neg</span><span class="w">                     </span><span class="c1">// single-cycle pulse on release</span>
+<span class="p">);</span>
+<span class="w">    </span><span class="c1">// ---------------- Part 1: level-type debouncing ----------------</span>
+<span class="w">    </span><span class="c1">// Update output only if input differs from it for 20ms</span>
+<span class="w">    </span><span class="kt">reg</span><span class="w"> </span><span class="p">[</span><span class="mh">20</span><span class="o">:</span><span class="mh">0</span><span class="p">]</span><span class="w"> </span><span class="n">cnt</span><span class="p">;</span><span class="w">                        </span><span class="c1">// 2^21 = 2,097,152 &gt; 2,000,000</span>
+<span class="w">    </span><span class="k">always</span><span class="w"> </span><span class="p">@(</span><span class="k">posedge</span><span class="w"> </span><span class="n">clk</span><span class="w"> </span><span class="k">or</span><span class="w"> </span><span class="k">negedge</span><span class="w"> </span><span class="n">rst_n</span><span class="p">)</span><span class="w"> </span><span class="k">begin</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">rst_n</span><span class="p">)</span><span class="w"> </span><span class="k">begin</span>
+<span class="w">            </span><span class="n">cnt</span><span class="w">       </span><span class="o">&lt;=</span><span class="w"> </span><span class="mh">21</span><span class="mi">'d0</span><span class="p">;</span>
+<span class="w">            </span><span class="n">btn_level</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mh">1</span><span class="mb">'b0</span><span class="p">;</span>
+<span class="w">        </span><span class="k">end</span>
+<span class="w">        </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">btn_in</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">btn_level</span><span class="p">)</span><span class="w">      </span><span class="c1">// no change (or returned to old value): clear</span>
+<span class="w">            </span><span class="n">cnt</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mh">21</span><span class="mi">'d0</span><span class="p">;</span>
+<span class="w">        </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">cnt</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">CNT_MAX</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mh">1</span><span class="p">)</span><span class="w"> </span><span class="k">begin</span><span class="w"> </span><span class="c1">// new level stable for 20ms: update</span>
+<span class="w">            </span><span class="n">btn_level</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">btn_in</span><span class="p">;</span>
+<span class="w">            </span><span class="n">cnt</span><span class="w">       </span><span class="o">&lt;=</span><span class="w"> </span><span class="mh">21</span><span class="mi">'d0</span><span class="p">;</span>
+<span class="w">        </span><span class="k">end</span>
+<span class="w">        </span><span class="k">else</span><span class="w">                               </span><span class="c1">// changed but not yet stable for 20ms: count</span>
+<span class="w">            </span><span class="n">cnt</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">cnt</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mh">1</span><span class="mb">'b1</span><span class="p">;</span>
+<span class="w">    </span><span class="k">end</span>
+
+<span class="w">    </span><span class="c1">// ---------------- Part 2: edge detection ----------------</span>
+<span class="w">    </span><span class="kt">reg</span><span class="w"> </span><span class="n">btn_level_d</span><span class="p">;</span><span class="w">                       </span><span class="c1">// btn_level delayed by one cycle</span>
+<span class="w">    </span><span class="k">always</span><span class="w"> </span><span class="p">@(</span><span class="k">posedge</span><span class="w"> </span><span class="n">clk</span><span class="w"> </span><span class="k">or</span><span class="w"> </span><span class="k">negedge</span><span class="w"> </span><span class="n">rst_n</span><span class="p">)</span><span class="w"> </span><span class="k">begin</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">rst_n</span><span class="p">)</span>
+<span class="w">            </span><span class="n">btn_level_d</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mh">1</span><span class="mb">'b0</span><span class="p">;</span>
+<span class="w">        </span><span class="k">else</span>
+<span class="w">            </span><span class="n">btn_level_d</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">btn_level</span><span class="p">;</span>
+<span class="w">    </span><span class="k">end</span>
+
+<span class="w">    </span><span class="k">assign</span><span class="w"> </span><span class="n">btn_pos</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">btn_level</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="o">~</span><span class="n">btn_level_d</span><span class="p">;</span><span class="w">   </span><span class="c1">// rising edge: press</span>
+<span class="w">    </span><span class="k">assign</span><span class="w"> </span><span class="n">btn_neg</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">~</span><span class="n">btn_level</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">btn_level_d</span><span class="p">;</span><span class="w">   </span><span class="c1">// falling edge: release</span>
+<span class="k">endmodule</span>
+</code></pre></div>
+<p>Signal flow:</p>
+<div class="highlight"><pre><span></span><code>btn_in (bouncing) → [debounce] → btn_level (clean level) → [edge detection] → btn_pos / btn_neg (single pulses)
+</code></pre></div>
+<h3 id="44-timing-analysis">4.4 Timing Analysis</h3>
+<p><img alt="Level-type debouncing timing" src="../../images/fig7_level_timing.png"></p>
+<p><strong>How it works</strong>:</p>
+<ol>
+<li>Button pressed → <code>btn_in</code> starts bouncing</li>
+<li>While <code>btn_in</code> differs from <code>btn_level</code>, <code>cnt</code> counts up; when bouncing returns it to the old value, they are equal and <code>cnt</code> is cleared</li>
+<li>After bouncing ends, <code>btn_in</code> stays at 1 and <code>cnt</code> keeps counting up to <code>N-1</code></li>
+<li>On the next clock edge, <code>btn_level</code> becomes 1 and <code>cnt</code> is cleared; edge detection then outputs a one-cycle <code>btn_pos</code></li>
+<li>Release works the same way in reverse; finally <code>btn_level</code> returns to 0 and edge detection outputs a one-cycle <code>btn_neg</code></li>
+</ol>
+<p>In the figure, N = CNT_MAX = 2,000,000; "3 ~ N-2" means roughly two million clock cycles are omitted.</p>
+<h3 id="45-simulation-tip">4.5 Simulation Tip</h3>
+<p>Simulating with <code>CNT_MAX = 2_000_000</code> means millions of clock cycles per button press, which is very slow. For simulation, temporarily change the default value of the parameter to a small number:</p>
+<div class="highlight"><pre><span></span><code><span class="k">parameter</span><span class="w"> </span><span class="n">CNT_MAX</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">21</span><span class="mi">'d10</span><span class="w">             </span><span class="c1">// for simulation: only 10 stable cycles needed</span>
+</code></pre></div>
+<p>The bounce pulses modeled in the testbench must then also be shorter than 10 clock cycles. <strong>Remember to change it back to <code>21'd2_000_000</code> before programming the board.</strong></p>
+<hr>
+<h2 id="5-method-2-pulse-type-debouncing">5. Method 2: Pulse-Type Debouncing</h2>
+<h3 id="51-idea">5.1 Idea</h3>
+<p>In many cases we only need to know that "the button was pressed once". Then the pulse can be generated directly during the debounce counting, without separate edge detection:</p>
+<ol>
+<li>The counter counts up while the button is high (pressed) and is cleared when it is low</li>
+<li>During bouncing the button returns to low several times, so the counter is cleared several times</li>
+<li>Once the button stays high for 20 ms, the counter reaches <code>N-1</code></li>
+<li>A one-clock pulse is output when the counter <strong>first reaches</strong> <code>N-1</code></li>
+<li>The counter then stays at <code>N-1</code>, so no more pulses are produced while the button is held</li>
+<li>After release, the counter is cleared and waits for the next press</li>
+</ol>
+<p><img alt="Pulse-type debouncing" src="../../images/fig8_pulse_overview.png"></p>
+<p>Note: this method <strong>outputs a pulse only on press</strong>; nothing is output on release.</p>
+<h3 id="52-code">5.2 Code</h3>
+<div class="highlight"><pre><span></span><code><span class="k">module</span><span class="w"> </span><span class="n">btn_debounce_pulse</span><span class="w"> </span><span class="p">#(</span>
+<span class="w">    </span><span class="k">parameter</span><span class="w"> </span><span class="n">CNT_MAX</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">21</span><span class="mi">'d2</span><span class="n">_000_000</span><span class="w">      </span><span class="c1">// 20ms @ 100MHz</span>
+<span class="p">)(</span>
+<span class="w">    </span><span class="k">input</span><span class="w">      </span><span class="n">clk</span><span class="p">,</span>
+<span class="w">    </span><span class="k">input</span><span class="w">      </span><span class="n">rst_n</span><span class="p">,</span>
+<span class="w">    </span><span class="k">input</span><span class="w">      </span><span class="n">btn_in</span><span class="p">,</span><span class="w">                     </span><span class="c1">// button input, high when pressed</span>
+<span class="w">    </span><span class="k">output</span><span class="w"> </span><span class="kt">reg</span><span class="w"> </span><span class="n">btn_pulse</span><span class="w">                   </span><span class="c1">// one-clock pulse per press</span>
+<span class="p">);</span>
+<span class="w">    </span><span class="c1">// Count while held, stay at N-1; clear on release or when bouncing low</span>
+<span class="w">    </span><span class="kt">reg</span><span class="w"> </span><span class="p">[</span><span class="mh">20</span><span class="o">:</span><span class="mh">0</span><span class="p">]</span><span class="w"> </span><span class="n">cnt</span><span class="p">;</span>
+<span class="w">    </span><span class="k">always</span><span class="w"> </span><span class="p">@(</span><span class="k">posedge</span><span class="w"> </span><span class="n">clk</span><span class="w"> </span><span class="k">or</span><span class="w"> </span><span class="k">negedge</span><span class="w"> </span><span class="n">rst_n</span><span class="p">)</span><span class="w"> </span><span class="k">begin</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">rst_n</span><span class="p">)</span>
+<span class="w">            </span><span class="n">cnt</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mh">21</span><span class="mi">'d0</span><span class="p">;</span>
+<span class="w">        </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">btn_in</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mh">1</span><span class="mb">'b0</span><span class="p">)</span>
+<span class="w">            </span><span class="n">cnt</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mh">21</span><span class="mi">'d0</span><span class="p">;</span>
+<span class="w">        </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">cnt</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">CNT_MAX</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mh">1</span><span class="p">)</span>
+<span class="w">            </span><span class="n">cnt</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">cnt</span><span class="p">;</span><span class="w">                    </span><span class="c1">// keep the value to prevent re-triggering</span>
+<span class="w">        </span><span class="k">else</span>
+<span class="w">            </span><span class="n">cnt</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">cnt</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mh">1</span><span class="mb">'b1</span><span class="p">;</span>
+<span class="w">    </span><span class="k">end</span>
+
+<span class="w">    </span><span class="c1">// The counter passes CNT_MAX-2 only once, so only a single-cycle pulse is output</span>
+<span class="w">    </span><span class="k">always</span><span class="w"> </span><span class="p">@(</span><span class="k">posedge</span><span class="w"> </span><span class="n">clk</span><span class="w"> </span><span class="k">or</span><span class="w"> </span><span class="k">negedge</span><span class="w"> </span><span class="n">rst_n</span><span class="p">)</span><span class="w"> </span><span class="k">begin</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">rst_n</span><span class="p">)</span>
+<span class="w">            </span><span class="n">btn_pulse</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mh">1</span><span class="mb">'b0</span><span class="p">;</span>
+<span class="w">        </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">cnt</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">CNT_MAX</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mh">2</span><span class="p">)</span>
+<span class="w">            </span><span class="c1">// when cnt is N-2, on the next clock edge cnt becomes N-1 and btn_pulse goes high</span>
+<span class="w">            </span><span class="n">btn_pulse</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mh">1</span><span class="mb">'b1</span><span class="p">;</span>
+<span class="w">        </span><span class="k">else</span>
+<span class="w">            </span><span class="n">btn_pulse</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mh">1</span><span class="mb">'b0</span><span class="p">;</span>
+<span class="w">    </span><span class="k">end</span>
+<span class="k">endmodule</span>
+</code></pre></div>
+<h3 id="53-timing-analysis">5.3 Timing Analysis</h3>
+<p><img alt="Pulse-type debouncing timing" src="../../images/fig9_pulse_timing.png"></p>
+<ul>
+<li>During bouncing, <code>cnt</code> is cleared every time <code>btn_in</code> returns to 0</li>
+<li>After a stable press, <code>cnt</code> counts up to <code>N-1</code> and stays there ("N-1 (hold)" in the figure)</li>
+<li><code>btn_pulse</code> is high in the cycle where <code>cnt</code> first equals <code>N-1</code></li>
+<li>On release <code>cnt</code> is cleared; release bouncing only makes <code>cnt</code> change between 0 and 1, so no pulse is produced</li>
+</ul>
+<h3 id="54-question">5.4 Question</h3>
+<p>In the Method 2 module, suppose edge detection is applied once more to <code>btn_pulse</code> (use a register <code>btn_pulse_d</code> to store its previous value, and let <code>pos = btn_pulse &amp; ~btn_pulse_d</code>). What does <code>pos</code> look like?</p>
+<details>
+<summary>Click to see the answer</summary>
+
+- In the cycle where btn_pulse is high, btn_pulse_d is still 0, so pos = 1; in the next cycle btn_pulse is already back to 0, so pos = 0. Therefore pos is identical to btn_pulse, and this extra edge detection is redundant.
+
+Conclusion: the output of pulse-type debouncing is already a single-cycle pulse and does not need edge detection; the output of level-type debouncing is a level and must go through edge detection.
+
+</details>
+
+<hr>
+<h2 id="6-comparison-of-the-two-methods">6. Comparison of the Two Methods</h2>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Method 1: Level-type + Edge detection</th>
+<th>Method 2: Pulse-type</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Output of the debounce logic</td>
+<td>Clean square wave (level)</td>
+<td>Single-cycle pulse</td>
+</tr>
+<tr>
+<td>Edge detection needed</td>
+<td>Yes</td>
+<td>No</td>
+</tr>
+<tr>
+<td>What is debounced</td>
+<td>Both press and release</td>
+<td>Press only</td>
+</tr>
+<tr>
+<td>Can detect release</td>
+<td>Yes (<code>btn_neg</code>)</td>
+<td>No</td>
+</tr>
+<tr>
+<td>Long-press detection</td>
+<td>Yes (time <code>btn_level</code>)</td>
+<td>Requires modifying the code</td>
+</tr>
+<tr>
+<td>Code contents</td>
+<td>Debounce logic + edge detection logic</td>
+<td>Debounce logic only</td>
+</tr>
+<tr>
+<td>Typical use</td>
+<td>General purpose, easy to extend</td>
+<td>Only "one press, one action"</td>
+</tr>
+</tbody>
+</table>
+<p>Both methods are common in practice. Method 1 provides more functions and is recommended as the default; Method 2 needs less code and suits simple cases where only the press matters.</p>
+<hr>
+<h2 id="7-lab-exercises">7. Lab Exercises</h2>
+<p>Use one of the 5 buttons on the right side of the EGO1 board for on-board testing. All functions must be written in <strong>a single module</strong>.</p>
+<h3 id="exercise-1-basic-toggle-an-led-on-each-press">Exercise 1 (Basic): Toggle an LED on Each Press</h3>
+<p>Add an output <code>led</code> to the Method 1 module <code>btn_debounce</code>, and use <code>btn_pos</code> to make the LED toggle once every time the button is pressed.</p>
+<ul>
+<li>Simulate first (temporarily reduce <code>CNT_MAX</code> as described in Section 4.5), then restore the original value and verify on the board</li>
+<li>On the board, press the button quickly several times and check that each press toggles the LED exactly once</li>
+</ul>
+<h3 id="exercise-2-intermediate-optional-implement-with-method-2">Exercise 2 (Intermediate, optional): Implement with Method 2</h3>
+<p>Add an output <code>led</code> to the Method 2 module <code>btn_debounce_pulse</code>, implement the same function, and compare the simulation waveforms of the two designs:</p>
+<ul>
+<li>In each design, how long after the button becomes stably pressed does the LED toggle?</li>
+<li>How do the two designs behave differently when the button is released?</li>
+</ul>
+<h3 id="exercise-3-extension-optional">Exercise 3 (Extension, optional)</h3>
+<ul>
+<li><strong>Respond on release</strong>: nothing happens on press; the LED toggles when the button is released (hint: <code>btn_neg</code>)</li>
+<li><strong>Long press to clear</strong>: a short press adds 1 to an 8-bit counter (displayed on 8 LEDs); holding for more than 1 second clears the counter (hint: only Method 1 supports this directly — use another counter to measure how long <code>btn_level</code> stays high)</li>
+</ul>
+<hr>
+<h2 id="appendix-faq">Appendix: FAQ</h2>
+<ul>
+<li>
+<p><strong>Q</strong>: The count still jumps after debouncing?
+  <strong>A</strong>: Check that <code>CNT_MAX</code> is large enough. 20 ms (<code>2_000_000</code> @ 100 MHz) is recommended. If the value is too small, the output updates before bouncing ends. Also check that you restored <code>CNT_MAX</code> after simulation before programming the board.</p>
+</li>
+<li>
+<p><strong>Q</strong>: The button does nothing at all?
+  <strong>A</strong>: Check the button pin constraints. The 5 general-purpose buttons on EGO1 are <strong>active-high</strong> (1 when pressed). If you use another board with active-low buttons, invert the input first.</p>
+</li>
+<li>
+<p><strong>Q</strong>: The simulation runs for a long time but the output never changes?
+  <strong>A</strong>: Temporarily reduce <code>CNT_MAX</code> (e.g. to 10) for simulation; see Section 4.5.</p>
+</li>
+<li>
+<p><strong>Q</strong>: Counting misbehaves after changing <code>CNT_MAX</code>?
+  <strong>A</strong>: The counter is fixed at 21 bits and can count up to 2,097,151. If <code>CNT_MAX</code> is set larger than that (e.g. for a higher clock frequency or a longer debounce time), the width of <code>cnt</code> must be increased as well.</p>
+</li>
+</ul></div>
+
+
+
+
+
+
+
+
+  <aside class="md-source-file">
+    
+    
+    
+      
+  
+  <span class="md-source-file__fact">
+    <span class="md-icon" title="Contributors">
+      
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 4a4 4 0 0 1 4 4 4 4 0 0 1-4 4 4 4 0 0 1-4-4 4 4 0 0 1 4-4m0 10c4.42 0 8 1.79 8 4v2H4v-2c0-2.21 3.58-4 8-4"/></svg>
+      
+    </span>
+    <nav>
+      baiyhsz
+    </nav>
+  </span>
+
+    
+    
+  </aside>
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright &copy; 2025 Southern University of Science and Technology
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["search.suggest", "search.highlight", "content.tabs.link", "navigation.tabs", "navigation.top", "content.code.copy"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>

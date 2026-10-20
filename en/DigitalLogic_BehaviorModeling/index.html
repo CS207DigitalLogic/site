@@ -1,0 +1,2011 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Digital Logic Laboratory Course Materials">
+      
+      
+      
+        <link rel="canonical" href="https://cs207digitallogic.github.io/site/en/DigitalLogic_BehaviorModeling/">
+      
+      
+        <link rel="prev" href="../DigitalLogic_Dataflow/">
+      
+      
+        <link rel="next" href="../DigitalLogic_SequentialLogic/">
+      
+      
+        
+          <link rel="alternate" href="../../DigitalLogic_BehaviorModeling/" hreflang="zh">
+        
+          <link rel="alternate" href="./" hreflang="en">
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>Lab 4: Behavioral Modeling and Seven-Segment Display - Digital Logic Course</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#digital-logic-behavioral-modeling-and-seven-segment-display" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../" title="Digital Logic Course" class="md-header__button md-logo" aria-label="Digital Logic Course" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Digital Logic Course
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Lab 4: Behavioral Modeling and Seven-Segment Display
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-hidden="true"  type="radio" name="__palette" id="__palette_0">
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+      <div class="md-header__option">
+  <div class="md-select">
+    
+    <button class="md-header__button md-icon" aria-label="Select language">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m12.87 15.07-2.54-2.51.03-.03A17.5 17.5 0 0 0 14.07 6H17V4h-7V2H8v2H1v2h11.17C11.5 7.92 10.44 9.75 9 11.35 8.07 10.32 7.3 9.19 6.69 8h-2c.73 1.63 1.73 3.17 2.98 4.56l-5.09 5.02L4 19l5-5 3.11 3.11zM18.5 10h-2L12 22h2l1.12-3h4.75L21 22h2zm-2.62 7 1.62-4.33L19.12 17z"/></svg>
+    </button>
+    <div class="md-select__inner">
+      <ul class="md-select__list">
+        
+          <li class="md-select__item">
+            <a href="../../DigitalLogic_BehaviorModeling/" hreflang="zh" class="md-select__link">
+              中文
+            </a>
+          </li>
+        
+          <li class="md-select__item">
+            <a href="./" hreflang="en" class="md-select__link">
+              English
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</div>
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://cs207digitallogic.github.io" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub Repository
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../DigitalLogic_EnvironmentSetup/" class="md-tabs__link">
+          
+  
+  
+  Labs
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../projects/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Projects
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../links/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  OJ Platforms
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../resources/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Course Resources
+
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../" title="Digital Logic Course" class="md-nav__button md-logo" aria-label="Digital Logic Course" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Digital Logic Course
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://cs207digitallogic.github.io" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub Repository
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Labs
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Labs
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../DigitalLogic_EnvironmentSetup/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 1: Environment Setup
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../DigitalLogic_VerilogBasics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 2: Verilog Basics and Structural Modeling
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../DigitalLogic_Dataflow/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 3: Dataflow Modeling and FPGA Verification
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 4: Behavioral Modeling and Seven-Segment Display
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 4: Behavioral Modeling and Seven-Segment Display
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#lab-objectives" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Lab Objectives
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1-behavioral-modeling" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Behavioral Modeling
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. Behavioral Modeling">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#11-what-is-behavioral-modeling" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.1 What Is Behavioral Modeling?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#12-always-block-combinational-logic" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.2 always Block (Combinational Logic)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#13-comparison-between-assign-and-always" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.3 Comparison Between assign and always @(*)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-conditional-control-statements" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Conditional Control Statements
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. Conditional Control Statements">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#21-if-else-statement" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.1 if-else Statement
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#22-case-statement" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.2 case Statement
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-seven-segment-display-principle-based-on-ego1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Seven-Segment Display Principle (Based on EGO1)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Seven-Segment Display Principle (Based on EGO1)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#31-hardware-principle" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.1 Hardware Principle
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#32-pin-constraints" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.2 Pin Constraints
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3.2 Pin Constraints">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#321-segment-select-pins-for-the-two-groups" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.2.1 Segment-Select Pins for the Two Groups
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#322-eight-digit-select-signals" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.2.2 Eight Digit-Select Signals
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#33-segment-code-mapping-table-truth-table" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.3 Segment-Code Mapping Table (Truth Table)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-lab-exercise-bcd-to-seven-segment-decoder-design" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Lab Exercise: BCD-to-Seven-Segment Decoder Design
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. Lab Exercise: BCD-to-Seven-Segment Decoder Design">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#step-1-write-the-design" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 1: Write the Design
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-2-write-the-testbench" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 2: Write the Testbench
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-3-assign-pins-and-verify-on-the-board" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 3: Assign Pins and Verify on the Board
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#appendix-frequently-asked-questions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Appendix: Frequently Asked Questions
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../DigitalLogic_SequentialLogic/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 5: Sequential Logic—Counters and Clock Dividers
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../DigitalLogic_DynamicDisplay/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 6: Multiplexed Display—Chasing LEDs and Seven-Segment Displays
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../DigitalLogic_ButtonDebounce/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 7: Button Debouncing and Edge Detection
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../DigitalLogic_StateMachine/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 8: State Machines
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../DigitalLogic_ModuleIntegration/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 9: Module Integration
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../DigitalLogic_UART/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 10: UART
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../DigitalLogic_StopwatchCore/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 11 Demo: Stopwatch Core
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../DigitalLogic_StopwatchControl/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 12 Demo: Stopwatch Control
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../DigitalLogic_StopwatchIntegration/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 13 Demo: System Integration
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../DigitalLogic_Memory/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 14: Memory Design and IP Cores
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../projects/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Projects
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../links/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    OJ Platforms
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../resources/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Course Resources
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#lab-objectives" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Lab Objectives
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1-behavioral-modeling" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Behavioral Modeling
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. Behavioral Modeling">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#11-what-is-behavioral-modeling" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.1 What Is Behavioral Modeling?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#12-always-block-combinational-logic" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.2 always Block (Combinational Logic)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#13-comparison-between-assign-and-always" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.3 Comparison Between assign and always @(*)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-conditional-control-statements" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Conditional Control Statements
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. Conditional Control Statements">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#21-if-else-statement" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.1 if-else Statement
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#22-case-statement" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.2 case Statement
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-seven-segment-display-principle-based-on-ego1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Seven-Segment Display Principle (Based on EGO1)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Seven-Segment Display Principle (Based on EGO1)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#31-hardware-principle" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.1 Hardware Principle
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#32-pin-constraints" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.2 Pin Constraints
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3.2 Pin Constraints">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#321-segment-select-pins-for-the-two-groups" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.2.1 Segment-Select Pins for the Two Groups
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#322-eight-digit-select-signals" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.2.2 Eight Digit-Select Signals
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#33-segment-code-mapping-table-truth-table" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.3 Segment-Code Mapping Table (Truth Table)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-lab-exercise-bcd-to-seven-segment-decoder-design" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Lab Exercise: BCD-to-Seven-Segment Decoder Design
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. Lab Exercise: BCD-to-Seven-Segment Decoder Design">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#step-1-write-the-design" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 1: Write the Design
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-2-write-the-testbench" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 2: Write the Testbench
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-3-assign-pins-and-verify-on-the-board" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 3: Assign Pins and Verify on the Board
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#appendix-frequently-asked-questions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Appendix: Frequently Asked Questions
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<div><div class="toc">
+<ul>
+<li><a href="#digital-logic-behavioral-modeling-and-seven-segment-display">Digital Logic: Behavioral Modeling and Seven-Segment Display</a><ul>
+<li><a href="#lab-objectives">Lab Objectives</a></li>
+<li><a href="#1-behavioral-modeling">1. Behavioral Modeling</a><ul>
+<li><a href="#11-what-is-behavioral-modeling">1.1 What Is Behavioral Modeling?</a></li>
+<li><a href="#12-always-block-combinational-logic">1.2 always Block (Combinational Logic)</a></li>
+<li><a href="#13-comparison-between-assign-and-always">1.3 Comparison Between assign and always @(*)</a></li>
+</ul>
+</li>
+<li><a href="#2-conditional-control-statements">2. Conditional Control Statements</a><ul>
+<li><a href="#21-if-else-statement">2.1 if-else Statement</a></li>
+<li><a href="#22-case-statement">2.2 case Statement</a></li>
+</ul>
+</li>
+<li><a href="#3-seven-segment-display-principle-based-on-ego1">3. Seven-Segment Display Principle (Based on EGO1)</a><ul>
+<li><a href="#31-hardware-principle">3.1 Hardware Principle</a></li>
+<li><a href="#32-pin-constraints">3.2 Pin Constraints</a><ul>
+<li><a href="#321-segment-select-pins-for-the-two-groups">3.2.1 Segment-Select Pins for the Two Groups</a></li>
+<li><a href="#322-eight-digit-select-signals">3.2.2 Eight Digit-Select Signals</a></li>
+</ul>
+</li>
+<li><a href="#33-segment-code-mapping-table-truth-table">3.3 Segment-Code Mapping Table (Truth Table)</a></li>
+</ul>
+</li>
+<li><a href="#4-lab-exercise-bcd-to-seven-segment-decoder-design">4. Lab Exercise: BCD-to-Seven-Segment Decoder Design</a><ul>
+<li><a href="#step-1-write-the-design">Step 1: Write the Design</a></li>
+<li><a href="#step-2-write-the-testbench">Step 2: Write the Testbench</a></li>
+<li><a href="#step-3-assign-pins-and-verify-on-the-board">Step 3: Assign Pins and Verify on the Board</a></li>
+</ul>
+</li>
+<li><a href="#appendix-frequently-asked-questions">Appendix: Frequently Asked Questions</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<hr>
+<h1 id="digital-logic-behavioral-modeling-and-seven-segment-display">Digital Logic: Behavioral Modeling and Seven-Segment Display</h1>
+<h2 id="lab-objectives">Lab Objectives</h2>
+<ul>
+<li>Master Verilog behavioral modeling methods (<code>always</code> blocks for describing combinational logic)</li>
+<li>Master the use of <code>if-else</code> and <code>case</code> statements</li>
+<li>Understand the operating principle of seven-segment displays (based on the EGO1 development board)</li>
+<li>Complete the design and on-board verification of a BCD-to-seven-segment decoder</li>
+</ul>
+<hr>
+<h2 id="1-behavioral-modeling">1. Behavioral Modeling</h2>
+<h3 id="11-what-is-behavioral-modeling">1.1 What Is Behavioral Modeling?</h3>
+<p>Compared with structural modeling (connecting basic gates) and dataflow modeling (writing Boolean expressions), behavioral modeling is a higher-level approach. Its syntax is similar to high-level programming languages such as C. It implements functions by describing the <strong>behavior and algorithms</strong> of a circuit. However, Verilog describes hardware circuits rather than software programs, and synthesis tools automatically infer the underlying logic-gate circuits.</p>
+<h3 id="12-always-block-combinational-logic">1.2 <code>always</code> Block (Combinational Logic)</h3>
+<p>In Verilog, behavioral modeling is mainly implemented through <code>always</code> blocks. For <strong>combinational logic</strong>, we use <code>always @(*)</code>.</p>
+<ul>
+<li><strong>Syntax</strong>:</li>
+</ul>
+<p>Verilog</p>
+<div class="highlight"><pre><span></span><code>always @(*) begin
+    // Behavioral description statements (if-else, case, etc.)
+end
+</code></pre></div>
+<ul>
+<li>
+<p><strong>Key Features (Common Mistakes — Please Remember!)</strong>:</p>
+</li>
+<li>
+<p><code>@(*)</code> represents the sensitivity list. This means that whenever any signal read inside the <code>always</code> block changes, the combinational logic is recalculated and the <code>always</code> block is triggered once.</p>
+</li>
+<li>
+<p><strong>A variable assigned on the left-hand side must be declared as type <code>reg</code>!</strong> (This is a syntax requirement. Although in combinational logic it still synthesizes to a wire rather than an actual register.)</p>
+<div class="highlight"><pre><span></span><code><span class="k">module</span><span class="w"> </span><span class="n">test</span><span class="p">(</span>
+<span class="w">    </span><span class="k">input</span><span class="w"> </span><span class="n">x</span><span class="p">,</span>
+<span class="w">    </span><span class="k">output</span><span class="w"> </span><span class="kt">reg</span><span class="w"> </span><span class="n">y</span>
+<span class="p">);</span>
+
+<span class="k">always</span><span class="w"> </span><span class="p">@(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="k">begin</span>
+<span class="w">    </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">x</span><span class="p">;</span>
+<span class="k">end</span>
+
+<span class="k">endmodule</span>
+</code></pre></div>
+<p>​</p>
+</li>
+</ul>
+<h3 id="13-comparison-between-assign-and-always">1.3 Comparison Between <code>assign</code> and <code>always @(*)</code></h3>
+<table>
+<thead>
+<tr>
+<th><strong>Comparison Item</strong></th>
+<th><strong>Dataflow Modeling (assign)</strong></th>
+<th><strong>Behavioral Modeling (always @(*))</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Assignment Target Type</strong></td>
+<td>Must be <code>wire</code></td>
+<td>Must be <code>reg</code></td>
+</tr>
+<tr>
+<td><strong>Typical Use Cases</strong></td>
+<td>Simple logic expressions, connections</td>
+<td>Complex logic decisions, multiplexers, decoders</td>
+</tr>
+<tr>
+<td><strong>Supported Syntax</strong></td>
+<td>Ternary operator <code>? :</code></td>
+<td><code>if-else</code>, <code>case</code>, <code>for</code> loops</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="2-conditional-control-statements">2. Conditional Control Statements</h2>
+<h3 id="21-if-else-statement">2.1 <code>if-else</code> Statement</h3>
+<p>Similar to C, it is used for prioritized conditional decisions.</p>
+<p>Verilog</p>
+<div class="highlight"><pre><span></span><code>always @(*) begin
+    if (sel == 2'b00) begin
+        out = 1'b1;
+    end else if (sel == 2'b01) begin
+        out = 1'b0;
+    end else begin
+        out = 1'b1;
+    end
+end
+</code></pre></div>
+<blockquote>
+<p><strong>Note</strong>: In combinational logic using <code>if-else</code>, an <code>else</code> branch must be included. Otherwise, the synthesis tool will infer an additional latch, which may cause serious timing problems during actual on-board operation.</p>
+</blockquote>
+<h3 id="22-case-statement">2.2 <code>case</code> Statement</h3>
+<p>Used for multi-branch selection and commonly used in multiplexing circuits such as state machines and decoders. The branches do not have priority over one another and are evaluated in parallel.</p>
+<p>Verilog</p>
+<div class="highlight"><pre><span></span><code>always @(*) begin
+    case (sel)
+        2'b00: out = 1'b1;
+        2'b01: out = 1'b0;
+        2'b10: out = 1'b1;
+        2'b11: out = 1'b1;
+        default: out = 1'b0; // A default branch must be included to prevent a Latch!
+    endcase
+end
+</code></pre></div>
+<blockquote>
+<p><strong>Note</strong>: A <code>default</code> branch must be included in a <code>case</code> statement. Otherwise, the synthesis tool will infer an additional latch, which may cause serious timing problems during actual on-board operation.</p>
+</blockquote>
+<hr>
+<h2 id="3-seven-segment-display-principle-based-on-ego1">3. Seven-Segment Display Principle (Based on EGO1)</h2>
+<h3 id="31-hardware-principle">3.1 Hardware Principle</h3>
+<p>A seven-segment display is essentially a display device composed of seven bar-shaped light-emitting diodes (LEDs) and one dot-shaped light-emitting diode (decimal point, DP). By controlling which LEDs are on or off, digits 0-9 and English letters can be displayed.</p>
+<p>According to the EGO1 development board manual, the on-board seven-segment displays are common-cathode displays, meaning <strong>"HIGH level turns the segment on"</strong>:</p>
+<p><img alt="image-20260317205215987" src="../../images/image-20260317205215987.png"></p>
+<h3 id="32-pin-constraints">3.2 Pin Constraints</h3>
+<p>The 8 seven-segment displays on the EGO1 board are divided into <strong>left and right groups</strong>, with 4 displays in each group:</p>
+<ul>
+<li>Left-side segments <code>CA0~CG0</code> and <code>DP0</code></li>
+<li>The right-side group shares segment signals <code>CA1~CG1</code> and <code>DP1</code></li>
+<li>Each of the 8 seven-segment displays also has its own independent digit-select signal, corresponding to <code>BIT1~BIT8</code></li>
+</ul>
+<p><img alt="image-20260327135752216" src="../../images/image-20260327135752216.png"></p>
+<p>This means that <strong>the 4 seven-segment displays within the same group share the same set of segment-select signals</strong>. What actually determines "which seven-segment display is currently turned on" is the display's own <strong>digit-select signal</strong>.</p>
+<p>The pins related to the seven-segment displays on <code>EGo1</code> are organized by label in the following tables.</p>
+<h4 id="321-segment-select-pins-for-the-two-groups">3.2.1 Segment-Select Pins for the Two Groups</h4>
+<table>
+<thead>
+<tr>
+<th>Segment</th>
+<th>Left Group Segment Label</th>
+<th>FPGA Pin</th>
+<th>Right Group Segment Label</th>
+<th>FPGA Pin</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>a</td>
+<td><code>CA0</code></td>
+<td>B4</td>
+<td><code>CA1</code></td>
+<td>D4</td>
+</tr>
+<tr>
+<td>b</td>
+<td><code>CB0</code></td>
+<td>A4</td>
+<td><code>CB1</code></td>
+<td>E3</td>
+</tr>
+<tr>
+<td>c</td>
+<td><code>CC0</code></td>
+<td>A3</td>
+<td><code>CC1</code></td>
+<td>D3</td>
+</tr>
+<tr>
+<td>d</td>
+<td><code>CD0</code></td>
+<td>B1</td>
+<td><code>CD1</code></td>
+<td>F4</td>
+</tr>
+<tr>
+<td>e</td>
+<td><code>CE0</code></td>
+<td>A1</td>
+<td><code>CE1</code></td>
+<td>F3</td>
+</tr>
+<tr>
+<td>f</td>
+<td><code>CF0</code></td>
+<td>B3</td>
+<td><code>CF1</code></td>
+<td>E2</td>
+</tr>
+<tr>
+<td>g</td>
+<td><code>CG0</code></td>
+<td>B2</td>
+<td><code>CG1</code></td>
+<td>D2</td>
+</tr>
+<tr>
+<td>dp</td>
+<td><code>DP0</code></td>
+<td>D5</td>
+<td><code>DP1</code></td>
+<td>H2</td>
+</tr>
+</tbody>
+</table>
+<p>This table shows that the 4 seven-segment displays on the left share the same <code>CA0~CG0, DP0</code> segment signals, while the 4 displays on the right share the same <code>CA1~CG1, DP1</code> segment signals. Therefore, <strong>if multiple digit-select signals within the same group are enabled at the same time, those displays will show the same content</strong>.</p>
+<blockquote>
+<p><strong>Important</strong>: The segment-select order here must strictly match the signal definition and bit ordering in your circuit. In other words, if the segment code is defined as <code>{a, b, c, d, e, f, g, dp}</code>, the signals must be connected and assigned in the order <code>CA/CB/CC/CD/CE/CF/CG/DP</code>. The order of <code>a~dp</code> must not be mixed up, otherwise incorrect segments will light up.</p>
+</blockquote>
+<h4 id="322-eight-digit-select-signals">3.2.2 Eight Digit-Select Signals</h4>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Seven-Segment Display Label</th>
+<th>FPGA Pin</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>DN0_K1</code></td>
+<td><code>BIT1</code></td>
+<td>G2</td>
+</tr>
+<tr>
+<td><code>DN0_K2</code></td>
+<td><code>BIT2</code></td>
+<td>C2</td>
+</tr>
+<tr>
+<td><code>DN0_K3</code></td>
+<td><code>BIT3</code></td>
+<td>C1</td>
+</tr>
+<tr>
+<td><code>DN0_K4</code></td>
+<td><code>BIT4</code></td>
+<td>H1</td>
+</tr>
+<tr>
+<td><code>DN1_K1</code></td>
+<td><code>BIT5</code></td>
+<td>G1</td>
+</tr>
+<tr>
+<td><code>DN1_K2</code></td>
+<td><code>BIT6</code></td>
+<td>F1</td>
+</tr>
+<tr>
+<td><code>DN1_K3</code></td>
+<td><code>BIT7</code></td>
+<td>E1</td>
+</tr>
+<tr>
+<td><code>DN1_K4</code></td>
+<td><code>BIT8</code></td>
+<td>G6</td>
+</tr>
+</tbody>
+</table>
+<p>From this table, the left 4 seven-segment displays correspond to <code>BIT1~BIT4</code>, while the right group of 4 displays corresponds to <code>BIT5~BIT8</code>. In this lab, if you only want to turn on the first seven-segment display on the far left, you should enable <code>BIT1</code>.</p>
+<p>Therefore, to turn on a particular seven-segment display, two types of signals must be configured at the same time:</p>
+<ol>
+<li><strong>Segment-select signals (control what character is displayed)</strong>: A seven-segment display contains seven segments <code>a, b, c, d, e, f, g</code> and a decimal point <code>dp</code>. For a common-cathode display, an FPGA output of <strong>HIGH (1)</strong> turns on the corresponding segment.</li>
+<li><strong>Digit-select signals (control which digit is active)</strong>: Each of the 8 seven-segment displays has its own independent digit-select signal. Only when the digit-select signal of a particular display is set to <strong>1</strong> will that display show the character currently defined by the segment-select signals of its group.</li>
+</ol>
+<p>You can think of it as:</p>
+<ul>
+<li><strong>Segment select</strong> controls "what is displayed"</li>
+<li><strong>Digit select</strong> controls "where it is displayed"</li>
+</ul>
+<p>For example, to display the digit <code>5</code> on <strong>one digit in the right half</strong>, you need to:</p>
+<ol>
+<li>Output the segment code corresponding to digit <code>5</code> on the segment-select pins of the right-side group</li>
+<li>Set the digit-select signal corresponding to the target display to <code>1</code></li>
+</ol>
+<p>If only the segment-select signals are set but no digit-select signal is enabled, no seven-segment display will actually light up. If multiple digit-select signals in the same group are enabled at the same time, those displays will show <strong>the same character</strong>, because they share the same group of segment-select signals.</p>
+<blockquote>
+<p>Before testing on the board, check three things: <strong>whether the segment-code bit order is correct, whether the digit-select bit order is correct, and whether the digit-select and segment-select signals belong to the same group.</strong></p>
+<ol>
+<li><strong>The bit order of the segment-select signals must match the pin assignments.</strong>
+   If the code defines <code>seg_out = {a,b,c,d,e,f,g}</code>, then <code>seg_out[6]~seg_out[0]</code> must be assigned to the corresponding <code>CA~CG</code> pins. The left-to-right order, bit indices, and physical pins in the code must match one another exactly. Otherwise, incorrect segments may light up or the displayed digit may be wrong.</li>
+<li><strong>The bit order of the digit-select signals must match the pin assignments.</strong>
+   If the code defines <code>ans_out[7]</code> as the leftmost seven-segment display and <code>ans_out[0]</code> as the rightmost seven-segment display, then the pin constraints must also bind them in that order to <code>BIT1~BIT8</code>. Do not rely only on signal names. Make sure which physical display each bit in the code actually corresponds to.</li>
+<li><strong>The digit-select and segment-select signals must belong to the same group of seven-segment displays.</strong>
+   The 8 seven-segment displays on the EGO1 board are divided into left and right groups. The 4 digit-select signals on the left can only be used together with the segment-select signals of the left group, while the 4 digit-select signals on the right can only be used together with the segment-select signals of the right group. If a digit-select signal for a left-side display is enabled while segment-code outputs are provided only to the right-side group, that display will not work properly.</li>
+</ol>
+</blockquote>
+<h3 id="33-segment-code-mapping-table-truth-table">3.3 Segment-Code Mapping Table (Truth Table)</h3>
+<p>Assume that the 7 segments of the seven-segment display (temporarily ignoring the decimal point) are ordered from the most significant bit to the least significant bit as <code>{a, b, c, d, e, f, g, dp}</code>. To display the digit "0", segments a,b,c,d,e,f must be turned on, while g and dp must be turned off. Therefore, the segment code is <code>8'b1111_1100</code>.</p>
+<p>For example:</p>
+<table>
+<thead>
+<tr>
+<th><strong>Displayed Character</strong></th>
+<th>Corresponding Input</th>
+<th><strong>Binary Segment Code {a,b,c,d,e,f,g}</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>4‘b0000</td>
+<td>7'b1111110</td>
+</tr>
+<tr>
+<td>1</td>
+<td>4‘b0001</td>
+<td>7'b0110000</td>
+</tr>
+<tr>
+<td>2</td>
+<td>4‘b0010</td>
+<td>7'b1101101</td>
+</tr>
+<tr>
+<td>3</td>
+<td>4‘b0001</td>
+<td>7'b1111001</td>
+</tr>
+<tr>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="4-lab-exercise-bcd-to-seven-segment-decoder-design">4. Lab Exercise: BCD-to-Seven-Segment Decoder Design</h2>
+<ul>
+<li><strong>Module Name</strong>: <code>bcd_to_7seg</code></li>
+<li><strong>Input</strong>: <code>bcd_in</code> (4-bit BCD code, range 0-9)</li>
+<li><strong>Output 1</strong>: <code>seg_out</code> (7-bit segment-select output, connected to a~g)</li>
+<li><strong>Output 2</strong>: <code>ans_out</code> (8-bit digit-select output, connected to BIT1~BIT8, used to select the seven-segment display)</li>
+<li><strong>Function Description</strong>: Use behavioral modeling (<code>case</code> statement) to convert a 4-bit BCD code into the corresponding seven-segment display code. If the input is an invalid value (such as 10-15), all segments are turned off. Use the <strong>first seven-segment display on the far left</strong> of the EGO1 board for display.</li>
+</ul>
+<h3 id="step-1-write-the-design">Step 1: Write the Design</h3>
+<p>Use <code>always @(*)</code> and a <code>case</code> statement to implement the decoding logic.</p>
+<div class="highlight"><pre><span></span><code><span class="k">module</span><span class="w"> </span><span class="n">bcd_to_7seg</span><span class="p">(</span>
+<span class="w">    </span><span class="k">input</span><span class="w"> </span><span class="p">[</span><span class="mh">3</span><span class="o">:</span><span class="mh">0</span><span class="p">]</span><span class="w"> </span><span class="n">bcd_in</span><span class="p">,</span>
+<span class="w">    </span><span class="k">output</span><span class="w"> </span><span class="kt">reg</span><span class="w"> </span><span class="p">[</span><span class="mh">6</span><span class="o">:</span><span class="mh">0</span><span class="p">]</span><span class="w"> </span><span class="n">seg_out</span><span class="p">,</span><span class="w"> </span><span class="c1">// {abcdefg} segment a: MSB(seg_out[6]), segment g:LSB(seg_out[0])</span>
+<span class="w">    </span><span class="k">output</span><span class="w"> </span><span class="p">[</span><span class="mh">7</span><span class="o">:</span><span class="mh">0</span><span class="p">]</span><span class="w"> </span><span class="n">ans_out</span><span class="w"> </span><span class="c1">// ans_out[7] corresponds to the leftmost seven-segment display, ans_out[0] corresponds to the rightmost seven-segment display</span>
+<span class="p">);</span><span class="w">  </span>
+
+<span class="w">    </span><span class="k">assign</span><span class="w"> </span><span class="n">ans_out</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">8</span><span class="mb">'b1000</span><span class="n">_0000</span><span class="p">;</span><span class="w"> </span><span class="c1">// Turn on the leftmost seven-segment display</span>
+
+<span class="w">    </span><span class="k">always</span><span class="w"> </span><span class="p">@(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="k">begin</span>
+<span class="w">        </span><span class="k">case</span><span class="w"> </span><span class="p">(</span><span class="n">bcd_in</span><span class="p">)</span>
+<span class="w">            </span><span class="mh">4</span><span class="mi">'d0</span><span class="o">:</span><span class="w"> </span><span class="n">seg_out</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">7</span><span class="mb">'b1111110</span><span class="p">;</span>
+<span class="w">            </span><span class="mh">4</span><span class="mi">'d1</span><span class="o">:</span><span class="w"> </span><span class="n">seg_out</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">7</span><span class="mb">'b0110000</span><span class="p">;</span>
+<span class="w">            </span><span class="c1">// complete your code</span>
+<span class="w">            </span><span class="k">default</span><span class="o">:</span><span class="w"> </span><span class="p">....</span><span class="w"> </span>
+<span class="w">        </span><span class="k">endcase</span>
+<span class="w">    </span><span class="k">end</span>
+<span class="k">endmodule</span>
+</code></pre></div>
+<blockquote>
+<p>Hint: In addition to assigning values to the segment-select signals, remember to enable the digit-select signal of the first seven-segment display (set it to 1).</p>
+</blockquote>
+<h3 id="step-2-write-the-testbench">Step 2: Write the Testbench</h3>
+<p>Use the <code>for</code> loop learned previously to generate input stimuli from 0 to 9 and observe whether the waveform outputs the correct segment codes.</p>
+<h3 id="step-3-assign-pins-and-verify-on-the-board">Step 3: Assign Pins and Verify on the Board</h3>
+<ul>
+<li>
+<p>Bind <code>bcd_in</code> to 4 slide switches on the EGO1 development board.</p>
+</li>
+<li>
+<p>Bind the 7 bits of <code>seg_out</code> to the corresponding segment pins of the left-side seven-segment display group.</p>
+</li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="n">set_property</span><span class="w"> </span><span class="n">PACKAGE_PIN</span><span class="w"> </span><span class="n">B2</span><span class="w"> </span><span class="p">[</span><span class="n">get_ports</span><span class="w"> </span><span class="p">{</span><span class="n">seg_out</span><span class="p">[</span><span class="mh">0</span><span class="p">]}]</span>
+<span class="n">set_property</span><span class="w"> </span><span class="n">IOSTANDARD</span><span class="w"> </span><span class="n">LVCMOS33</span><span class="w"> </span><span class="p">[</span><span class="n">get_ports</span><span class="w"> </span><span class="p">{</span><span class="n">seg_out</span><span class="p">[</span><span class="mh">0</span><span class="p">]}]</span>
+<span class="p">...</span>
+</code></pre></div>
+<p>Bind the 8 bits of <code>ans_out</code> to the digit-select pins.</p>
+<ul>
+<li>Run synthesis, generate the Bitstream and download it to the board. Toggle the switches and observe how the displayed digit changes!</li>
+</ul>
+<blockquote>
+<p><strong>Question</strong>: If the design is required to display not only 0-9 but also hexadecimal A-F, what changes should be made to your code?</p>
+</blockquote>
+<h2 id="appendix-frequently-asked-questions">Appendix: Frequently Asked Questions</h2>
+<ul>
+<li><strong>Q</strong>: When using the leftmost seven-segment display, the code and pin assignments are correct, but why does the display not light up?
+  <strong>A</strong>: Check whether the segment-select signals are correctly bound to the pins of the left-side group, and whether the digit-select signal corresponding to the leftmost seven-segment display is correctly set to 1.</li>
+</ul></div>
+
+
+
+
+
+
+
+
+  <aside class="md-source-file">
+    
+    
+    
+      
+  
+  <span class="md-source-file__fact">
+    <span class="md-icon" title="Contributors">
+      
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 4a4 4 0 0 1 4 4 4 4 0 0 1-4 4 4 4 0 0 1-4-4 4 4 0 0 1 4-4m0 10c4.42 0 8 1.79 8 4v2H4v-2c0-2.21 3.58-4 8-4"/></svg>
+      
+    </span>
+    <nav>
+      baiyhsz
+    </nav>
+  </span>
+
+    
+    
+  </aside>
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright &copy; 2025 Southern University of Science and Technology
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["search.suggest", "search.highlight", "content.tabs.link", "navigation.tabs", "navigation.top", "content.code.copy"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>

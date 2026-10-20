@@ -1,0 +1,2254 @@
+
+<!doctype html>
+<html lang="zh" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="数字逻辑实验课程资料">
+      
+      
+      
+        <link rel="canonical" href="https://cs207digitallogic.github.io/site/DigitalLogic_ButtonDebounce/">
+      
+      
+        <link rel="prev" href="../DigitalLogic_DynamicDisplay/">
+      
+      
+        <link rel="next" href="../DigitalLogic_StateMachine/">
+      
+      
+        
+          <link rel="alternate" href="./" hreflang="zh">
+        
+          <link rel="alternate" href="../en/DigitalLogic_ButtonDebounce/" hreflang="en">
+        
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>Lab 7 按键消抖与边沿检测 - 数字逻辑课程</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#_1" class="md-skip">
+          跳转至
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="页眉">
+    <a href=".." title="数字逻辑课程" class="md-header__button md-logo" aria-label="数字逻辑课程" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            数字逻辑课程
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Lab 7 按键消抖与边沿检测
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-hidden="true"  type="radio" name="__palette" id="__palette_0">
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+      <div class="md-header__option">
+  <div class="md-select">
+    
+    <button class="md-header__button md-icon" aria-label="选择当前语言">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m12.87 15.07-2.54-2.51.03-.03A17.5 17.5 0 0 0 14.07 6H17V4h-7V2H8v2H1v2h11.17C11.5 7.92 10.44 9.75 9 11.35 8.07 10.32 7.3 9.19 6.69 8h-2c.73 1.63 1.73 3.17 2.98 4.56l-5.09 5.02L4 19l5-5 3.11 3.11zM18.5 10h-2L12 22h2l1.12-3h4.75L21 22h2zm-2.62 7 1.62-4.33L19.12 17z"/></svg>
+    </button>
+    <div class="md-select__inner">
+      <ul class="md-select__list">
+        
+          <li class="md-select__item">
+            <a href="./" hreflang="zh" class="md-select__link">
+              中文
+            </a>
+          </li>
+        
+          <li class="md-select__item">
+            <a href="../en/DigitalLogic_ButtonDebounce/" hreflang="en" class="md-select__link">
+              English
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</div>
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="搜索" placeholder="搜索" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="查找">
+        
+        <button type="reset" class="md-search__icon md-icon" title="清空当前内容" aria-label="清空当前内容" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            正在初始化搜索引擎
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://cs207digitallogic.github.io" title="前往仓库" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub Repository
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="标签" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href=".." class="md-tabs__link">
+        
+  
+  
+    
+  
+  首页
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../DigitalLogic_EnvironmentSetup/" class="md-tabs__link">
+          
+  
+  
+  实验
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../projects/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  课程项目
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../links/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  在线OJ
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../resources/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  课程资源
+
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="导航栏" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="数字逻辑课程" class="md-nav__button md-logo" aria-label="数字逻辑课程" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    数字逻辑课程
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://cs207digitallogic.github.io" title="前往仓库" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub Repository
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    首页
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    实验
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    实验
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../DigitalLogic_EnvironmentSetup/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 1 环境搭建
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../DigitalLogic_VerilogBasics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 2 Verilog 基础与结构化建模
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../DigitalLogic_Dataflow/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 3 数据流建模与 FPGA 验证
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../DigitalLogic_BehaviorModeling/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 4 行为建模与数码管显示
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../DigitalLogic_SequentialLogic/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 5 时序逻辑——计数器与分频器
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../DigitalLogic_DynamicDisplay/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 6 动态显示——跑马灯与数码管
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 7 按键消抖与边沿检测
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 7 按键消抖与边沿检测
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        实验目标
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. 按键抖动问题
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. 按键抖动问题">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#11" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.1 机械按键的物理特性
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#12" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.2 抖动的危害
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. 边沿检测：从电平到单脉冲
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. 边沿检测：从电平到单脉冲">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#21" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.1 为什么不能直接用电平做使能？
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#22-posedge" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.2 不能用 posedge 检测普通信号
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#23" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.3 边沿检测原理
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#24" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.4 边沿检测代码
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. 观察抖动：边沿检测直接接原始按键
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. 观察抖动：边沿检测直接接原始按键">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#31" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.1 实验
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#32" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.2 现象与分析
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. 消抖方法一：电平型消抖 + 边沿检测
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. 消抖方法一：电平型消抖 + 边沿检测">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#41" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.1 原理：采样等稳
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#42" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.2 延时参数计算
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#43" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.3 代码
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#44" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.4 时序分析
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#45" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.5 仿真技巧
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. 消抖方法二：脉冲型消抖
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5. 消抖方法二：脉冲型消抖">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#51" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.1 思路
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#52" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.2 代码
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#53" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.3 时序分析
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#54" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.4 思考题
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. 两种方法对比
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. 实验练习
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="7. 实验练习">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1led" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        练习 1（基础）：按一次，LED 翻转
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        练习 2（进阶，选做）：用方法二实现
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        练习 3（拓展，选做）
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        附录：常见问题
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../DigitalLogic_StateMachine/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 8 状态机
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../DigitalLogic_ModuleIntegration/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 9 模块集成
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../DigitalLogic_UART/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab10 串口
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../DigitalLogic_StopwatchCore/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 11 Demo——秒表核心
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../DigitalLogic_StopwatchControl/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 12 Demo——秒表控制
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../DigitalLogic_StopwatchIntegration/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 13 Demo——系统集成
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../DigitalLogic_Memory/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab 14 存储器设计与 IP 核
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../projects/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    课程项目
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../links/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    在线OJ
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../resources/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    课程资源
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        实验目标
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. 按键抖动问题
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. 按键抖动问题">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#11" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.1 机械按键的物理特性
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#12" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.2 抖动的危害
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. 边沿检测：从电平到单脉冲
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. 边沿检测：从电平到单脉冲">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#21" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.1 为什么不能直接用电平做使能？
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#22-posedge" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.2 不能用 posedge 检测普通信号
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#23" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.3 边沿检测原理
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#24" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.4 边沿检测代码
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. 观察抖动：边沿检测直接接原始按键
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. 观察抖动：边沿检测直接接原始按键">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#31" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.1 实验
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#32" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.2 现象与分析
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. 消抖方法一：电平型消抖 + 边沿检测
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. 消抖方法一：电平型消抖 + 边沿检测">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#41" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.1 原理：采样等稳
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#42" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.2 延时参数计算
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#43" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.3 代码
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#44" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.4 时序分析
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#45" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.5 仿真技巧
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. 消抖方法二：脉冲型消抖
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5. 消抖方法二：脉冲型消抖">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#51" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.1 思路
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#52" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.2 代码
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#53" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.3 时序分析
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#54" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.4 思考题
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. 两种方法对比
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. 实验练习
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="7. 实验练习">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1led" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        练习 1（基础）：按一次，LED 翻转
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        练习 2（进阶，选做）：用方法二实现
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        练习 3（拓展，选做）
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        附录：常见问题
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<div><div class="toc">
+<ul>
+<li><a href="#_1">数字逻辑：按键消抖与边沿检测</a><ul>
+<li><a href="#_2">实验目标</a></li>
+<li><a href="#1">1. 按键抖动问题</a><ul>
+<li><a href="#11">1.1 机械按键的物理特性</a></li>
+<li><a href="#12">1.2 抖动的危害</a></li>
+</ul>
+</li>
+<li><a href="#2">2. 边沿检测：从电平到单脉冲</a><ul>
+<li><a href="#21">2.1 为什么不能直接用电平做使能？</a></li>
+<li><a href="#22-posedge">2.2 不能用 posedge 检测普通信号</a></li>
+<li><a href="#23">2.3 边沿检测原理</a></li>
+<li><a href="#24">2.4 边沿检测代码</a></li>
+</ul>
+</li>
+<li><a href="#3">3. 观察抖动：边沿检测直接接原始按键</a><ul>
+<li><a href="#31">3.1 实验</a></li>
+<li><a href="#32">3.2 现象与分析</a></li>
+</ul>
+</li>
+<li><a href="#4">4. 消抖方法一：电平型消抖 + 边沿检测</a><ul>
+<li><a href="#41">4.1 原理：采样等稳</a></li>
+<li><a href="#42">4.2 延时参数计算</a></li>
+<li><a href="#43">4.3 代码</a></li>
+<li><a href="#44">4.4 时序分析</a></li>
+<li><a href="#45">4.5 仿真技巧</a></li>
+</ul>
+</li>
+<li><a href="#5">5. 消抖方法二：脉冲型消抖</a><ul>
+<li><a href="#51">5.1 思路</a></li>
+<li><a href="#52">5.2 代码</a></li>
+<li><a href="#53">5.3 时序分析</a></li>
+<li><a href="#54">5.4 思考题</a></li>
+</ul>
+</li>
+<li><a href="#6">6. 两种方法对比</a></li>
+<li><a href="#7">7. 实验练习</a><ul>
+<li><a href="#1led">练习 1（基础）：按一次，LED 翻转</a></li>
+<li><a href="#2_1">练习 2（进阶，选做）：用方法二实现</a></li>
+<li><a href="#3_1">练习 3（拓展，选做）</a></li>
+</ul>
+</li>
+<li><a href="#_3">附录：常见问题</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<hr>
+<h1 id="_1">数字逻辑：按键消抖与边沿检测</h1>
+<h2 id="_2">实验目标</h2>
+<ul>
+<li>理解机械按键的抖动现象及其对数字电路的影响</li>
+<li>掌握边沿检测原理（从电平信号提取单周期脉冲）</li>
+<li>掌握两种基于计数器的按键消抖方法：<strong>电平型消抖</strong>与<strong>脉冲型消抖</strong></li>
+<li>理解两种方法的区别与适用场景</li>
+<li>实现"按一次按键，只响应一次"的正确行为</li>
+</ul>
+<blockquote>
+<p><strong>说明</strong>：EGO1 开发板右侧的 5 个通用按键<strong>默认低电平，按下为高电平</strong>（高电平有效）。本文所有代码和波形图都按高电平有效绘制。本实验中的每个设计都在<strong>一个模块</strong>内完成。</p>
+</blockquote>
+<hr>
+<h2 id="1">1. 按键抖动问题</h2>
+<h3 id="11">1.1 机械按键的物理特性</h3>
+<p>开发板上的按键是机械开关。按下或释放按键时，金属触点之间会发生多次<strong>弹跳</strong>，导致信号在 0 和 1 之间快速跳变，持续约 <strong>5~20ms</strong>。</p>
+<p><img alt="按键抖动示意" src="../images/fig1_bounce.png"></p>
+<h3 id="12">1.2 抖动的危害</h3>
+<p>如果直接使用未消抖的按键信号驱动计数器：</p>
+<ul>
+<li>你期望"按一次加 1"</li>
+<li>实际结果可能"按一次加了 3~10 次"</li>
+<li>因为每次弹跳都会产生一个上升沿，触发计数</li>
+</ul>
+<p>本实验将分两步解决"按一次只响应一次"的问题：</p>
+<ol>
+<li><strong>边沿检测</strong>：解决"按住按键时一直响应"的问题（第 2 节）</li>
+<li><strong>按键消抖</strong>：解决"按一次响应好几次"的问题（第 4、5 节）</li>
+</ol>
+<hr>
+<h2 id="2">2. 边沿检测：从电平到单脉冲</h2>
+<h3 id="21">2.1 为什么不能直接用电平做使能？</h3>
+<p>假设按键信号已经是干净的电平（不考虑抖动），我们想实现"按一次计数器加 1"。最直观的写法是：</p>
+<div class="highlight"><pre><span></span><code><span class="k">always</span><span class="w"> </span><span class="p">@(</span><span class="k">posedge</span><span class="w"> </span><span class="n">clk</span><span class="p">)</span><span class="w"> </span><span class="k">begin</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">btn_level</span><span class="p">)</span>
+<span class="w">        </span><span class="n">cnt</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">cnt</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mh">1</span><span class="mb">'b1</span><span class="p">;</span>
+<span class="k">end</span>
+</code></pre></div>
+<p>问题在于：<code>btn_level</code> 是一个<strong>电平信号</strong>。按一次按键大约持续 100ms~1s，在 100MHz 时钟下就是<strong>几千万个时钟周期</strong>。按住期间每个时钟沿计数器都会加 1，结果是按一次加了几千万。</p>
+<p><img alt="电平做使能的问题" src="../images/fig2_level_enable.png"></p>
+<p>我们需要的是：<strong>只在按下的那一个时钟周期产生高电平</strong>，这就是边沿检测要做的事。</p>
+<h3 id="22-posedge">2.2 不能用 posedge 检测普通信号</h3>
+<p>初学者常见的一个错误，是直接把普通信号写进 always 块的边沿触发列表里：</p>
+<p><strong>错误写法：</strong></p>
+<div class="highlight"><pre><span></span><code><span class="k">always</span><span class="w"> </span><span class="p">@(</span><span class="k">posedge</span><span class="w"> </span><span class="n">btn_level</span><span class="p">)</span><span class="w"> </span><span class="k">begin</span>
+<span class="w">    </span><span class="n">cnt</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">cnt</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mh">1</span><span class="mb">'b1</span><span class="p">;</span>
+<span class="k">end</span>
+<span class="c1">// 这里的 btn_level 只是普通信号，并不是时钟或复位</span>
+</code></pre></div>
+<p>不能这么写的原因是：芯片内部有专门的全局时钟布线网络，用来保证时钟信号延迟低、到达各触发器的时间一致。如果对普通信号使用 <code>posedge</code> 或 <code>negedge</code>，综合工具会把这个普通信号当作时钟处理。普通连线达不到时钟网络的要求，容易引入毛刺和时序错误，甚至导致工程无法综合下板。</p>
+<p><strong>正确写法：</strong></p>
+<div class="highlight"><pre><span></span><code><span class="k">always</span><span class="w"> </span><span class="p">@(</span><span class="k">posedge</span><span class="w"> </span><span class="n">clk</span><span class="p">)</span><span class="w"> </span><span class="k">begin</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">pos_edge</span><span class="p">)</span>
+<span class="w">        </span><span class="n">cnt</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">cnt</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mh">1</span><span class="mb">'b1</span><span class="p">;</span>
+<span class="k">end</span>
+</code></pre></div>
+<p>这里的 <code>pos_edge</code> 是一个与时钟 <code>clk</code> 同步的信号。当输入信号出现上升沿时，<code>pos_edge</code> 变成 1，并且只持续一个时钟周期。这样既能检测到跳变，电路又始终工作在同一个时钟下。</p>
+<h3 id="23">2.3 边沿检测原理</h3>
+<p>使用一个寄存器保存<strong>上一个时钟周期</strong>的信号值，通过比较当前值和上一个周期的值来判断边沿：</p>
+<div class="highlight"><pre><span></span><code>当前值 sig_in ： 0 0 0 1 1 1 1 0 0
+上一拍 sig_d  ： 0 0 0 0 1 1 1 1 0
+上升沿 pos_edge： 0 0 0 1 0 0 0 0 0   （当前=1 且 上一拍=0）
+下降沿 neg_edge： 0 0 0 0 0 0 0 1 0   （当前=0 且 上一拍=1）
+</code></pre></div>
+<p>对应的时序波形如下：</p>
+<p><img alt="边沿检测时序" src="../images/fig3_edge_principle.png"></p>
+<ul>
+<li><code>sig_d</code> 比 <code>sig_in</code> 晚一个时钟周期</li>
+<li>在 <code>sig_in</code> 已经变高而 <code>sig_d</code> 还没变高的这一个周期里，<code>pos_edge = 1</code></li>
+<li>同理，在 <code>sig_in</code> 已经变低而 <code>sig_d</code> 还没变低的这一个周期里，<code>neg_edge = 1</code></li>
+</ul>
+<h3 id="24">2.4 边沿检测代码</h3>
+<div class="highlight"><pre><span></span><code><span class="k">module</span><span class="w"> </span><span class="n">edge_detect</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="k">input</span><span class="w">      </span><span class="n">clk</span><span class="p">,</span>
+<span class="w">    </span><span class="k">input</span><span class="w">      </span><span class="n">rst_n</span><span class="p">,</span>
+<span class="w">    </span><span class="k">input</span><span class="w">      </span><span class="n">sig_in</span><span class="p">,</span><span class="w">       </span><span class="c1">// 输入信号</span>
+<span class="w">    </span><span class="k">output</span><span class="w">     </span><span class="n">pos_edge</span><span class="p">,</span><span class="w">     </span><span class="c1">// 上升沿脉冲（单周期）</span>
+<span class="w">    </span><span class="k">output</span><span class="w">     </span><span class="n">neg_edge</span><span class="w">      </span><span class="c1">// 下降沿脉冲（单周期）</span>
+<span class="p">);</span>
+<span class="w">    </span><span class="kt">reg</span><span class="w"> </span><span class="n">sig_d</span><span class="p">;</span><span class="w">  </span><span class="c1">// 延迟一拍的信号</span>
+
+<span class="w">    </span><span class="k">always</span><span class="w"> </span><span class="p">@(</span><span class="k">posedge</span><span class="w"> </span><span class="n">clk</span><span class="w"> </span><span class="k">or</span><span class="w"> </span><span class="k">negedge</span><span class="w"> </span><span class="n">rst_n</span><span class="p">)</span><span class="w"> </span><span class="k">begin</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">rst_n</span><span class="p">)</span>
+<span class="w">            </span><span class="n">sig_d</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mh">1</span><span class="mb">'b0</span><span class="p">;</span>
+<span class="w">        </span><span class="k">else</span>
+<span class="w">            </span><span class="n">sig_d</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">sig_in</span><span class="p">;</span>
+<span class="w">    </span><span class="k">end</span>
+
+<span class="w">    </span><span class="k">assign</span><span class="w"> </span><span class="n">pos_edge</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sig_in</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="o">~</span><span class="n">sig_d</span><span class="p">;</span><span class="w">  </span><span class="c1">// 当前高，上一拍低 → 上升沿</span>
+<span class="w">    </span><span class="k">assign</span><span class="w"> </span><span class="n">neg_edge</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">~</span><span class="n">sig_in</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">sig_d</span><span class="p">;</span><span class="w">  </span><span class="c1">// 当前低，上一拍高 → 下降沿</span>
+<span class="k">endmodule</span>
+</code></pre></div>
+<p>边沿检测的核心只有三行：一个寄存一拍的 always 块，加两条 assign。后面各节会把这三行直接写进需要它的模块里。</p>
+<hr>
+<h2 id="3">3. 观察抖动：边沿检测直接接原始按键</h2>
+<h3 id="31">3.1 实验</h3>
+<p>先不做消抖，在一个模块里完成"边沿检测 + 计数器"，计数值用 8 个 LED 以二进制显示：</p>
+<div class="highlight"><pre><span></span><code><span class="k">module</span><span class="w"> </span><span class="n">btn_raw_cnt</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="k">input</span><span class="w">            </span><span class="n">clk</span><span class="p">,</span>
+<span class="w">    </span><span class="k">input</span><span class="w">            </span><span class="n">rst_n</span><span class="p">,</span>
+<span class="w">    </span><span class="k">input</span><span class="w">            </span><span class="n">btn_in</span><span class="p">,</span><span class="w">     </span><span class="c1">// 原始按键，按下为高</span>
+<span class="w">    </span><span class="k">output</span><span class="w"> </span><span class="kt">reg</span><span class="w"> </span><span class="p">[</span><span class="mh">7</span><span class="o">:</span><span class="mh">0</span><span class="p">]</span><span class="w"> </span><span class="n">led</span><span class="w">         </span><span class="c1">// 计数值，二进制显示</span>
+<span class="p">);</span>
+<span class="w">    </span><span class="c1">// 边沿检测</span>
+<span class="w">    </span><span class="kt">reg</span><span class="w">  </span><span class="n">btn_d</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">wire</span><span class="w"> </span><span class="n">btn_pos</span><span class="p">;</span>
+
+<span class="w">    </span><span class="k">always</span><span class="w"> </span><span class="p">@(</span><span class="k">posedge</span><span class="w"> </span><span class="n">clk</span><span class="w"> </span><span class="k">or</span><span class="w"> </span><span class="k">negedge</span><span class="w"> </span><span class="n">rst_n</span><span class="p">)</span><span class="w"> </span><span class="k">begin</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">rst_n</span><span class="p">)</span>
+<span class="w">            </span><span class="n">btn_d</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mh">1</span><span class="mb">'b0</span><span class="p">;</span>
+<span class="w">        </span><span class="k">else</span>
+<span class="w">            </span><span class="n">btn_d</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">btn_in</span><span class="p">;</span>
+<span class="w">    </span><span class="k">end</span>
+
+<span class="w">    </span><span class="k">assign</span><span class="w"> </span><span class="n">btn_pos</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">btn_in</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="o">~</span><span class="n">btn_d</span><span class="p">;</span>
+
+<span class="w">    </span><span class="c1">// 计数器：每检测到一个上升沿加 1</span>
+<span class="w">    </span><span class="k">always</span><span class="w"> </span><span class="p">@(</span><span class="k">posedge</span><span class="w"> </span><span class="n">clk</span><span class="w"> </span><span class="k">or</span><span class="w"> </span><span class="k">negedge</span><span class="w"> </span><span class="n">rst_n</span><span class="p">)</span><span class="w"> </span><span class="k">begin</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">rst_n</span><span class="p">)</span>
+<span class="w">            </span><span class="n">led</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mh">8</span><span class="mi">'d0</span><span class="p">;</span>
+<span class="w">        </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">btn_pos</span><span class="p">)</span>
+<span class="w">            </span><span class="n">led</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">led</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mh">1</span><span class="mb">'b1</span><span class="p">;</span>
+<span class="w">    </span><span class="k">end</span>
+<span class="k">endmodule</span>
+</code></pre></div>
+<p>上板后按一次按键，观察 LED 显示的计数值。</p>
+<h3 id="32">3.2 现象与分析</h3>
+<p>按一次按键，计数值经常增加好几个。原因如下图：抖动期间每次从 0 变到 1 都是一个上升沿，边沿检测会把每一个上升沿都检测出来。</p>
+<p><img alt="原始按键直接边沿检测" src="../images/fig5_raw_edge.png"></p>
+<blockquote>
+<p><strong>提示</strong>：这一步用计数器观察，而不用 LED 翻转。如果抖动产生了偶数个上升沿，LED 翻转偶数次后状态不变，容易误以为代码有错。</p>
+</blockquote>
+<p>结论：<strong>边沿检测只能把电平变成脉冲，无法区分真正的按下和抖动</strong>。必须先消抖。</p>
+<hr>
+<h2 id="4">4. 消抖方法一：电平型消抖 + 边沿检测</h2>
+<h3 id="41">4.1 原理：采样等稳</h3>
+<p>输入发生变化后，输出不立即改变，而是等输入保持新值达到 20ms 后才更新。具体步骤：</p>
+<ol>
+<li>每个时钟周期比较按键输入 <code>btn_in</code> 和当前输出 <code>btn_level</code></li>
+<li>两者相同：说明没有变化，计数器清零</li>
+<li>两者不同：说明按键可能变了，计数器开始累加</li>
+<li>计数过程中如果按键又变回原值（两者又相同），说明还在抖动，计数器清零重新开始</li>
+<li>计数器计满 20ms：说明新电平已经稳定，更新 <code>btn_level</code></li>
+</ol>
+<p>这种方法对<strong>按下和释放都会消抖</strong>，输出是一个干净的、比原始信号延迟约 20ms 的方波。由于输出是电平，还需要再做一次边沿检测，才能得到按下或释放时的单周期脉冲 <code>btn_pos</code>、<code>btn_neg</code>。</p>
+<p><img alt="电平型消抖示意" src="../images/fig6_level_overview.png"></p>
+<h3 id="42">4.2 延时参数计算</h3>
+<ul>
+<li>消抖时间目标：约 <strong>20ms</strong></li>
+<li>系统时钟：100MHz → 1 个周期 = 10ns</li>
+<li>20ms = 20,000,000 ns</li>
+<li>需要计数次数 = 20,000,000 / 10 = <strong>2,000,000</strong></li>
+</ul>
+<p>所以 <code>CNT_MAX = 2_000_000</code>。</p>
+<p>计数器位宽：计数范围是 0 ~ 1,999,999，而 2²¹ = 2,097,152 &gt; 2,000,000，所以位宽取 <strong>21 位</strong>，即 <code>reg [20:0] cnt</code>。</p>
+<h3 id="43">4.3 代码</h3>
+<p>消抖和边沿检测写在同一个模块里：</p>
+<div class="highlight"><pre><span></span><code><span class="k">module</span><span class="w"> </span><span class="n">btn_debounce</span><span class="w"> </span><span class="p">#(</span>
+<span class="w">    </span><span class="k">parameter</span><span class="w"> </span><span class="n">CNT_MAX</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">21</span><span class="mi">'d2</span><span class="n">_000_000</span><span class="w">      </span><span class="c1">// 20ms @ 100MHz</span>
+<span class="p">)(</span>
+<span class="w">    </span><span class="k">input</span><span class="w">      </span><span class="n">clk</span><span class="p">,</span>
+<span class="w">    </span><span class="k">input</span><span class="w">      </span><span class="n">rst_n</span><span class="p">,</span>
+<span class="w">    </span><span class="k">input</span><span class="w">      </span><span class="n">btn_in</span><span class="p">,</span><span class="w">                     </span><span class="c1">// 按键输入，按下为高</span>
+<span class="w">    </span><span class="k">output</span><span class="w"> </span><span class="kt">reg</span><span class="w"> </span><span class="n">btn_level</span><span class="p">,</span><span class="w">                  </span><span class="c1">// 消抖后的干净电平</span>
+<span class="w">    </span><span class="k">output</span><span class="w">     </span><span class="n">btn_pos</span><span class="p">,</span><span class="w">                    </span><span class="c1">// 按下时的单周期脉冲</span>
+<span class="w">    </span><span class="k">output</span><span class="w">     </span><span class="n">btn_neg</span><span class="w">                     </span><span class="c1">// 释放时的单周期脉冲</span>
+<span class="p">);</span>
+<span class="w">    </span><span class="c1">// ---------------- 第一部分：电平型消抖 ----------------</span>
+<span class="w">    </span><span class="c1">// 输入与当前输出不同，并持续 20ms，才更新输出</span>
+<span class="w">    </span><span class="kt">reg</span><span class="w"> </span><span class="p">[</span><span class="mh">20</span><span class="o">:</span><span class="mh">0</span><span class="p">]</span><span class="w"> </span><span class="n">cnt</span><span class="p">;</span><span class="w">                        </span><span class="c1">// 2^21 = 2,097,152 &gt; 2,000,000</span>
+<span class="w">    </span><span class="k">always</span><span class="w"> </span><span class="p">@(</span><span class="k">posedge</span><span class="w"> </span><span class="n">clk</span><span class="w"> </span><span class="k">or</span><span class="w"> </span><span class="k">negedge</span><span class="w"> </span><span class="n">rst_n</span><span class="p">)</span><span class="w"> </span><span class="k">begin</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">rst_n</span><span class="p">)</span><span class="w"> </span><span class="k">begin</span>
+<span class="w">            </span><span class="n">cnt</span><span class="w">       </span><span class="o">&lt;=</span><span class="w"> </span><span class="mh">21</span><span class="mi">'d0</span><span class="p">;</span>
+<span class="w">            </span><span class="n">btn_level</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mh">1</span><span class="mb">'b0</span><span class="p">;</span>
+<span class="w">        </span><span class="k">end</span>
+<span class="w">        </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">btn_in</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">btn_level</span><span class="p">)</span><span class="w">      </span><span class="c1">// 没有变化（或抖动变回原值）：清零</span>
+<span class="w">            </span><span class="n">cnt</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mh">21</span><span class="mi">'d0</span><span class="p">;</span>
+<span class="w">        </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">cnt</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">CNT_MAX</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mh">1</span><span class="p">)</span><span class="w"> </span><span class="k">begin</span><span class="w"> </span><span class="c1">// 新电平稳定满 20ms：更新输出</span>
+<span class="w">            </span><span class="n">btn_level</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">btn_in</span><span class="p">;</span>
+<span class="w">            </span><span class="n">cnt</span><span class="w">       </span><span class="o">&lt;=</span><span class="w"> </span><span class="mh">21</span><span class="mi">'d0</span><span class="p">;</span>
+<span class="w">        </span><span class="k">end</span>
+<span class="w">        </span><span class="k">else</span><span class="w">                               </span><span class="c1">// 有变化但还没稳定够 20ms：继续计数</span>
+<span class="w">            </span><span class="n">cnt</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">cnt</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mh">1</span><span class="mb">'b1</span><span class="p">;</span>
+<span class="w">    </span><span class="k">end</span>
+
+<span class="w">    </span><span class="c1">// ---------------- 第二部分：边沿检测 ----------------</span>
+<span class="w">    </span><span class="kt">reg</span><span class="w"> </span><span class="n">btn_level_d</span><span class="p">;</span><span class="w">                       </span><span class="c1">// btn_level 延迟一拍</span>
+<span class="w">    </span><span class="k">always</span><span class="w"> </span><span class="p">@(</span><span class="k">posedge</span><span class="w"> </span><span class="n">clk</span><span class="w"> </span><span class="k">or</span><span class="w"> </span><span class="k">negedge</span><span class="w"> </span><span class="n">rst_n</span><span class="p">)</span><span class="w"> </span><span class="k">begin</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">rst_n</span><span class="p">)</span>
+<span class="w">            </span><span class="n">btn_level_d</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mh">1</span><span class="mb">'b0</span><span class="p">;</span>
+<span class="w">        </span><span class="k">else</span>
+<span class="w">            </span><span class="n">btn_level_d</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">btn_level</span><span class="p">;</span>
+<span class="w">    </span><span class="k">end</span>
+
+<span class="w">    </span><span class="k">assign</span><span class="w"> </span><span class="n">btn_pos</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">btn_level</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="o">~</span><span class="n">btn_level_d</span><span class="p">;</span><span class="w">   </span><span class="c1">// 上升沿：按下</span>
+<span class="w">    </span><span class="k">assign</span><span class="w"> </span><span class="n">btn_neg</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">~</span><span class="n">btn_level</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">btn_level_d</span><span class="p">;</span><span class="w">   </span><span class="c1">// 下降沿：释放</span>
+<span class="k">endmodule</span>
+</code></pre></div>
+<p>信号处理流程：</p>
+<div class="highlight"><pre><span></span><code>btn_in(有抖动) → [消抖] → btn_level(干净电平) → [边沿检测] → btn_pos / btn_neg(单脉冲)
+</code></pre></div>
+<h3 id="44">4.4 时序分析</h3>
+<p><img alt="电平型消抖时序" src="../images/fig7_level_timing.png"></p>
+<p><strong>工作流程</strong>：</p>
+<ol>
+<li>按键按下 → <code>btn_in</code> 开始抖动</li>
+<li><code>btn_in</code> 与 <code>btn_level</code> 不同时 <code>cnt</code> 累加；抖动变回原值时两者相同，<code>cnt</code> 清零</li>
+<li>抖动结束后 <code>btn_in</code> 稳定为 1，<code>cnt</code> 持续累加到 <code>N-1</code></li>
+<li>下一个时钟沿 <code>btn_level</code> 变为 1，<code>cnt</code> 清零；此时边沿检测输出一个周期的 <code>btn_pos</code></li>
+<li>释放时过程与按下对称，最终 <code>btn_level</code> 变回 0，边沿检测输出一个周期的 <code>btn_neg</code></li>
+</ol>
+<p>图中 N = CNT_MAX = 2,000,000；"3 ~ N-2" 表示中间省略了约两百万个时钟周期。</p>
+<h3 id="45">4.5 仿真技巧</h3>
+<p>如果直接用 <code>CNT_MAX = 2_000_000</code> 仿真，一次按键就要仿真几百万个时钟周期，速度非常慢。仿真时可以临时把参数的默认值改小：</p>
+<div class="highlight"><pre><span></span><code><span class="k">parameter</span><span class="w"> </span><span class="n">CNT_MAX</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">21</span><span class="mi">'d10</span><span class="w">             </span><span class="c1">// 仿真用：只需稳定 10 个时钟周期</span>
+</code></pre></div>
+<p>相应地，testbench 中模拟的抖动脉冲宽度也要小于 10 个时钟周期。<strong>上板前记得改回 <code>21'd2_000_000</code>。</strong></p>
+<hr>
+<h2 id="5">5. 消抖方法二：脉冲型消抖</h2>
+<h3 id="51">5.1 思路</h3>
+<p>很多场合只需要知道"按键被按下了一次"。这时可以直接在消抖的计数过程中产生脉冲，不需要单独的边沿检测：</p>
+<ol>
+<li>按键为高（按下）时计数器累加，为低时清零</li>
+<li>抖动期间按键会多次变回低电平，计数器多次清零</li>
+<li>按键稳定为高并持续 20ms，计数器计到 <code>N-1</code></li>
+<li>在计数器<strong>第一次到达</strong> <code>N-1</code> 时输出一个时钟周期的脉冲</li>
+<li>之后计数器保持在 <code>N-1</code> 不变，所以按住期间不会再产生脉冲</li>
+<li>松开后计数器清零，等待下一次按下</li>
+</ol>
+<p><img alt="脉冲型消抖示意" src="../images/fig8_pulse_overview.png"></p>
+<p>注意：这种方法<strong>只在按下时输出脉冲</strong>，释放时没有输出。</p>
+<h3 id="52">5.2 代码</h3>
+<div class="highlight"><pre><span></span><code><span class="k">module</span><span class="w"> </span><span class="n">btn_debounce_pulse</span><span class="w"> </span><span class="p">#(</span>
+<span class="w">    </span><span class="k">parameter</span><span class="w"> </span><span class="n">CNT_MAX</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">21</span><span class="mi">'d2</span><span class="n">_000_000</span><span class="w">      </span><span class="c1">// 20ms @ 100MHz</span>
+<span class="p">)(</span>
+<span class="w">    </span><span class="k">input</span><span class="w">      </span><span class="n">clk</span><span class="p">,</span>
+<span class="w">    </span><span class="k">input</span><span class="w">      </span><span class="n">rst_n</span><span class="p">,</span>
+<span class="w">    </span><span class="k">input</span><span class="w">      </span><span class="n">btn_in</span><span class="p">,</span><span class="w">                     </span><span class="c1">// 按键输入，按下为高</span>
+<span class="w">    </span><span class="k">output</span><span class="w"> </span><span class="kt">reg</span><span class="w"> </span><span class="n">btn_pulse</span><span class="w">                   </span><span class="c1">// 每次按下输出 1 个时钟周期的脉冲</span>
+<span class="p">);</span>
+<span class="w">    </span><span class="c1">// 按住时计数，计到 N-1 后保持；松开或抖动回低则清零</span>
+<span class="w">    </span><span class="kt">reg</span><span class="w"> </span><span class="p">[</span><span class="mh">20</span><span class="o">:</span><span class="mh">0</span><span class="p">]</span><span class="w"> </span><span class="n">cnt</span><span class="p">;</span>
+<span class="w">    </span><span class="k">always</span><span class="w"> </span><span class="p">@(</span><span class="k">posedge</span><span class="w"> </span><span class="n">clk</span><span class="w"> </span><span class="k">or</span><span class="w"> </span><span class="k">negedge</span><span class="w"> </span><span class="n">rst_n</span><span class="p">)</span><span class="w"> </span><span class="k">begin</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">rst_n</span><span class="p">)</span>
+<span class="w">            </span><span class="n">cnt</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mh">21</span><span class="mi">'d0</span><span class="p">;</span>
+<span class="w">        </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">btn_in</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mh">1</span><span class="mb">'b0</span><span class="p">)</span>
+<span class="w">            </span><span class="n">cnt</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mh">21</span><span class="mi">'d0</span><span class="p">;</span>
+<span class="w">        </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">cnt</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">CNT_MAX</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mh">1</span><span class="p">)</span>
+<span class="w">            </span><span class="n">cnt</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">cnt</span><span class="p">;</span><span class="w">                    </span><span class="c1">// 保持不变，防止重复触发</span>
+<span class="w">        </span><span class="k">else</span>
+<span class="w">            </span><span class="n">cnt</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">cnt</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mh">1</span><span class="mb">'b1</span><span class="p">;</span>
+<span class="w">    </span><span class="k">end</span>
+
+<span class="w">    </span><span class="c1">// 计数器只会被 CNT_MAX-2 触发一次，因此只输出一个周期的脉冲</span>
+<span class="w">    </span><span class="k">always</span><span class="w"> </span><span class="p">@(</span><span class="k">posedge</span><span class="w"> </span><span class="n">clk</span><span class="w"> </span><span class="k">or</span><span class="w"> </span><span class="k">negedge</span><span class="w"> </span><span class="n">rst_n</span><span class="p">)</span><span class="w"> </span><span class="k">begin</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">rst_n</span><span class="p">)</span>
+<span class="w">            </span><span class="n">btn_pulse</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mh">1</span><span class="mb">'b0</span><span class="p">;</span>
+<span class="w">        </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">cnt</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">CNT_MAX</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mh">2</span><span class="p">)</span>
+<span class="w">            </span><span class="c1">// cnt 为 N-2 时，下一个时钟沿 cnt 变为 N-1，btn_pulse 同时拉高</span>
+<span class="w">            </span><span class="n">btn_pulse</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mh">1</span><span class="mb">'b1</span><span class="p">;</span>
+<span class="w">        </span><span class="k">else</span>
+<span class="w">            </span><span class="n">btn_pulse</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mh">1</span><span class="mb">'b0</span><span class="p">;</span>
+<span class="w">    </span><span class="k">end</span>
+<span class="k">endmodule</span>
+</code></pre></div>
+<h3 id="53">5.3 时序分析</h3>
+<p><img alt="脉冲型消抖时序" src="../images/fig9_pulse_timing.png"></p>
+<ul>
+<li>抖动期间 <code>btn_in</code> 每次回到 0，<code>cnt</code> 都清零</li>
+<li>稳定按下后 <code>cnt</code> 累加到 <code>N-1</code> 并保持（图中 "N-1 (hold)"）</li>
+<li><code>btn_pulse</code> 在 <code>cnt</code> 第一次等于 <code>N-1</code> 的那个周期为高</li>
+<li>释放时 <code>cnt</code> 清零，释放抖动只会让 <code>cnt</code> 在 0、1 之间变化，不会产生脉冲</li>
+</ul>
+<h3 id="54">5.4 思考题</h3>
+<p>如果在方法二的模块里，再对 <code>btn_pulse</code> 做一次边沿检测（用寄存器 <code>btn_pulse_d</code> 保存上一拍的值，令 <code>pos = btn_pulse &amp; ~btn_pulse_d</code>），得到的 <code>pos</code> 是什么样的？</p>
+<details>
+<summary>点击查看答案</summary>
+
+- btn_pulse 为高的那一拍，btn_pulse_d 还是 0，所以 pos = 1；下一拍 btn_pulse 已经变回 0，pos = 0。因此 pos 与 btn_pulse 完全相同，这次边沿检测是多余的。
+
+结论：脉冲型消抖的输出已经是单周期脉冲，不需要再做边沿检测；电平型消抖的输出是电平，必须再做边沿检测。
+
+</details>
+
+<hr>
+<h2 id="6">6. 两种方法对比</h2>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>方法一：电平型消抖 + 边沿检测</th>
+<th>方法二：脉冲型消抖</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>消抖部分的输出</td>
+<td>干净的方波（电平）</td>
+<td>单周期脉冲</td>
+</tr>
+<tr>
+<td>是否需要边沿检测</td>
+<td>需要</td>
+<td>不需要</td>
+</tr>
+<tr>
+<td>消抖范围</td>
+<td>按下、释放都消抖</td>
+<td>只针对按下</td>
+</tr>
+<tr>
+<td>能否检测释放</td>
+<td>能（<code>btn_neg</code>）</td>
+<td>不能</td>
+</tr>
+<tr>
+<td>能否实现长按检测</td>
+<td>能（对 <code>btn_level</code> 计时）</td>
+<td>需要修改代码</td>
+</tr>
+<tr>
+<td>代码组成</td>
+<td>消抖逻辑 + 边沿检测逻辑</td>
+<td>只有消抖逻辑</td>
+</tr>
+<tr>
+<td>适用场景</td>
+<td>通用，便于扩展</td>
+<td>只需"按一次做一次"</td>
+</tr>
+</tbody>
+</table>
+<p>两种方法都是工程中常见的写法。方法一功能更完整，推荐作为默认写法；方法二代码更少，适合只需要响应按下的简单场景。</p>
+<hr>
+<h2 id="7">7. 实验练习</h2>
+<p>要求使用 EGO1 开发板右侧 5 个按键中的一个上板测试。所有功能都在<strong>一个模块</strong>内完成。</p>
+<h3 id="1led">练习 1（基础）：按一次，LED 翻转</h3>
+<p>在方法一的 <code>btn_debounce</code> 模块中增加一个输出 <code>led</code>，利用 <code>btn_pos</code> 实现：每按一次按键，LED 翻转一次状态。</p>
+<ul>
+<li>先完成仿真（使用 4.5 节的方法把 <code>CNT_MAX</code> 临时改小），再改回原值上板验证</li>
+<li>上板后连续快速按键，检查是否每次都只翻转一次</li>
+</ul>
+<h3 id="2_1">练习 2（进阶，选做）：用方法二实现</h3>
+<p>在方法二的 <code>btn_debounce_pulse</code> 模块中增加一个输出 <code>led</code>，实现同样的功能，并对比两种方案的仿真波形：</p>
+<ul>
+<li>两种方案中，LED 翻转的时刻分别比按键稳定按下晚多久？</li>
+<li>两种方案在释放按键时的行为有什么不同？</li>
+</ul>
+<h3 id="3_1">练习 3（拓展，选做）</h3>
+<ul>
+<li><strong>松开才响应</strong>：按下按键时不变化，松开按键时 LED 才翻转（提示：<code>btn_neg</code>）</li>
+<li><strong>长按清零</strong>：短按时 8 位计数器加 1（用 8 个 LED 显示），按住超过 1 秒计数器清零（提示：只有方法一能直接实现，需要再用一个计数器统计 <code>btn_level</code> 保持高电平的时间）</li>
+</ul>
+<hr>
+<h2 id="_3">附录：常见问题</h2>
+<ul>
+<li>
+<p><strong>问</strong>：消抖后按键还是跳数？
+  <strong>答</strong>：检查 <code>CNT_MAX</code> 是否够大。20ms（<code>2_000_000</code> @ 100MHz）是推荐值。如果值太小，抖动还没结束输出就更新了。另外检查上板时是否忘记把仿真用的 <code>CNT_MAX</code> 改回原值。</p>
+</li>
+<li>
+<p><strong>问</strong>：按键完全没反应？
+  <strong>答</strong>：检查按键引脚约束是否正确。EGO1 的 5 个通用按键是<strong>高电平有效</strong>（按下为 1）；如果你使用的是其他开发板且按键为低电平有效，需要先对输入取反。</p>
+</li>
+<li>
+<p><strong>问</strong>：仿真了很长时间还是看不到输出变化？
+  <strong>答</strong>：仿真时把 <code>CNT_MAX</code> 临时改小（如 10），见 4.5 节。</p>
+</li>
+<li>
+<p><strong>问</strong>：为什么修改了 <code>CNT_MAX</code> 后计数异常？
+  <strong>答</strong>：计数器位宽固定为 21 位，最大可计到 2,097,151。如果将 <code>CNT_MAX</code> 改得比这个值更大（例如更高的时钟频率或更长的消抖时间），需要同时加大 <code>cnt</code> 的位宽。</p>
+</li>
+</ul></div>
+
+
+
+
+
+
+
+
+  <aside class="md-source-file">
+    
+    
+    
+      
+  
+  <span class="md-source-file__fact">
+    <span class="md-icon" title="贡献者">
+      
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 4a4 4 0 0 1 4 4 4 4 0 0 1-4 4 4 4 0 0 1-4-4 4 4 0 0 1 4-4m0 10c4.42 0 8 1.79 8 4v2H4v-2c0-2.21 3.58-4 8-4"/></svg>
+      
+    </span>
+    <nav>
+      baiyhsz
+    </nav>
+  </span>
+
+    
+    
+  </aside>
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  回到页面顶部
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright &copy; 2025 南方科技大学
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["search.suggest", "search.highlight", "content.tabs.link", "navigation.tabs", "navigation.top", "content.code.copy"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "\u5df2\u590d\u5236", "clipboard.copy": "\u590d\u5236", "search.result.more.one": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.more.other": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 # \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.none": "\u6ca1\u6709\u627e\u5230\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.one": "\u627e\u5230 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.other": "# \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.placeholder": "\u952e\u5165\u4ee5\u5f00\u59cb\u641c\u7d22", "search.result.term.missing": "\u7f3a\u5c11", "select.version": "\u9009\u62e9\u5f53\u524d\u7248\u672c"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>
