@@ -1626,6 +1626,9 @@
 <h3 id="23-moore">2.3 第三段：输出逻辑（组合逻辑，Moore型）</h3>
 <div class="highlight"><pre><span></span><code><span class="c1">// 第三段：输出逻辑——仅根据当前状态决定输出（Moore型）</span>
 <span class="k">always</span><span class="w"> </span><span class="p">@(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="k">begin</span>
+<span class="w">    </span><span class="c1">// 默认输出，确保每条组合逻辑路径都有赋值</span>
+<span class="w">    </span><span class="n">led</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">1</span><span class="mb">'b0</span><span class="p">;</span>
+<span class="w">    </span><span class="n">buzzer</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">1</span><span class="mb">'b0</span><span class="p">;</span>
 <span class="w">    </span><span class="k">case</span><span class="w"> </span><span class="p">(</span><span class="n">state</span><span class="p">)</span>
 <span class="w">        </span><span class="nl">IDLE:</span><span class="w"> </span><span class="k">begin</span>
 <span class="w">            </span><span class="n">led</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">1</span><span class="mb">'b0</span><span class="p">;</span>
@@ -1652,7 +1655,8 @@
 
 <span class="kt">reg</span><span class="w"> </span><span class="p">[</span><span class="mh">1</span><span class="o">:</span><span class="mh">0</span><span class="p">]</span><span class="w"> </span><span class="n">state</span><span class="p">,</span><span class="w"> </span><span class="n">next_state</span><span class="p">;</span>
 </code></pre></div>
-<p><img alt="image-20260409202246744" src="../images/image-20260409202246744.png"></p>
+<p><img alt="三状态有限状态机：IDLE、STATE_A 和 STATE_B 的状态转移图" src="../images/fsm-three-state.svg"></p>
+<p>圆内标注状态名及该状态下的输出 <code>led</code>、<code>buzzer</code>；箭头标注状态转移条件，<code>1</code> 表示无条件转移。<code>rst_n = 0</code> 时异步复位到 <code>IDLE</code>，其余转移在时钟上升沿发生。</p>
 <blockquote>
 <p><strong>注意</strong>：<code>state</code> 和 <code>next_state</code> 都声明为 <code>reg</code> 类型，但 <code>state</code> 在时序块中赋值（综合为寄存器），<code>next_state</code> 在组合块中赋值（综合为导线）。</p>
 </blockquote>
@@ -1675,12 +1679,16 @@
 <h3 id="32">3.2 第二段：次态逻辑 + 输出逻辑（组合逻辑）</h3>
 <div class="highlight"><pre><span></span><code><span class="c1">// 第二段：次态逻辑 + 输出逻辑（组合逻辑合并）</span>
 <span class="k">always</span><span class="w"> </span><span class="p">@(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="k">begin</span>
+<span class="w">    </span><span class="c1">// 默认保持当前状态，输出默认清零，避免推断锁存器</span>
+<span class="w">    </span><span class="n">next_state</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">state</span><span class="p">;</span>
+<span class="w">    </span><span class="n">led</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">1</span><span class="mb">'b0</span><span class="p">;</span>
+<span class="w">    </span><span class="n">buzzer</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">1</span><span class="mb">'b0</span><span class="p">;</span>
+
 <span class="w">    </span><span class="c1">// 根据当前状态和输入，决定次态和输出</span>
 <span class="w">    </span><span class="k">case</span><span class="w"> </span><span class="p">(</span><span class="n">state</span><span class="p">)</span>
 <span class="w">        </span><span class="nl">IDLE:</span><span class="w"> </span><span class="k">begin</span>
 <span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">start</span><span class="p">)</span><span class="w"> </span><span class="k">begin</span>
 <span class="w">                </span><span class="n">next_state</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">STATE_A</span><span class="p">;</span>
-<span class="w">                </span><span class="n">led</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">1</span><span class="mb">'b1</span><span class="p">;</span><span class="w">          </span><span class="c1">// 同时就输出</span>
 <span class="w">            </span><span class="k">end</span>
 <span class="w">        </span><span class="k">end</span>
 <span class="w">        </span><span class="nl">STATE_A:</span><span class="w"> </span><span class="k">begin</span>
@@ -1700,7 +1708,10 @@
 <span class="w">    </span><span class="k">endcase</span>
 <span class="k">end</span>
 </code></pre></div>
+<p>本例的状态转移及输出与第 2.4 节的状态图相同。两段式与三段式的区别在于 <code>always</code> 块的组织方式。</p>
+<p>本例与上一节的三段式示例均为 Moore 型：输出仅由当前状态决定。在 <code>IDLE</code> 中，即使 <code>start = 1</code>，<code>led</code> 仍为 <code>0</code>；在时钟上升沿进入 <code>STATE_A</code> 后，<code>led</code> 才变为 <code>1</code>。两段式或三段式描述的是代码结构，Moore 型或 Mealy 型取决于输出是否依赖当前输入。</p>
 <blockquote>
+<p><strong>注意</strong>：<code>case</code> 前的默认赋值覆盖所有执行路径；<code>case</code> 中的赋值会覆盖相应默认值。仅有 <code>default</code> 分支不能为已匹配状态中未赋值的信号提供默认值。</p>
 <p><strong>建议</strong>：最好使用三段式，虽然代码多一点，但结构更清晰，易于维护和调试。</p>
 </blockquote>
 <h2 id="4">4. 实验练习：计数检测</h2>

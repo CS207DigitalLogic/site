@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="930" height="390" viewBox="0 0 930 390" role="img" aria-labelledby="title description">
+  <title id="title">Three-process Moore state machine with outputs</title>
+  <desc id="description">Reset enters IDLE. IDLE stays when start equals zero and moves to STATE_A when start equals one. STATE_A stays when condition equals zero and moves to STATE_B when condition equals one. STATE_B returns to IDLE unconditionally. Outputs (led, buzzer) are (0, 0) in IDLE, (1, 0) in STATE_A, and (0, 1) in STATE_B.</desc>
+  <defs>
+    <marker id="arrow" markerWidth="12" markerHeight="10" refX="10" refY="5" orient="auto" markerUnits="userSpaceOnUse">
+      <path d="M 0 0 L 11 5 L 0 10 L 3 5 Z" fill="#159fdb"/>
+    </marker>
+    <style>
+      .edge { fill: none; stroke: #159fdb; stroke-width: 2; marker-end: url(#arrow); }
+      .state { fill: #e6f4fb; stroke: #252525; stroke-width: 2.4; }
+      .name { font-family: 'Times New Roman', 'Liberation Serif', serif; font-size: 22px; fill: #171717; text-anchor: middle; dominant-baseline: middle; }
+      .output { font-family: 'Times New Roman', 'Liberation Serif', serif; font-size: 18px; fill: #171717; text-anchor: middle; dominant-baseline: middle; }
+      .label { font-family: 'Times New Roman', 'Liberation Serif', serif; font-size: 25px; fill: #171717; text-anchor: middle; }
+      .signal { font-style: italic; }
+    </style>
+  </defs>
+  <rect width="930" height="390" fill="#fff"/>
+
+  <!-- Transition paths terminate at the state boundaries. -->
+  <g class="edge">
+    <path d="M 32 200 H 112"/>
+    <path d="M 246 200 H 432"/>
+    <path d="M 566 200 H 752"/>
+    <path d="M 211 142 C 269 22, 91 22, 149 142"/>
+    <path d="M 531 142 C 589 22, 411 22, 469 142"/>
+    <path d="M 820 267 C 820 376, 180 376, 180 267"/>
+  </g>
+
+  <g class="state">
+    <circle cx="180" cy="200" r="66"/>
+    <circle cx="500" cy="200" r="66"/>
+    <circle cx="820" cy="200" r="66"/>
+  </g>
+  <g class="name">
+    <text x="180" y="174">IDLE</text>
+    <text x="500" y="174">STATE_A</text>
+    <text x="820" y="174">STATE_B</text>
+  </g>
+  <path d="M 126 192 H 234 M 446 192 H 554 M 766 192 H 874" fill="none" stroke="#252525" stroke-width="1.2"/>
+  <g class="output">
+    <text x="180" y="213">led = 0</text>
+    <text x="180" y="237">buzzer = 0</text>
+    <text x="500" y="213">led = 1</text>
+    <text x="500" y="237">buzzer = 0</text>
+    <text x="820" y="213">led = 0</text>
+    <text x="820" y="237">buzzer = 1</text>
+  </g>
+
+  <g class="label">
+    <text x="180" y="35"><tspan class="signal">start</tspan> = 0</text>
+    <text x="500" y="35"><tspan class="signal">condition</tspan> = 0</text>
+    <text x="340" y="182"><tspan class="signal">start</tspan> = 1</text>
+    <text x="660" y="182"><tspan class="signal">condition</tspan> = 1</text>
+    <text x="500" y="335">1</text>
+    <text x="69" y="180" font-size="20"><tspan class="signal">rst_n</tspan> = 0</text>
+  </g>
+</svg>

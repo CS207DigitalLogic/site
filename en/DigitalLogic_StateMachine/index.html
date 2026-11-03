@@ -1541,11 +1541,11 @@
 <hr>
 <h2 id="1-finite-state-machines">1. Finite State Machines</h2>
 <h3 id="11-what-is-a-finite-state-machine">1.1 What Is a Finite State Machine?</h3>
-<p>A finite state machine (FSM) is a sequential-logic model that:</p>
+<p>A finite state machine (FSM) is a sequential logic circuit model that:</p>
 <ul>
 <li>Has a <strong>finite number of states</strong>.</li>
 <li>Moves from its current state to a next state under <strong>clock control</strong>, according to the current state and input signals.</li>
-<li>Produces outputs according to the state and, in some machines, the inputs.</li>
+<li>Produces outputs based on the state (and inputs).</li>
 </ul>
 <p>State machines are fundamental tools in digital-system design and are widely used for control logic, protocol processing, sequence detection, and other applications.</p>
 <h3 id="12-components-of-a-state-machine">1.2 Components of a State Machine</h3>
@@ -1563,7 +1563,7 @@
 <tr>
 <td>Output depends on</td>
 <td><strong>Current state only</strong></td>
-<td>Current state <strong>and</strong> inputs</td>
+<td>Current state <strong>+</strong> inputs</td>
 </tr>
 <tr>
 <td>Output changes</td>
@@ -1594,16 +1594,16 @@
 <h2 id="2-three-process-state-machine-template">2. Three-Process State-Machine Template</h2>
 <p>The three-process style places the three parts of a state machine in three separate <code>always</code> blocks. This structure is clear, maintainable, and is the <strong>recommended standard style</strong>.</p>
 <h3 id="21-process-1-state-register-sequential-logic">2.1 Process 1: State Register (Sequential Logic)</h3>
-<div class="highlight"><pre><span></span><code><span class="c1">// 第一段：状态寄存器——在时钟边沿更新状态</span>
+<div class="highlight"><pre><span></span><code><span class="c1">// Process 1: State register - update the state on the clock edge</span>
 <span class="k">always</span><span class="w"> </span><span class="p">@(</span><span class="k">posedge</span><span class="w"> </span><span class="n">clk</span><span class="w"> </span><span class="k">or</span><span class="w"> </span><span class="k">negedge</span><span class="w"> </span><span class="n">rst_n</span><span class="p">)</span><span class="w"> </span><span class="k">begin</span>
 <span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">rst_n</span><span class="p">)</span>
-<span class="w">        </span><span class="n">state</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">IDLE</span><span class="p">;</span><span class="w">       </span><span class="c1">// 复位到初始状态</span>
+<span class="w">        </span><span class="n">state</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">IDLE</span><span class="p">;</span><span class="w">       </span><span class="c1">// Reset to the initial state</span>
 <span class="w">    </span><span class="k">else</span>
-<span class="w">        </span><span class="n">state</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">next_state</span><span class="p">;</span><span class="w"> </span><span class="c1">// 更新为次态</span>
+<span class="w">        </span><span class="n">state</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">next_state</span><span class="p">;</span><span class="w"> </span><span class="c1">// Update to the next state</span>
 <span class="k">end</span>
 </code></pre></div>
 <h3 id="22-process-2-next-state-logic-combinational-logic">2.2 Process 2: Next-State Logic (Combinational Logic)</h3>
-<div class="highlight"><pre><span></span><code><span class="c1">// 第二段：次态逻辑——根据当前状态和输入，决定下一个状态</span>
+<div class="highlight"><pre><span></span><code><span class="c1">// Process 2: Next-state logic - determine the next state from the current state and inputs</span>
 <span class="k">always</span><span class="w"> </span><span class="p">@(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="k">begin</span>
 <span class="w">    </span><span class="k">case</span><span class="w"> </span><span class="p">(</span><span class="n">state</span><span class="p">)</span>
 <span class="w">        </span><span class="nl">IDLE:</span><span class="w"> </span><span class="k">begin</span>
@@ -1626,8 +1626,11 @@
 <span class="k">end</span>
 </code></pre></div>
 <h3 id="23-process-3-output-logic-combinational-logic-moore-type">2.3 Process 3: Output Logic (Combinational Logic, Moore Type)</h3>
-<div class="highlight"><pre><span></span><code><span class="c1">// 第三段：输出逻辑——仅根据当前状态决定输出（Moore型）</span>
+<div class="highlight"><pre><span></span><code><span class="c1">// Process 3: Output logic - determine outputs from the current state only (Moore type)</span>
 <span class="k">always</span><span class="w"> </span><span class="p">@(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="k">begin</span>
+<span class="w">    </span><span class="c1">// Default outputs ensure an assignment on every combinational logic path</span>
+<span class="w">    </span><span class="n">led</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">1</span><span class="mb">'b0</span><span class="p">;</span>
+<span class="w">    </span><span class="n">buzzer</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">1</span><span class="mb">'b0</span><span class="p">;</span>
 <span class="w">    </span><span class="k">case</span><span class="w"> </span><span class="p">(</span><span class="n">state</span><span class="p">)</span>
 <span class="w">        </span><span class="nl">IDLE:</span><span class="w"> </span><span class="k">begin</span>
 <span class="w">            </span><span class="n">led</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">1</span><span class="mb">'b0</span><span class="p">;</span>
@@ -1647,16 +1650,17 @@
 </code></pre></div>
 <h3 id="24-state-encoding">2.4 State Encoding</h3>
 <p>Define state constants using <code>localparam</code> or <code>parameter</code>:</p>
-<div class="highlight"><pre><span></span><code><span class="c1">// 状态定义</span>
+<div class="highlight"><pre><span></span><code><span class="c1">// State definitions</span>
 <span class="k">localparam</span><span class="w"> </span><span class="n">IDLE</span><span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="mh">2</span><span class="mi">'d0</span><span class="p">;</span>
 <span class="k">localparam</span><span class="w"> </span><span class="n">STATE_A</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">2</span><span class="mi">'d1</span><span class="p">;</span>
 <span class="k">localparam</span><span class="w"> </span><span class="n">STATE_B</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">2</span><span class="mi">'d2</span><span class="p">;</span>
 
 <span class="kt">reg</span><span class="w"> </span><span class="p">[</span><span class="mh">1</span><span class="o">:</span><span class="mh">0</span><span class="p">]</span><span class="w"> </span><span class="n">state</span><span class="p">,</span><span class="w"> </span><span class="n">next_state</span><span class="p">;</span>
 </code></pre></div>
-<p><img alt="image-20260409202246744" src="../../images/image-20260409202246744.png"></p>
+<p><img alt="Three-state finite state machine: transitions between IDLE, STATE_A, and STATE_B" src="../../images/fsm-three-state.svg"></p>
+<p>Each circle shows the state name and the outputs <code>led</code> and <code>buzzer</code> in that state; arrow labels specify transition conditions, with <code>1</code> denoting an unconditional transition. When <code>rst_n = 0</code>, the machine asynchronously resets to <code>IDLE</code>; all other transitions occur on the rising edge of the clock.</p>
 <blockquote>
-<p><strong>Note</strong>: Both <code>state</code> and <code>next_state</code> are declared as type <code>reg</code>, but <code>state</code> is assigned in a sequential block and is synthesized as a register, whereas <code>next_state</code> is assigned in a combinational block and is synthesized as combinational logic.</p>
+<p><strong>Note</strong>: Both <code>state</code> and <code>next_state</code> are declared as type <code>reg</code>, but <code>state</code> is assigned in a sequential block (synthesized as a register), while <code>next_state</code> is assigned in a combinational block (synthesized as wires).</p>
 </blockquote>
 <hr>
 <h2 id="3-two-process-state-machine-template">3. Two-Process State-Machine Template</h2>
@@ -1666,27 +1670,31 @@
 <li><strong>Process 2</strong>: Combined next-state and output logic (combinational logic)</li>
 </ol>
 <h3 id="31-process-1-state-register-sequential-logic">3.1 Process 1: State Register (Sequential Logic)</h3>
-<div class="highlight"><pre><span></span><code><span class="c1">// 第一段：状态寄存器——在时钟边沿更新状态</span>
+<div class="highlight"><pre><span></span><code><span class="c1">// Process 1: State register - update the state on the clock edge</span>
 <span class="k">always</span><span class="w"> </span><span class="p">@(</span><span class="k">posedge</span><span class="w"> </span><span class="n">clk</span><span class="w"> </span><span class="k">or</span><span class="w"> </span><span class="k">negedge</span><span class="w"> </span><span class="n">rst_n</span><span class="p">)</span><span class="w"> </span><span class="k">begin</span>
 <span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">rst_n</span><span class="p">)</span>
-<span class="w">        </span><span class="n">state</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">IDLE</span><span class="p">;</span><span class="w">       </span><span class="c1">// 复位到初始状态</span>
+<span class="w">        </span><span class="n">state</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">IDLE</span><span class="p">;</span><span class="w">       </span><span class="c1">// Reset to the initial state</span>
 <span class="w">    </span><span class="k">else</span>
-<span class="w">        </span><span class="n">state</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">next_state</span><span class="p">;</span><span class="w"> </span><span class="c1">// 更新为次态</span>
+<span class="w">        </span><span class="n">state</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">next_state</span><span class="p">;</span><span class="w"> </span><span class="c1">// Update to the next state</span>
 <span class="k">end</span>
 </code></pre></div>
 <h3 id="32-process-2-next-state-and-output-logic-combinational-logic">3.2 Process 2: Next-State and Output Logic (Combinational Logic)</h3>
-<div class="highlight"><pre><span></span><code><span class="c1">// 第二段：次态逻辑 + 输出逻辑（组合逻辑合并）</span>
+<div class="highlight"><pre><span></span><code><span class="c1">// Process 2: Next-state and output logic (combined combinational logic)</span>
 <span class="k">always</span><span class="w"> </span><span class="p">@(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="k">begin</span>
-<span class="w">    </span><span class="c1">// 根据当前状态和输入，决定次态和输出</span>
+<span class="w">    </span><span class="c1">// Hold the current state and clear outputs by default to avoid inferring latches</span>
+<span class="w">    </span><span class="n">next_state</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">state</span><span class="p">;</span>
+<span class="w">    </span><span class="n">led</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">1</span><span class="mb">'b0</span><span class="p">;</span>
+<span class="w">    </span><span class="n">buzzer</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">1</span><span class="mb">'b0</span><span class="p">;</span>
+
+<span class="w">    </span><span class="c1">// Determine the next state and outputs from the current state and inputs</span>
 <span class="w">    </span><span class="k">case</span><span class="w"> </span><span class="p">(</span><span class="n">state</span><span class="p">)</span>
 <span class="w">        </span><span class="nl">IDLE:</span><span class="w"> </span><span class="k">begin</span>
 <span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">start</span><span class="p">)</span><span class="w"> </span><span class="k">begin</span>
 <span class="w">                </span><span class="n">next_state</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">STATE_A</span><span class="p">;</span>
-<span class="w">                </span><span class="n">led</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">1</span><span class="mb">'b1</span><span class="p">;</span><span class="w">          </span><span class="c1">// 同时就输出</span>
 <span class="w">            </span><span class="k">end</span>
 <span class="w">        </span><span class="k">end</span>
 <span class="w">        </span><span class="nl">STATE_A:</span><span class="w"> </span><span class="k">begin</span>
-<span class="w">            </span><span class="n">led</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">1</span><span class="mb">'b1</span><span class="p">;</span><span class="w">              </span><span class="c1">// Moore型输出</span>
+<span class="w">            </span><span class="n">led</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">1</span><span class="mb">'b1</span><span class="p">;</span><span class="w">              </span><span class="c1">// Moore-type output</span>
 <span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">condition</span><span class="p">)</span>
 <span class="w">                </span><span class="n">next_state</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">STATE_B</span><span class="p">;</span>
 <span class="w">        </span><span class="k">end</span>
@@ -1702,7 +1710,10 @@
 <span class="w">    </span><span class="k">endcase</span>
 <span class="k">end</span>
 </code></pre></div>
+<p>The state transitions and outputs in this example are the same as those in the state diagram in Section 2.4. The two-process and three-process styles differ in how the <code>always</code> blocks are organized.</p>
+<p>Both this example and the three-process example in the previous section are Moore machines: outputs depend only on the current state. While in <code>IDLE</code>, <code>led</code> remains <code>0</code> even when <code>start = 1</code>; it becomes <code>1</code> only after the machine enters <code>STATE_A</code> on the rising edge of the clock. Two-process and three-process refer to code structure, whereas Moore or Mealy behavior depends on whether outputs depend on the current inputs.</p>
 <blockquote>
+<p><strong>Note</strong>: Default assignments before <code>case</code> cover every execution path; assignments inside <code>case</code> override the corresponding defaults. A <code>default</code> branch alone does not provide default values for signals left unassigned in a matched state.</p>
 <p><strong>Recommendation</strong>: Prefer the three-process style. It requires slightly more code but provides a clearer structure and is easier to maintain and debug.</p>
 </blockquote>
 <h2 id="4-laboratory-exercise-count-detection">4. Laboratory Exercise: Count Detection</h2>
@@ -1718,7 +1729,7 @@
 <li><code>y_out</code>: Validity indicator</li>
 </ul>
 <p><strong>Function</strong>:</p>
-<p>On each rising edge of the clock, the circuit samples the bits in <code>x_in</code>. It accumulates the <strong>total number of 1s received across all samples</strong>.</p>
+<p>On each rising edge of the clock, the circuit samples the bits in <code>x_in</code>. It accumulates the <strong>total number of all 1s received</strong>.</p>
 <ul>
 <li>When the accumulated number of 1s is a <strong>multiple of 5</strong>, <code>y_out = 1</code> (valid).</li>
 <li>Otherwise, <code>y_out = 0</code> (invalid).</li>
@@ -1799,8 +1810,8 @@
 <span class="w">    </span><span class="kt">reg</span><span class="w"> </span><span class="p">[</span><span class="mh">4</span><span class="o">:</span><span class="mh">0</span><span class="p">]</span><span class="w"> </span><span class="n">x_in</span><span class="p">;</span>
 <span class="w">    </span><span class="kt">wire</span><span class="w"> </span><span class="n">y_out_2stage</span><span class="p">,</span><span class="w"> </span><span class="n">y_out_3stage</span><span class="p">;</span>
 
-<span class="w">    </span><span class="n">bit_counter_2stage</span><span class="w"> </span><span class="n">u1</span><span class="p">(...);</span><span class="w">  </span><span class="c1">// 两段式</span>
-<span class="w">    </span><span class="n">bit_counter_3stage</span><span class="w"> </span><span class="n">u2</span><span class="p">(...);</span><span class="w">  </span><span class="c1">// 三段式</span>
+<span class="w">    </span><span class="n">bit_counter_2stage</span><span class="w"> </span><span class="n">u1</span><span class="p">(...);</span><span class="w">  </span><span class="c1">// Two-process implementation</span>
+<span class="w">    </span><span class="n">bit_counter_3stage</span><span class="w"> </span><span class="n">u2</span><span class="p">(...);</span><span class="w">  </span><span class="c1">// Three-process implementation</span>
 
 <span class="w">    </span><span class="k">initial</span><span class="w"> </span><span class="n">clk</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0</span><span class="p">;</span>
 <span class="w">    </span><span class="k">always</span><span class="w"> </span><span class="p">#</span><span class="mh">5</span><span class="w"> </span><span class="n">clk</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">~</span><span class="n">clk</span><span class="p">;</span>
@@ -1808,19 +1819,19 @@
 <span class="w">    </span><span class="k">initial</span><span class="w"> </span><span class="k">begin</span>
 <span class="w">        </span><span class="n">rst_n</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0</span><span class="p">;</span><span class="w"> </span><span class="p">#</span><span class="mh">50</span><span class="p">;</span><span class="w"> </span><span class="n">rst_n</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">1</span><span class="p">;</span>
 
-<span class="w">        </span><span class="c1">// 测试用例：单个1重复5次</span>
+<span class="w">        </span><span class="c1">// Test case: Repeat a single 1 five times</span>
 <span class="w">        </span><span class="k">repeat</span><span class="p">(</span><span class="mh">5</span><span class="p">)</span><span class="w"> </span><span class="k">begin</span>
 <span class="w">            </span><span class="n">x_in</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">5</span><span class="mb">'b00001</span><span class="p">;</span><span class="w">  </span><span class="p">#</span><span class="mh">100</span><span class="p">;</span>
 <span class="w">            </span><span class="n">x_in</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">5</span><span class="mb">'b00000</span><span class="p">;</span><span class="w">  </span><span class="p">#</span><span class="mh">100</span><span class="p">;</span>
 <span class="w">        </span><span class="k">end</span>
 
-<span class="w">        </span><span class="c1">// 此时应该回到state=0，y_out=1</span>
+<span class="w">        </span><span class="c1">// At this point, the state should return to state=0, with y_out=1</span>
 <span class="w">        </span><span class="nb">$finish</span><span class="p">;</span>
 <span class="w">    </span><span class="k">end</span>
 <span class="k">endmodule</span>
 </code></pre></div>
 <h3 id="44-on-board-verification">4.4 On-Board Verification</h3>
-<p>Testing directly at the 100 MHz system-clock rate is difficult. Use a <strong>button, debouncing, and edge detection</strong> to emulate a sampling pulse.</p>
+<p>Since testing directly with the system clock (100 MHz) is difficult, a <strong>button + debouncing + edge detection</strong> can be used to emulate clock pulses:</p>
 <p><strong>Procedure</strong>:</p>
 <ol>
 <li><strong>Program the bitstream.</strong></li>
@@ -1846,7 +1857,7 @@
 <li><strong>Poor readability</strong>: Sequential and combinational logic are mixed and difficult to distinguish.</li>
 <li><strong>Error-prone</strong>: It is easy to confuse blocking assignments (<code>=</code>) with non-blocking assignments (<code>&lt;=</code>).</li>
 <li><strong>Difficult maintenance</strong>: Logic changes can easily introduce bugs.</li>
-<li><strong>Poor conformity</strong>: The style does not follow the recommended Verilog HDL design convention used in this course.</li>
+<li><strong>Poor conformity</strong>: It does not conform to Verilog HDL design specifications.</li>
 <li><strong>Synthesis uncertainty</strong>: Different tools may interpret the description differently and produce different synthesis results.</li>
 </ol></div>
 
